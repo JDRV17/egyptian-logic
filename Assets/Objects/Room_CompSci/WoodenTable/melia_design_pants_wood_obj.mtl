@@ -1,0 +1,42 @@
+# Max2Mtl Version 4.0 Mar 10th, 2001
+#
+# Multi/Sub melia_design_pants_wood (4) to come 
+#
+newmtl melia_design_pants_wood_mtl_1
+Ka  0.5 0.5 0.5
+Kd  0.5 0.5 0.5
+Ks  0.9 0.9 0.9
+d  1.0
+Ns  0.0
+illum 2
+map_Kd dcmap_melia_design_pants_wood_1.jpg
+#
+newmtl melia_design_pants_wood_mtl_2
+Ka  0.5 0.5 0.5
+Kd  0.5 0.5 0.5
+Ks  0.9 0.9 0.9
+d  1.0
+Ns  0.0
+illum 2
+map_Kd dcmap_melia_design_pants_wood_2.jpg
+#
+newmtl melia_design_pants_wood_mtl_3
+Ka  0.5 0.5 0.5
+Kd  0.5 0.5 0.5
+Ks  0.9 0.9 0.9
+d  1.0
+Ns  0.0
+illum 2
+map_Kd dcmap_melia_design_pants_wood_3.jpg
+#
+newmtl melia_design_pants_wood_mtl_4
+Ka  1.0 1.0 1.0
+Kd  1.0 1.0 1.0
+Ks  0.9 0.9 0.9
+d  1.0
+Ns  0.0
+illum 2
+#
+# Multi/Sub melia_design_pants_wood done 
+#
+# EOF
