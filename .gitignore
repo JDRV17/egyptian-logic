@@ -81,3 +81,7 @@ Thumbs.db
 *.max
 *.pdf
 *.BMP
+/MonoBleedingEdge/
+/UnityPlayer.dll
+/Unity VR 2022/
+/Recordings/
