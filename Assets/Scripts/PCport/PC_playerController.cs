@@ -3,7 +3,7 @@ using UnityEngine;
 public class PC_playerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    public float mouseSensitivity = 100f;
+    public float mouseSensitivity = 10f;
     public float gravity = -9.81f;
     public Transform cameraTransform;
 
@@ -27,8 +27,9 @@ public class PC_playerController : MonoBehaviour
 
     void HandleMouseLook()
     {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        // Se elimina Time.deltaTime porque GetAxis para el ratón ya depende del movimiento entre frames
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
         // Vertical rotation (camera up/down)
         xRotation -= mouseY;
