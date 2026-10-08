@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: dc22537031f7ace4399b3f630c996fca
+guid: fe4326be40abddf4ba4a20b079f8326d
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Thors Hammer Carved
+  - Thors Hammer
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

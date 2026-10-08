@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 748d7a54b969d0f429c59152e89c05da
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Thors Hammer
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: fe4326be40abddf4ba4a20b079f8326d, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
