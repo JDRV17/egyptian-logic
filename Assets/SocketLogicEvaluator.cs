@@ -166,4 +166,23 @@ public class SocketLogicEvaluator : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// Evalúa qué salida daría la compuerta insertada para dos entradas booleanas 'a' y 'b'.
+    /// </summary>
+    public bool EvaluateOutputForInputs(bool a, bool b)
+    {
+        if (currentGate == null) return false;
+
+        switch (currentGate.GateType)
+        {
+            case LogicGateType.AND: return a && b;
+            case LogicGateType.OR: return a || b;
+            case LogicGateType.XOR: return a ^ b;
+            case LogicGateType.NAND: return !(a && b);
+            case LogicGateType.NOR: return !(a || b);
+            case LogicGateType.XNOR: return !(a ^ b);
+            default: return false;
+        }
+    }
 }
