@@ -10,6 +10,12 @@ public class LevelSubmitManager : MonoBehaviour
 
     [SerializeField] private XRPhysicalButton submitButton;
 
+    [Header("Configuración de la recompensa")]
+    [Tooltip("Arrastra aquí el GameObject del objeto a caer (puede estar desactivado inicialmente)")]
+    public GameObject fallingObject;
+    [Tooltip("El Rigidbody del objeto a caer")]
+    public Rigidbody fallingRigidbody;
+
     private void OnEnable()
     {
         if (submitButton != null) submitButton.onPressed.AddListener(ValidateSubmission);
@@ -38,6 +44,12 @@ public class LevelSubmitManager : MonoBehaviour
         if (EvaluateTruthTableMatch(playerCircuitsByVersion[v]))
         {
             Debug.Log("<color=green><b>¡FELICITACIONES!</b> Has logrado reproducir el comportamiento de la prueba correctamente.</color>");
+            if (fallingObject != null && fallingRigidbody != null)
+            {
+                fallingObject.SetActive(true); // Activa el objeto en la escena
+                fallingRigidbody.isKinematic = false; // Libera la física para que caiga
+                fallingRigidbody.useGravity = true;
+            }
         }
         else
         {
