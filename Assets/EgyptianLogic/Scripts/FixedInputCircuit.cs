@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
 
+[DefaultExecutionOrder(10)] // después del PuzzleVersionManager (-100)
 public class FixedInputCircuit : MonoBehaviour
 {
     public enum SourceType { FixedInput, GateOutput }
@@ -21,54 +22,89 @@ public class FixedInputCircuit : MonoBehaviour
         public string label = "Compuerta";
         public XRSocketInteractor socket;
         public InputSource inputA;
-        [Tooltip("Se ignora si la compuerta es NOT.")]
         public InputSource inputB;
-        public WireVisual outputWire;   // cable que sale de esta compuerta
+        public WireVisual outputWire;
 
         [System.NonSerialized] public LogicGateItem currentGate;
         [System.NonSerialized] public UnityAction<SelectEnterEventArgs> onEnter;
         [System.NonSerialized] public UnityAction<SelectExitEventArgs> onExit;
     }
 
-    [Header("Entradas con corriente fija")]
-    [Tooltip("true = la entrada está energizada. V1: 2 entradas, ambas en true.")]
-    [SerializeField] private bool[] fixedInputs = { true, true };
+    [System.Serializable]
+    public class OutputTerminal
+    {
+        public string label = "Salida";
+        public int nodeIndex = 0;
+        public Light bulbLight;
+        public Renderer bulbRenderer;
+        public int materialIndex = 0;
 
-    [Tooltip("Un cable por cada entrada fija, en el mismo orden que Fixed Inputs.")]
-    [SerializeField] private WireVisual[] fixedInputWires;
+        [System.NonSerialized] public Material material;
+        [System.NonSerialized] public bool isOn;
+    }
 
-    [Header("Estructura del circuito")]
-    [SerializeField] private List<GateNode> nodes = new List<GateNode>();
-    [Tooltip("Nodo cuya salida enciende la bombilla.")]
-    [SerializeField] private int outputNodeIndex = 0;
+    [System.Serializable]
+    public class VersionConfig
+    {
+        public string name = "V1";
+        [Tooltip("true = energizada. V1: {T,T}. V2: {F,T,T}. V3: {T,T,F,F,T}.")]
+        public bool[] fixedInputs = { true, true };
+        public WireVisual[] fixedInputWires;
+        public List<GateNode> nodes = new List<GateNode>();
+        public List<OutputTerminal> outputs = new List<OutputTerminal>();
+    }
 
-    [Header("Bombilla")]
-    [SerializeField] private Light bulbLight;
-    [SerializeField] private Renderer bulbRenderer;
-    [SerializeField] private int materialIndex = 0;
+    [Header("Versión")]
+    [Tooltip("Manager que escoge la versión. Si está vacío, se usa siempre la configuración 0.")]
+    [SerializeField] private PuzzleVersionManager versionManager;
+
+    [Tooltip("Posición 0 = V1, 1 = V2, 2 = V3.")]
+    [SerializeField] private VersionConfig[] versions = new VersionConfig[3];
+
+    [Header("Bombillas")]
     [SerializeField] private string emissionColorPropertyName = "_EmissionColor";
-
     [ColorUsage(false, true)]
     [SerializeField] private Color onEmissionColor = Color.yellow * 2f;
     [ColorUsage(false, true)]
     [SerializeField] private Color offEmissionColor = Color.black;
 
     [Header("Eventos")]
-    public UnityEvent<bool> onOutputChanged;
+    public UnityEvent onSolved;
+    public UnityEvent<bool> onSolvedChanged;
 
-    public bool IsOutputOn { get; private set; }
+    public bool IsSolved { get; private set; }
 
-    private Material targetMaterial;
+    private VersionConfig active;
+    private bool solvedFired;
 
-    private void Awake()
+    private void Awake() => ChooseConfig();
+
+    private void ChooseConfig()
     {
-        if (bulbRenderer != null && materialIndex < bulbRenderer.materials.Length)
-            targetMaterial = bulbRenderer.materials[materialIndex];
+        if (active != null) return;
+
+        int index = versionManager != null ? (int)versionManager.CurrentVersion : 0;
+        if (versions == null || index < 0 || index >= versions.Length || versions[index] == null)
+        {
+            Debug.LogError($"[FixedInputCircuit] {name}: no hay configuración para el índice {index}.");
+            return;
+        }
+
+        active = versions[index];
+
+        foreach (var o in active.outputs)
+            if (o.bulbRenderer != null && o.materialIndex < o.bulbRenderer.materials.Length)
+                o.material = o.bulbRenderer.materials[o.materialIndex];
+
+        Debug.Log($"[FixedInputCircuit] {name}: usando configuración '{active.name}' ({active.nodes.Count} nodo(s), {active.outputs.Count} salida(s), {active.fixedInputs.Length} entrada(s)).");
     }
 
     private void OnEnable()
     {
-        foreach (var node in nodes)
+        ChooseConfig();
+        if (active == null) return;
+
+        foreach (var node in active.nodes)
         {
             if (node.socket == null) continue;
 
@@ -91,7 +127,9 @@ public class FixedInputCircuit : MonoBehaviour
 
     private void OnDisable()
     {
-        foreach (var node in nodes)
+        if (active == null) return;
+
+        foreach (var node in active.nodes)
         {
             if (node.socket == null) continue;
             if (node.onEnter != null) node.socket.selectEntered.RemoveListener(node.onEnter);
@@ -103,33 +141,65 @@ public class FixedInputCircuit : MonoBehaviour
 
     public void EvaluateCircuit()
     {
-        bool result = TryEvaluateNode(outputNodeIndex, 0, out bool value) && value;
+        if (active == null) return;
 
-        bool changed = result != IsOutputOn;
-        IsOutputOn = result;
-        SetLightState(result);
+        bool allOn = active.outputs.Count > 0;
+
+        foreach (var o in active.outputs)
+        {
+            o.isOn = TryEvaluateNode(o.nodeIndex, 0, out bool v) && v;
+            SetBulb(o, o.isOn);
+            if (!o.isOn) allOn = false;
+        }
+
         UpdateWires();
 
-        if (changed) onOutputChanged?.Invoke(result);
+        if (allOn != IsSolved)
+        {
+            IsSolved = allOn;
+            onSolvedChanged?.Invoke(allOn);
+            if (allOn && !solvedFired)
+            {
+                solvedFired = true;
+                onSolved?.Invoke();
+            }
+        }
+    }
+
+    private void UpdateWires()
+    {
+        if (active.fixedInputWires != null)
+        {
+            for (int i = 0; i < active.fixedInputWires.Length; i++)
+            {
+                if (active.fixedInputWires[i] == null) continue;
+                bool on = i < active.fixedInputs.Length && active.fixedInputs[i];
+                active.fixedInputWires[i].SetState(on);
+            }
+        }
+
+        for (int i = 0; i < active.nodes.Count; i++)
+        {
+            if (active.nodes[i].outputWire == null) continue;
+            bool on = TryEvaluateNode(i, 0, out bool v) && v;
+            active.nodes[i].outputWire.SetState(on);
+        }
     }
 
     private bool TryEvaluateNode(int nodeIndex, int depth, out bool result)
     {
         result = false;
-
-        // depth > nodes.Count = ciclo mal configurado
+        var nodes = active.nodes;
         if (nodeIndex < 0 || nodeIndex >= nodes.Count || depth > nodes.Count) return false;
 
         var node = nodes[nodeIndex];
-        if (node.currentGate == null) return false; // socket vacío = circuito abierto
+        if (node.currentGate == null) return false;
 
         if (!TryResolve(node.inputA, depth, out bool a)) return false;
 
         bool b = false;
         if (node.currentGate.GateType != LogicGateType.NOT)
-        {
             if (!TryResolve(node.inputB, depth, out b)) return false;
-        }
 
         result = Compute(node.currentGate.GateType, a, b);
         return true;
@@ -141,8 +211,8 @@ public class FixedInputCircuit : MonoBehaviour
 
         if (src.type == SourceType.FixedInput)
         {
-            if (fixedInputs == null || src.index < 0 || src.index >= fixedInputs.Length) return false;
-            value = fixedInputs[src.index];
+            if (src.index < 0 || src.index >= active.fixedInputs.Length) return false;
+            value = active.fixedInputs[src.index];
             return true;
         }
 
@@ -164,44 +234,20 @@ public class FixedInputCircuit : MonoBehaviour
         }
     }
 
-    private void SetLightState(bool turnOn)
+    private void SetBulb(OutputTerminal o, bool turnOn)
     {
-        if (bulbLight != null) bulbLight.enabled = turnOn;
+        if (o.bulbLight != null) o.bulbLight.enabled = turnOn;
+        if (o.material == null) return;
 
-        if (targetMaterial != null)
+        if (turnOn)
         {
-            if (turnOn)
-            {
-                targetMaterial.EnableKeyword("_EMISSION");
-                targetMaterial.SetColor(emissionColorPropertyName, onEmissionColor);
-            }
-            else
-            {
-                targetMaterial.SetColor(emissionColorPropertyName, offEmissionColor);
-                targetMaterial.DisableKeyword("_EMISSION");
-            }
+            o.material.EnableKeyword("_EMISSION");
+            o.material.SetColor(emissionColorPropertyName, onEmissionColor);
         }
-    }
-
-    private void UpdateWires()
-    {
-        // Cables de entrada: encendidos si su entrada fija está energizada
-        if (fixedInputWires != null)
+        else
         {
-            for (int i = 0; i < fixedInputWires.Length; i++)
-            {
-                if (fixedInputWires[i] == null) continue;
-                bool on = fixedInputs != null && i < fixedInputs.Length && fixedInputs[i];
-                fixedInputWires[i].SetState(on);
-            }
-        }
-
-        // Cables de salida: encendidos solo si la compuerta existe y su resultado es true
-        for (int i = 0; i < nodes.Count; i++)
-        {
-            if (nodes[i].outputWire == null) continue;
-            bool on = TryEvaluateNode(i, 0, out bool v) && v;
-            nodes[i].outputWire.SetState(on);
+            o.material.SetColor(emissionColorPropertyName, offEmissionColor);
+            o.material.DisableKeyword("_EMISSION");
         }
     }
 }

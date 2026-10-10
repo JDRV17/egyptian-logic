@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
 
+[DefaultExecutionOrder(0)]
 public class PuzzleRevealer : MonoBehaviour
 {
     [Header("Movimiento")]
@@ -26,10 +27,13 @@ public class PuzzleRevealer : MonoBehaviour
 
     private void Awake()
     {
-        // Incluye hijos inactivos: las versiones no elegidas se desactivan después y no deben perderse
-        parts = GetComponentsInChildren<RevealPart>(true);
+        // El PuzzleVersionManager (orden -100) ya desactivó las versiones no elegidas,
+        // así que aquí solo entran las piezas de la versión activa
+        parts = GetComponentsInChildren<RevealPart>(false);
+        Debug.Log($"[PuzzleRevealer] {name}: {parts.Length} pieza(s) activas capturadas.");
+        parts = GetComponentsInChildren<RevealPart>(false);
 
-        foreach (var rb in GetComponentsInChildren<Rigidbody>(true))
+        foreach (var rb in GetComponentsInChildren<Rigidbody>(false))
         {
             bodies.Add((rb, rb.isKinematic, rb.useGravity));
             rb.isKinematic = true;
@@ -52,6 +56,7 @@ public class PuzzleRevealer : MonoBehaviour
     /// <summary>Conéctalo al evento On State Changed (bool) del XRSwitchToggle.</summary>
     public void OnSwitchChanged(bool isOn)
     {
+        Debug.Log($"[PuzzleRevealer] {name}: OnSwitchChanged({isOn})");
         if (isOn) Reveal();
     }
 

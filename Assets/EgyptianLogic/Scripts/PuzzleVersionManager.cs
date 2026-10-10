@@ -44,6 +44,8 @@ public class PuzzleVersionManager : MonoBehaviour
             return;
         }
 
+        CurrentVersion = version;
+
         if (targetObjective != null)
             targetObjective.SetVersion(version);
 
@@ -53,7 +55,6 @@ public class PuzzleVersionManager : MonoBehaviour
                 puzzleRoots[i].SetActive(i == index);
         }
 
-        CurrentVersion = version;
         Debug.Log($"[PuzzleVersionManager] Versión activa: {version} ({puzzleRoots[index].name})");
     }
 
