@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 // Se ejecuta antes que los demás scripts para que, al iniciar, solo quede activa la versión elegida.
 [DefaultExecutionOrder(-100)]
