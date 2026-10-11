@@ -52,6 +52,7 @@ public class HangingKey : MonoBehaviour
     private void OnReleased(SelectExitEventArgs args)
     {
         lastReleaseTime = Time.time;
+        if (!gameObject.activeInHierarchy) return;
         StartCoroutine(EnablePhysicsNextFrame());
     }
 
@@ -91,4 +92,5 @@ public class HangingKey : MonoBehaviour
         Hang();
         transform.SetPositionAndRotation(homePos, homeRot);
     }
+
 }
