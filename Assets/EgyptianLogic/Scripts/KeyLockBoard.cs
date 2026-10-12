@@ -22,6 +22,8 @@ public class KeyLockBoard : MonoBehaviour
     [SerializeField] private VersionAnswers[] versions = new VersionAnswers[3];
 
     public UnityEvent onSolved;
+    [Tooltip("Se dispara cuando todos los sockets tienen compuerta pero el circuito no está resuelto.")]
+    public UnityEvent onIncorrect;
     public bool IsSolved { get; private set; }
 
     private void OnEnable()
@@ -60,17 +62,27 @@ public class KeyLockBoard : MonoBehaviour
         var answers = versions[selector.CurrentVersion].answers;
         if (answers == null || answers.Length != locks.Length) return;
 
+        bool allFilled = true;
+        bool allCorrect = true;
+
         for (int i = 0; i < locks.Length; i++)
         {
             var held = locks[i] != null ? locks[i].firstInteractableSelected : null;
-            if (held == null) return;
+            if (held == null) { allFilled = false; allCorrect = false; continue; }
 
             var key = held.transform.GetComponent<HangingKey>();
-            if (key == null || key.KeyValue != answers[i]) return;
+            if (key == null || key.KeyValue != answers[i]) allCorrect = false;
         }
 
-        IsSolved = true;
-        Debug.Log("[KeyLockBoard] ¡Código correcto!");
-        onSolved?.Invoke();
+        if (allFilled && allCorrect)
+        {
+            IsSolved = true;
+            Debug.Log("[KeyLockBoard] ¡Código correcto!");
+            onSolved?.Invoke();
+        }
+        else if (allFilled)
+        {
+            onIncorrect?.Invoke();
+        }
     }
 }

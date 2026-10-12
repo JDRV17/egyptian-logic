@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class LevelSubmitManager : MonoBehaviour
 {
@@ -15,6 +16,10 @@ public class LevelSubmitManager : MonoBehaviour
     public GameObject fallingObject;
     [Tooltip("El Rigidbody del objeto a caer")]
     public Rigidbody fallingRigidbody;
+
+    [Header("Eventos")]
+    public UnityEvent onSolved;
+    public UnityEvent onIncorrect;
 
     private void OnEnable()
     {
@@ -43,17 +48,19 @@ public class LevelSubmitManager : MonoBehaviour
 
         if (EvaluateTruthTableMatch(playerCircuitsByVersion[v]))
         {
-            Debug.Log("<color=green><b>¡FELICITACIONES!</b> Has logrado reproducir el comportamiento de la prueba correctamente.</color>");
+            Debug.Log("<color=green><b>¡FELICITACIONES!</b> ...</color>");
             if (fallingObject != null && fallingRigidbody != null)
             {
-                fallingObject.SetActive(true); // Activa el objeto en la escena
-                fallingRigidbody.isKinematic = false; // Libera la física para que caiga
+                fallingObject.SetActive(true);
+                fallingRigidbody.isKinematic = false;
                 fallingRigidbody.useGravity = true;
             }
+            onSolved?.Invoke();      // <- nuevo
         }
         else
         {
-            Debug.Log("<color=yellow><b>VUELVE A INTENTARLO.</b> La respuesta de tu circuito no coincide con el comportamiento de la prueba.</color>");
+            Debug.Log("<color=yellow><b>VUELVE A INTENTARLO.</b> ...</color>");
+            onIncorrect?.Invoke();   // <- nuevo
         }
     }
 

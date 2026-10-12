@@ -71,6 +71,8 @@ public class FixedInputCircuit : MonoBehaviour
     [Header("Eventos")]
     public UnityEvent onSolved;
     public UnityEvent<bool> onSolvedChanged;
+    [Tooltip("Se dispara cuando todos los sockets tienen compuerta pero el circuito no está resuelto.")]
+    public UnityEvent onIncorrect;
 
     public bool IsSolved { get; private set; }
 
@@ -151,6 +153,14 @@ public class FixedInputCircuit : MonoBehaviour
             SetBulb(o, o.isOn);
             if (!o.isOn) allOn = false;
         }
+
+        // NUEVO: ¿todos los sockets tienen compuerta pero el circuito no está resuelto?
+        bool allFilled = true;
+        foreach (var n in active.nodes)
+            if (n.currentGate == null) { allFilled = false; break; }
+
+        if (allFilled && !allOn)
+            onIncorrect?.Invoke();
 
         UpdateWires();
 
