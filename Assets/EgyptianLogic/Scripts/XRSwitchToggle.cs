@@ -21,6 +21,9 @@ public class XRSwitchToggle : MonoBehaviour
     [Tooltip("Actívalo SOLO en la palanca que hay que encajar. No responde hasta que se llame EnableToggle().")]
     [SerializeField] private bool startLocked = false;
 
+    [Header("Sonido")]
+    [SerializeField] private AudioSource leverSound;
+
     [Header("Eventos")]
     public UnityEvent<bool> onStateChanged;
 
@@ -82,6 +85,7 @@ public class XRSwitchToggle : MonoBehaviour
     public void ToggleSwitch()
     {
         if (!canToggle) return;
+        if (leverSound != null) leverSound.Play();
 
         isOn = !isOn;
         Vector3 targetEuler = isOn ? onRotation : offRotation;

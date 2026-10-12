@@ -54,6 +54,8 @@ public class SpinningCubes : MonoBehaviour
     [Header("Submit")]
     [SerializeField] private TMP_Text feedbackText;   // opcional
     public UnityEvent onIncorrect;
+
+    [SerializeField] private AudioSource rotateSound;
     public int Attempts { get; private set; }
 
     public Version CurrentVersion { get; private set; }
@@ -109,6 +111,7 @@ public class SpinningCubes : MonoBehaviour
     private IEnumerator RevealRoutine()
     {
         onRevealStarted?.Invoke();
+        rotateSound.Play();
 
         float angle = CorrectAngle;
         int finished = 0;
@@ -138,6 +141,7 @@ public class SpinningCubes : MonoBehaviour
             if (rotators[i] != null && IsHidden(i))
                 rotators[i].SetInteractable(true);
 
+        rotateSound.Stop();
         IsReady = true;
 
         onRevealFinished?.Invoke();

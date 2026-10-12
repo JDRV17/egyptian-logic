@@ -60,7 +60,11 @@ public class CubeRotator : MonoBehaviour
         if (!rotating) StartCoroutine(RotateTo((steps + 1) % 4, duration, true));
     }
 
-    public void SetInteractable(bool value) => interactable.enabled = value;
+    public void SetInteractable(bool value)
+    {
+        if (interactable == null) interactable = GetComponent<XRSimpleInteractable>();
+        interactable.enabled = value;
+    }
 
     /// <summary>Gira animado hasta un paso concreto (0..3). Lo usa el manager para el paso inicial aleatorio.</summary>
     public void AnimateToStep(int targetStep, float dur)

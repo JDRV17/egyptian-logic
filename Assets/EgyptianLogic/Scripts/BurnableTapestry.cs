@@ -17,6 +17,8 @@ public class BurnableTapestry : MonoBehaviour
 
     [SerializeField] private float fadeOutDuration = 1.5f;
 
+    [SerializeField] private AudioSource burnSound;
+
     public UnityEvent onBurned;
 
     private Material mat;
@@ -46,6 +48,7 @@ public class BurnableTapestry : MonoBehaviour
 
     private IEnumerator BurnRoutine()
     {
+        if (burnSound != null) burnSound.Play();
         foreach (var f in flames) if (f != null) f.Play();
 
         // Estos valores se leen aquí, justo al empezar
@@ -102,6 +105,7 @@ public class BurnableTapestry : MonoBehaviour
         foreach (var f in flames) if (f != null) f.Stop();   // deja de emitir; las partículas existentes se disipan solas
         foreach (var go in disableWhenDone) if (go != null) go.SetActive(false);
         tapestryRenderer.enabled = false;
+        if (burnSound != null) burnSound.Stop();
         onBurned?.Invoke();
     }
 }

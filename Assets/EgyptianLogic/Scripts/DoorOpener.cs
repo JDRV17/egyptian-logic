@@ -21,6 +21,8 @@ public class DoorOpener : MonoBehaviour
     [SerializeField] private AudioSource openSound;
     public UnityEvent onOpened;
 
+    [SerializeField] private AudioSource finishSound;   // el BOOM
+
     private bool opened;
     private readonly List<(Rigidbody rb, bool wasKinematic, bool hadGravity)> bodies =
         new List<(Rigidbody, bool, bool)>();
@@ -79,6 +81,8 @@ public class DoorOpener : MonoBehaviour
                 if (pending == 0)
                 {
                     Release();
+                    if (openSound != null) openSound.Stop();
+                    if (finishSound != null) finishSound.Play();
                     onOpened?.Invoke();
                 }
             }));

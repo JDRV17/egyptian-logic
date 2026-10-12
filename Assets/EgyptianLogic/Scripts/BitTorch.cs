@@ -7,6 +7,10 @@ public class BitTorch : MonoBehaviour
 {
     [SerializeField] private ParticleSystem flame;
     [SerializeField] private Light flameLight;
+
+    [Header("Sonido")]
+    [SerializeField] private AudioSource fireLoop;
+    [SerializeField] private AudioSource igniteSound;
     public bool IsOn { get; private set; }
     public UnityEvent<bool> onChanged;
 
@@ -45,5 +49,12 @@ public class BitTorch : MonoBehaviour
         if (flame != null) { if (on) flame.Play(); else flame.Stop(); }
         if (flameLight != null) flameLight.enabled = on;
         onChanged?.Invoke(on);
+
+        if (fireLoop != null)
+        {
+            if (on && !fireLoop.isPlaying) fireLoop.Play();
+            else if (!on) fireLoop.Stop();
+        }
+        if (on && igniteSound != null) igniteSound.Play();
     }
 }
