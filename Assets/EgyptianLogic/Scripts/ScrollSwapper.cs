@@ -10,20 +10,7 @@ public class ScrollSwapper : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip soundOpenClose;
 
-    [Header("Configuración para Pruebas en PC")]
-    [Tooltip("Tecla del teclado para abrir o cerrar el pergamino")]
-    public KeyCode pcOpenKey = KeyCode.E;
-
     private bool isOpen = false;
-
-    void Update()
-    {
-        // Esto permite probarlo en PC presionando la tecla 'E'
-        if (Input.GetKeyDown(pcOpenKey))
-        {
-            ToggleScrollState();
-        }
-    }
 
     // Método principal para alternar el estado
     public void ToggleScrollState()

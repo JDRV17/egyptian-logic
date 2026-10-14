@@ -28229,7 +28229,6 @@ MonoBehaviour:
   scrollAbierto: {fileID: 522781508}
   audioSource: {fileID: 0}
   soundOpenClose: {fileID: 0}
-  pcOpenKey: 101
 --- !u!114 &267707361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30641,7 +30640,6 @@ MonoBehaviour:
   scrollAbierto: {fileID: 1946638222}
   audioSource: {fileID: 0}
   soundOpenClose: {fileID: 0}
-  pcOpenKey: 101
 --- !u!114 &301971124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62637,7 +62635,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f23d42dfe1c7cd340b0e0578b88add4c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.18
+      value: -0.154
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f23d42dfe1c7cd340b0e0578b88add4c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -77187,7 +77185,6 @@ MonoBehaviour:
   scrollAbierto: {fileID: 1026740849}
   audioSource: {fileID: 0}
   soundOpenClose: {fileID: 0}
-  pcOpenKey: 101
 --- !u!114 &838976034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86762,7 +86759,6 @@ MonoBehaviour:
   scrollAbierto: {fileID: 252703803}
   audioSource: {fileID: 0}
   soundOpenClose: {fileID: 0}
-  pcOpenKey: 101
 --- !u!114 &991335654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143333,6 +143329,50 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1645725699
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1645725700}
+  - component: {fileID: 1645725701}
+  m_Layer: 0
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1645725700
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645725699}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1590304227}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1645725701
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645725699}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.9, y: 1.2, z: 0.1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1651296415
 GameObject:
   m_ObjectHideFlags: 0
@@ -187157,15 +187197,15 @@ MonoBehaviour:
         residuos de abajo hacia arriba para obtener el valor hexadecimal completo."
       - '25 + 30 y 19 + 1E son equivalentes a 110111 en binario.
 
-        
+
 
         110110
         - 001110 y 36 - E son equivalentes a 40 en decimal.
 
-        
 
-        100101
-        + 011011 y 37 + 27 son equivalentes a 40 en hexadecimal.'
+
+        100101 + 011011
+        y 37 + 27 son equivalentes a 40 en hexadecimal.'
     skipFirstHint: 0
   - name: 1.4
     versionSource: {fileID: 1923287035}
@@ -187227,7 +187267,7 @@ MonoBehaviour:
       - "Para saber el valor del n\xFAmero en binario, basta con hacer lo mismo que
         hiciste en el reto de los cubos. Si el n\xFAmero es negativo, tendr\xE1s
         que representarlo en complemento a 2. Enciende la antorcha dorada (que representa
-        el bit de signo) y luego convierte todos los 0\"0\"s en \"1S1 y viceveras,
+        el bit de signo) y luego convierte todos los \"0\"s en \"1\"s y viceversa,
         asegur\xE1ndote de sumar 1 al final."
       - "15 en binario es 0 00001111, as\xED que basta con encender las \xFAltimas
         cuatro antorchas."
@@ -187242,7 +187282,7 @@ MonoBehaviour:
       - "Para saber el valor del n\xFAmero en binario, basta con hacer lo mismo que
         hiciste en el reto de los cubos. Si el n\xFAmero es negativo, tendr\xE1s
         que representarlo en complemento a 2. Enciende la antorcha dorada (que representa
-        el bit de signo) y luego convierte todos los 0\"0\"s en \"1S1 y viceveras,
+        el bit de signo) y luego convierte todos los \"0\"s en \"1\"s y viceversa,
         asegur\xE1ndote de sumar 1 al final."
       - "234 en binario es 0 1110 1010, as\xED que tienes que encender esas antorchas."
     - hints:
@@ -187256,7 +187296,7 @@ MonoBehaviour:
       - "Para saber el valor del n\xFAmero en binario, basta con hacer lo mismo que
         hiciste en el reto de los cubos. Si el n\xFAmero es negativo, tendr\xE1s
         que representarlo en complemento a 2. Enciende la antorcha dorada (que representa
-        el bit de signo) y luego convierte todos los 0\"0\"s en \"1S1 y viceveras,
+        el bit de signo) y luego convierte todos los \"0\"s en \"1\"s y viceversa,
         asegur\xE1ndote de sumar 1 al final."
       - "-156 escrito en complemento a 2 es 1 0110 0100, as\xED que enciende esas
         antorchas."
