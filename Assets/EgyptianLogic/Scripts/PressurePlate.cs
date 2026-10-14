@@ -7,9 +7,10 @@ public class PressurePlate : MonoBehaviour
     [Tooltip("Se dispara una sola vez cuando el jugador pisa la baldosa.")]
     public UnityEvent onPressed;
 
-    [Header("Configuración del Pergamino")]
-    public GameObject scrollObject;
-    public Rigidbody scrollRigidbody;
+    [Header("Pergamino de pista")]
+    [SerializeField] private HintScrollSpawner spawner;
+    [TextArea(2, 6)]
+    [SerializeField] private string hintText = "Ve cerca de la puerta de entrada.";
 
     private bool triggered;
 
@@ -18,12 +19,8 @@ public class PressurePlate : MonoBehaviour
         if (triggered || !other.CompareTag("Player")) return;
         triggered = true;
 
-        if (scrollObject != null && scrollRigidbody != null)
-        {
-            scrollObject.SetActive(true);
-            scrollRigidbody.isKinematic = false;
-            scrollRigidbody.useGravity = true;
-        }
+        if (spawner != null && !string.IsNullOrEmpty(hintText))
+            spawner.Spawn(hintText, false);
 
         Debug.Log("¡Baldosa pisada!");
         onPressed?.Invoke();

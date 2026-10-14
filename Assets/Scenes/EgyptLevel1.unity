@@ -600,7 +600,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &14160998
 GameObject:
@@ -7176,7 +7176,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 310376084}
   - {fileID: 1399031762}
   - {fileID: 997062798}
   - {fileID: 366627215}
@@ -7184,7 +7183,7 @@ Transform:
   - {fileID: 393575952}
   - {fileID: 974036681}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &69139518
 GameObject:
@@ -8401,7 +8400,7 @@ Transform:
   m_LocalScale: {x: 0.10000004, y: 0.10000003, z: 0.09999998}
   m_Children: []
   m_Father: {fileID: 366627215}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &89583664
 SphereCollider:
@@ -9054,7 +9053,7 @@ Transform:
   m_Children:
   - {fileID: 1252008822}
   m_Father: {fileID: 974036681}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &101433086
 MonoBehaviour:
@@ -19854,6 +19853,65 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &140426496
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 140426497}
+  - component: {fileID: 140426498}
+  - component: {fileID: 140426499}
+  m_Layer: 0
+  m_Name: HintZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &140426497
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140426496}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 9, y: 0, z: 8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 393575952}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!65 &140426498
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140426496}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4, y: 3.5, z: 5}
+  m_Center: {x: 0, y: 2, z: 0}
+--- !u!114 &140426499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140426496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdeeaeecb58f60a4580132235f41dd63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 2082442541}
+  stageIndex: 3
 --- !u!1 &150884683
 GameObject:
   m_ObjectHideFlags: 0
@@ -19893,7 +19951,7 @@ Transform:
   - {fileID: 1040853644}
   - {fileID: 2002100455}
   m_Father: {fileID: 1855372579}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &153066274
 PrefabInstance:
@@ -19904,7 +19962,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b217c5edc52c3fd4fa7874626222c844, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b217c5edc52c3fd4fa7874626222c844, type: 3}
       propertyPath: m_LocalScale.x
@@ -27911,7 +27969,7 @@ Transform:
   - {fileID: 645587660}
   - {fileID: 417683473}
   m_Father: {fileID: 366627215}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &265160527
 GameObject:
@@ -30986,37 +31044,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &310376083
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 310376084}
-  m_Layer: 0
-  m_Name: Scrolls
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &310376084
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 310376083}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1912376409}
-  m_Father: {fileID: 62897716}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &310913727
 GameObject:
   m_ObjectHideFlags: 0
@@ -31704,7 +31731,7 @@ Transform:
   - {fileID: 201514384}
   - {fileID: 1208267614}
   m_Father: {fileID: 366627215}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &333273711
 PrefabInstance:
@@ -32629,6 +32656,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 85283597}
+  - {fileID: 733950252}
   - {fileID: 875827741}
   - {fileID: 1567771040}
   - {fileID: 330378246}
@@ -32640,7 +32668,7 @@ Transform:
   - {fileID: 1891977878}
   - {fileID: 1772311392}
   m_Father: {fileID: 62897716}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &366627216
 MonoBehaviour:
@@ -43154,12 +43182,13 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1923287036}
+  - {fileID: 140426497}
   - {fileID: 650032774}
   - {fileID: 860157657}
   - {fileID: 1762903837}
   - {fileID: 543450653435038970}
   m_Father: {fileID: 62897716}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &395648789
 PrefabInstance:
@@ -44411,91 +44440,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.03, y: 0.01, z: 0.04}
   m_Center: {x: 0, y: -0.005, z: -0.005}
---- !u!1001 &449057272
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1912376409}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.001241684
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.040291786
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.044429675
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.53065896
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.4676503
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.5171176
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.48196858
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0.123
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 88.408
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -84.375
-      objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 24bd5873e3bda844fa99d2b317f37c9e, type: 2}
-    - target: {fileID: 919132149155446097, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
-      propertyPath: m_Name
-      value: Detail_Scroll
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
 --- !u!1 &449087187
 GameObject:
   m_ObjectHideFlags: 0
@@ -47434,6 +47378,65 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 505691946}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &518759209
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 518759210}
+  - component: {fileID: 518759211}
+  - component: {fileID: 518759212}
+  m_Layer: 0
+  m_Name: HintZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &518759210
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 518759209}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 4, y: 0, z: 6.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1855372579}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!65 &518759211
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 518759209}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4, y: 3.5, z: 3}
+  m_Center: {x: 0, y: 2, z: 0}
+--- !u!114 &518759212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 518759209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdeeaeecb58f60a4580132235f41dd63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 2082442541}
+  stageIndex: 2
 --- !u!1 &522781508 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
@@ -49612,7 +49615,7 @@ Transform:
   m_LocalScale: {x: 0.10000004, y: 0.10000003, z: 0.09999998}
   m_Children: []
   m_Father: {fileID: 366627215}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &577493982
 SphereCollider:
@@ -49720,7 +49723,7 @@ Transform:
   - {fileID: 2147380360}
   - {fileID: 1684668820}
   m_Father: {fileID: 997062798}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &579631469
 PrefabInstance:
@@ -50265,7 +50268,7 @@ Transform:
   m_Children:
   - {fileID: 2113764723}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
 --- !u!114 &608672668
 MonoBehaviour:
@@ -56380,7 +56383,7 @@ Transform:
   - {fileID: 882147414}
   - {fileID: 784461695}
   m_Father: {fileID: 997062798}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &645587659
 GameObject:
@@ -56561,7 +56564,7 @@ Transform:
   - {fileID: 785879393}
   - {fileID: 1829142336}
   m_Father: {fileID: 393575952}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &650032775
 BoxCollider:
@@ -56673,6 +56676,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 2082442541}
+        m_TargetAssemblyTypeName: HintManager, Assembly-CSharp
+        m_MethodName: MarkSolved
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -68683,6 +68698,65 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &733950251
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 733950252}
+  - component: {fileID: 733950253}
+  - component: {fileID: 733950254}
+  m_Layer: 0
+  m_Name: HintZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &733950252
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 733950251}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: -6, y: 0, z: 6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 366627215}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!65 &733950253
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 733950251}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 6, y: 3.5, z: 4}
+  m_Center: {x: 0, y: 2, z: 0}
+--- !u!114 &733950254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 733950251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdeeaeecb58f60a4580132235f41dd63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 2082442541}
+  stageIndex: 1
 --- !u!4 &737650918 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: af5327fd7214004438238228ea14eace, type: 3}
@@ -68790,7 +68864,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh25364
+  m_Name: pb_Mesh25518
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -76624,6 +76698,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 2082442541}
+        m_TargetAssemblyTypeName: HintManager, Assembly-CSharp
+        m_MethodName: MarkSolved
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   onSolvedChanged:
     m_PersistentCalls:
       m_Calls:
@@ -77754,7 +77840,7 @@ Transform:
   - {fileID: 365241377}
   - {fileID: 1375472952}
   m_Father: {fileID: 997062798}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &846843821
 GameObject:
@@ -78187,7 +78273,7 @@ Transform:
   m_Children:
   - {fileID: 543450653377418315}
   m_Father: {fileID: 393575952}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!64 &860157658
 MeshCollider:
@@ -83093,7 +83179,7 @@ Transform:
   m_Children:
   - {fileID: 267756525}
   m_Father: {fileID: 366627215}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &875827742
 BoxCollider:
@@ -85264,6 +85350,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2082442541}
+        m_TargetAssemblyTypeName: HintManager, Assembly-CSharp
+        m_MethodName: MarkSolved
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   randomizeOnStart: 1
   forcedVersion: 0
   layouts:
@@ -85545,7 +85643,7 @@ Transform:
   - {fileID: 70334549}
   - {fileID: 85490544}
   m_Father: {fileID: 366627215}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &957788557
 MonoBehaviour:
@@ -86068,12 +86166,13 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1110174163}
+  - {fileID: 1558982050}
   - {fileID: 1849339726}
   - {fileID: 101433085}
   - {fileID: 1198125245}
   - {fileID: 1643367516}
   m_Father: {fileID: 62897716}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &974261805
 GameObject:
@@ -86967,6 +87066,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1912518924}
+  - {fileID: 1943816560}
   - {fileID: 153066275}
   - {fileID: 1155921236}
   - {fileID: 845138057}
@@ -86976,7 +87076,7 @@ Transform:
   - {fileID: 1149665732}
   - {fileID: 543450653356525545}
   m_Father: {fileID: 62897716}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &998224094
 PrefabInstance:
@@ -93643,180 +93743,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &1055584245
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1055584246}
-  - component: {fileID: 1055584248}
-  - component: {fileID: 1055584247}
-  m_Layer: 7
-  m_Name: Parchment Text
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1055584246
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1055584245}
-  m_LocalRotation: {x: 0.5129171, y: -0.4867402, z: 0.5129171, w: 0.4867402}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 543450653259298323}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 93, y: -90, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.001, y: 0.0005}
-  m_SizeDelta: {x: 0.015, y: 0.015}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1055584247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1055584245}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: "Soy el Faraon Tut-AND-Kamon.\nTe encuentras en mi tumba... y has caido
-    en mi trampa.\nPara salir, tendras que solucionar varios acertijos de mi tipo
-    de magia ancestral favorita... la Logica Digital.\nPara comenzar, regresa a la
-    puerta por la que entraste... quizas por ahi cerca encuentres algo que te sea
-    de utilidad.\n\nBuena suerte, \xA1la necesitaras!"
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: af0b983f2605992459657e1dcfc16309, type: 2}
-  m_sharedMaterial: {fileID: 1096254827047113582, guid: af0b983f2605992459657e1dcfc16309, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4278191372
-  m_fontColor: {r: 0.047169805, g: 0.018333921, b: 0.0015129906, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 0.01
-  m_fontSizeBase: 0.01
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 1
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 0
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_renderer: {fileID: 1055584248}
-  m_maskType: 0
-  _SortingLayer: 0
-  _SortingLayerID: 0
-  _SortingOrder: 0
---- !u!23 &1055584248
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1055584245}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 1096254827047113582, guid: af0b983f2605992459657e1dcfc16309, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1058151710
 GameObject:
   m_ObjectHideFlags: 0
@@ -95767,8 +95693,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1110174163}
-  - component: {fileID: 1110174164}
   - component: {fileID: 1110174165}
+  - component: {fileID: 1110174164}
   m_Layer: 0
   m_Name: PuzzleVersionManager
   m_TagString: Untagged
@@ -95837,6 +95763,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2082442541}
+        m_TargetAssemblyTypeName: HintManager, Assembly-CSharp
+        m_MethodName: MarkSolved
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 4
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -96364,7 +96302,7 @@ Transform:
   - {fileID: 14160999}
   - {fileID: 1987498067}
   m_Father: {fileID: 997062798}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1125131348 stripped
 GameObject:
@@ -106414,30 +106352,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!1 &1133496765 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
-  m_PrefabInstance: {fileID: 1854453689}
-  m_PrefabAsset: {fileID: 0}
---- !u!136 &1133496767
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1133496765}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.0005
-  m_Height: 0.0065
-  m_Direction: 0
-  m_Center: {x: -0.0002, y: 0.00005, z: 0}
---- !u!4 &1133496768 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
-  m_PrefabInstance: {fileID: 1854453689}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1138458969
 GameObject:
   m_ObjectHideFlags: 0
@@ -106587,7 +106501,7 @@ Transform:
   - {fileID: 1335431502}
   - {fileID: 764499748}
   m_Father: {fileID: 997062798}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1154293233
 GameObject:
@@ -106829,7 +106743,7 @@ Transform:
   - {fileID: 1704499773}
   - {fileID: 1863411921}
   m_Father: {fileID: 997062798}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1156065790
 GameObject:
@@ -107828,7 +107742,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: e2bf9ca2076364b4c95244074ad50eb2, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e2bf9ca2076364b4c95244074ad50eb2, type: 3}
       propertyPath: m_LocalScale.x
@@ -125274,7 +125188,7 @@ Transform:
   - {fileID: 265932233}
   - {fileID: 1028562019}
   m_Father: {fileID: 62897716}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1399837341
 GameObject:
@@ -131109,7 +131023,7 @@ Transform:
   - {fileID: 667776307}
   - {fileID: 1743764554}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1447779604
 GameObject:
@@ -134559,6 +134473,65 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &1558982049
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1558982050}
+  - component: {fileID: 1558982051}
+  - component: {fileID: 1558982052}
+  m_Layer: 0
+  m_Name: HintZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1558982050
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558982049}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: -0, w: -0.7071068}
+  m_LocalPosition: {x: 10, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 974036681}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
+--- !u!65 &1558982051
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558982049}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 6, y: 3.5, z: 4}
+  m_Center: {x: 0, y: 2, z: 0}
+--- !u!114 &1558982052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558982049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdeeaeecb58f60a4580132235f41dd63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 2082442541}
+  stageIndex: 4
 --- !u!1 &1560656961 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d7dfaa83b0786ee40a307a7315696bd9, type: 3}
@@ -134642,7 +134615,7 @@ Transform:
   - {fileID: 1117268649}
   - {fileID: 1002272245}
   m_Father: {fileID: 366627215}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1567796946
 GameObject:
@@ -135316,7 +135289,7 @@ Transform:
   - {fileID: 291174228}
   - {fileID: 819361089}
   m_Father: {fileID: 1855372579}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1586922285
 PrefabInstance:
@@ -135837,6 +135810,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2082442541}
+        m_TargetAssemblyTypeName: HintManager, Assembly-CSharp
+        m_MethodName: MarkSolved
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onIncorrect:
     m_PersistentCalls:
       m_Calls:
@@ -135914,8 +135899,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  scrollObject: {fileID: 1912376408}
-  scrollRigidbody: {fileID: 1912376411}
+  spawner: {fileID: 2082442540}
+  hintText: "Soy el Fara\xF3n Tut-AND-Kamon.\nTe encuentras en mi tumba... y has
+    ca\xEDdo en mi trampa.\nPara salir, tendr\xE1s que solucionar varios acertijos
+    de mi tipo de magia ancestral favorita... la L\xF3gica Digital.\nPara comenzar,
+    regresa a la puerta por la que entraste... quiz\xE1s por ah\xED cerca encuentres
+    algo que te sea de utilidad.\nBuena suerte, \xA1la necesitar\xE1s!"
 --- !u!82 &1590304230
 AudioSource:
   m_ObjectHideFlags: 0
@@ -143172,7 +143161,7 @@ Transform:
   - {fileID: 1032818324}
   - {fileID: 333273712}
   m_Father: {fileID: 974036681}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1643550003
 GameObject:
@@ -146005,7 +145994,7 @@ Transform:
   m_Children:
   - {fileID: 242370301}
   m_Father: {fileID: 1855372579}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!114 &1714684792
 MonoBehaviour:
@@ -162211,7 +162200,7 @@ Transform:
   - {fileID: 561896903}
   - {fileID: 877436518}
   m_Father: {fileID: 393575952}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1763061059
 GameObject:
@@ -162595,7 +162584,7 @@ Transform:
   m_LocalScale: {x: 0.10000004, y: 0.10000003, z: 0.09999998}
   m_Children: []
   m_Father: {fileID: 366627215}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &1772311393
 SphereCollider:
@@ -164513,7 +164502,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh27172
+  m_Name: pb_Mesh27408
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -165080,7 +165069,7 @@ Transform:
   m_Children:
   - {fileID: 227501522}
   m_Father: {fileID: 974036681}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 90}
 --- !u!114 &1849339727
 MonoBehaviour:
@@ -170056,91 +170045,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!1001 &1854453689
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1912376409}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 99.999985
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 99.999985
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071067
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -3435279276100194387, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 530853563598026536, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
-      propertyPath: m_Name
-      value: closedparchment
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8624437575127805238, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: f6249b7653535414fa5f6e47fc057d0a, type: 3}
 --- !u!1 &1855372578
 GameObject:
   m_ObjectHideFlags: 0
@@ -170169,11 +170073,12 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 949862374}
+  - {fileID: 518759210}
   - {fileID: 1714684791}
   - {fileID: 1585125809}
   - {fileID: 150884684}
   m_Father: {fileID: 62897716}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1861320498
 GameObject:
@@ -171802,7 +171707,7 @@ Transform:
   m_LocalScale: {x: 0.10000004, y: 0.10000003, z: 0.09999998}
   m_Children: []
   m_Father: {fileID: 366627215}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &1891977879
 SphereCollider:
@@ -172548,318 +172453,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1910362787}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1912376408
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1912376409}
-  - component: {fileID: 1912376411}
-  - component: {fileID: 1912376410}
-  - component: {fileID: 1912376412}
-  - component: {fileID: 1912376414}
-  - component: {fileID: 1912376413}
-  m_Layer: 7
-  m_Name: Scroll 1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1912376409
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1912376408}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10.75, y: 6.78, z: -0.16}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1133496768}
-  - {fileID: 543450653259298323}
-  m_Father: {fileID: 310376084}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1912376410
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1912376408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ad34abafad169848a38072baa96cdb2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_InteractionManager: {fileID: 12871409}
-  m_Colliders:
-  - {fileID: 1133496767}
-  - {fileID: 919132149603970218}
-  m_InteractionLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_InteractionLayers:
-    m_Bits: 1
-  m_SelectMode: 0
-  m_CustomReticle: {fileID: 0}
-  m_FirstHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_LastHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_HoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_HoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FirstSelectEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_LastSelectExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_SelectEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_SelectExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Activated:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1912376412}
-        m_TargetAssemblyTypeName: ScrollSwapper, Assembly-CSharp
-        m_MethodName: ToggleScrollState
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  m_Deactivated:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnFirstHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnLastHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelectEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelectExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelectCanceled:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnActivate:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnDeactivate:
-    m_PersistentCalls:
-      m_Calls: []
-  m_AttachTransform: {fileID: 0}
-  m_AttachEaseInTime: 0.15
-  m_MovementType: 2
-  m_VelocityDamping: 1
-  m_VelocityScale: 1
-  m_AngularVelocityDamping: 1
-  m_AngularVelocityScale: 1
-  m_TrackPosition: 1
-  m_SmoothPosition: 0
-  m_SmoothPositionAmount: 5
-  m_TightenPosition: 0.5
-  m_TrackRotation: 1
-  m_SmoothRotation: 0
-  m_SmoothRotationAmount: 5
-  m_TightenRotation: 0.5
-  m_ThrowOnDetach: 1
-  m_ThrowSmoothingDuration: 0.25
-  m_ThrowSmoothingCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  m_ThrowVelocityScale: 1.5
-  m_ThrowAngularVelocityScale: 1
-  m_ForceGravityOnDetach: 0
-  m_RetainTransformParent: 1
-  m_AttachPointCompatibilityMode: 0
---- !u!54 &1912376411
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1912376408}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 2
---- !u!114 &1912376412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1912376408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2b919eae75e47e498c5e1a5e717a980, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scrollCerrado: {fileID: 1133496765}
-  scrollAbierto: {fileID: 919132149603970217}
-  audioSource: {fileID: 0}
-  soundOpenClose: {fileID: 0}
-  pcOpenKey: 101
---- !u!114 &1912376413
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1912376408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26b49db2d404617418491b1ad1994e7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clips:
-  - {fileID: 8300000, guid: aecb4ae896a8b1f4bbcedcac47ade3cb, type: 3}
-  minImpactSpeed: 0.2
-  maxImpactSpeed: 3
-  cooldown: 0.15
---- !u!82 &1912376414
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1912376408}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -4738908822199845478, guid: d87484e32bdf6994c83c4795d07d9321, type: 2}
-  m_audioClip: {fileID: 8300000, guid: aecb4ae896a8b1f4bbcedcac47ade3cb, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 10
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &1912518923
 GameObject:
   m_ObjectHideFlags: 0
@@ -173488,6 +173081,65 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 394604710328265865, guid: 16dddf9b32d4ee945b87ac137fd0680f, type: 3}
+--- !u!1 &1943816559
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1943816560}
+  - component: {fileID: 1943816561}
+  - component: {fileID: 1943816562}
+  m_Layer: 0
+  m_Name: HintZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1943816560
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943816559}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.5, y: 0, z: -6.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 997062798}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1943816561
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943816559}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 8, y: 3.5, z: 3}
+  m_Center: {x: 0, y: 2, z: 0}
+--- !u!114 &1943816562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943816559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdeeaeecb58f60a4580132235f41dd63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 2082442541}
+  stageIndex: 0
 --- !u!1 &1946638222 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
@@ -181324,7 +180976,7 @@ Transform:
   m_LocalScale: {x: 0.10000004, y: 0.10000003, z: 0.09999998}
   m_Children: []
   m_Father: {fileID: 366627215}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &2057056487
 SphereCollider:
@@ -187279,6 +186931,352 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2079989735}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &2082442539
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2082442542}
+  - component: {fileID: 2082442541}
+  - component: {fileID: 2082442540}
+  m_Layer: 0
+  m_Name: HintManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2082442540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082442539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d197987c8eee1914dbfa244f3a25f85f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scrollPrefab: {fileID: 3764638092201832992, guid: 9ef815c7c23600c49b709663eba06898, type: 3}
+  head: {fileID: 2113764723}
+  distance: 1
+  height: 2.5
+  lifeTime: 120
+--- !u!114 &2082442541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082442539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2cf4dbda7d22704aad32cf81b32cd22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hintAction: {fileID: 6939370880194445124, guid: 7b49681756e1b4c48981409e8999e74f, type: 3}
+  stages:
+  - name: 1.1
+    versionSource: {fileID: 1912518925}
+    byVersion:
+    - hints:
+      - "Soy el Fara\xF3n Tut-AND-Kamon.\nTe encuentras en mi tumba... y has ca\xEDdo
+        en mi trampa.\nPara salir, tendr\xE1s que solucionar varios acertijos de
+        mi tipo de magia ancestral favorita... la L\xF3gica Digital.\nPara comenzar,
+        regresa a la puerta por la que entraste... quiz\xE1s por ah\xED cerca encuentres
+        algo que te sea de utilidad.\n\nBuena suerte, \xA1la necesitar\xE1s!"
+      - "Dentro del cofre encontrar\xE1s unos objetos llamados compuertas l\xF3gicas.
+        En el tapiz de la derecha (el que perdi\xF3 su imagen) debes colocar las
+        compuertas en el orden correcto para que la bombilla se encienda al activar
+        los mismos switches que encienden la bombilla de la izquierda. Prueba activando
+        los switches de la izquierda para intentar adivinar qu\xE9 compuertas usar."
+      - "La compuerta roja (AND), pasa la corriente solo si ambos switches de entrada
+        est\xE1n encendidos. La naranja (OR) si cualquiera de los dos (o ambos) est\xE1n
+        encendidos. La morada (XOR) si alguno de los dos est\xE1 encendido, pero
+        no ambos. La verde (NOT) invierte lo que hace el switch con el que se conecta.
+        Las met\xE1licas (NAND, NOR, XNOR) hacen lo opuesto a sus versiones regulares."
+      - "La luz se enciende solo si el primer y segundo switch est\xE1n activados.
+        Para resolver el acertijo, coloca la compuerta AND (la roja), en el espacio
+        vac\xEDo del circuito, y presiona el bot\xF3n a la derecha."
+    - hints:
+      - "Soy el Fara\xF3n Tut-AND-Kamon.\nTe encuentras en mi tumba... y has ca\xEDdo
+        en mi trampa.\nPara salir, tendr\xE1s que solucionar varios acertijos de
+        mi tipo de magia ancestral favorita... la L\xF3gica Digital.\nPara comenzar,
+        regresa a la puerta por la que entraste... quiz\xE1s por ah\xED cerca encuentres
+        algo que te sea de utilidad.\n\nBuena suerte, \xA1la necesitar\xE1s!"
+      - "Dentro del cofre encontrar\xE1s unos objetos llamados compuertas l\xF3gicas.
+        En el tapiz de la derecha (el que perdi\xF3 su imagen) debes colocar las
+        compuertas en el orden correcto para que la bombilla se encienda al activar
+        los mismos switches que encienden la bombilla de la izquierda. Prueba activando
+        los switches de la izquierda para intentar adivinar qu\xE9 compuertas usar."
+      - "La compuerta roja (AND), pasa la corriente solo si ambos switches de entrada
+        est\xE1n encendidos. La naranja (OR) si cualquiera de los dos (o ambos) est\xE1n
+        encendidos. La morada (XOR) si alguno de los dos est\xE1 encendido, pero
+        no ambos. La verde (NOT) invierte lo que hace el switch con el que se conecta.
+        Las met\xE1licas (NAND, NOR, XNOR) hacen lo opuesto a sus versiones regulares."
+      - "La luz se enciende solo si el tercer switch est\xE1 activado y tambi\xE9n
+        ya sea el primero o el segundo, pero no ambos. Para resolver el acertijo,
+        coloca la compuerta XOR (la morada), en el espacio entre los primeros dos
+        switches, y luego AND (la roja) en el otro y presiona el bot\xF3n a la derecha. "
+    - hints:
+      - "Soy el Fara\xF3n Tut-AND-Kamon.\nTe encuentras en mi tumba... y has ca\xEDdo
+        en mi trampa.\nPara salir, tendr\xE1s que solucionar varios acertijos de
+        mi tipo de magia ancestral favorita... la L\xF3gica Digital.\nPara comenzar,
+        regresa a la puerta por la que entraste... quiz\xE1s por ah\xED cerca encuentres
+        algo que te sea de utilidad.\n\nBuena suerte, \xA1la necesitar\xE1s!"
+      - "Dentro del cofre encontrar\xE1s unos objetos llamados compuertas l\xF3gicas.
+        En el tapiz de la derecha (el que perdi\xF3 su imagen) debes colocar las
+        compuertas en el orden correcto para que la bombilla se encienda al activar
+        los mismos switches que encienden la bombilla de la izquierda. Prueba activando
+        los switches de la izquierda para intentar adivinar qu\xE9 compuertas usar."
+      - "La compuerta roja (AND), pasa la corriente solo si ambos switches de entrada
+        est\xE1n encendidos. La naranja (OR) si cualquiera de los dos (o ambos) est\xE1n
+        encendidos. La morada (XOR) si alguno de los dos est\xE1 encendido, pero
+        no ambos. La verde (NOT) invierte lo que hace el switch con el que se conecta.
+        Las met\xE1licas (NAND, NOR, XNOR) hacen lo opuesto a sus versiones regulares."
+      - "La luz se enciende solo si el tercer y cuarto switch est\xE1n activados
+        y el primer y segundo estan iguales, ya sea encendidos o apagados. Para resolver
+        el acertijo, coloca la compuerta XOR (la morada), en el espacio entre los
+        primeros dos switches, NOT (la verde) en el tercer switch, NOR (la met\xE1lica
+        con naranja) entre esas dos y luego AND (la roja) en el otro espacio, y presiona
+        el bot\xF3n a la derecha. "
+    skipFirstHint: 1
+  - name: 1.2
+    versionSource: {fileID: 85283598}
+    byVersion:
+    - hints:
+      - "Recoge la palanca que cay\xF3 sobre la arena y ll\xE9vala a su pedestal,
+        cerca de donde guard\xE9 mis m\xE1s preciadas riquezas. Col\xF3cala en el
+        pedestal y act\xEDvala para comenzar el siguiente reto."
+      - "De las tres compuertas que salieron de la pared, escoge aquellas que completen
+        el circuito para transmitir la luz al final de la mesa. Col\xF3calas en los
+        huecos correspondientes."
+      - "La compuerta roja (AND) pasa la corriente si ambas entradas est\xE1n encendidas.
+        La compuerta naranja (OR) pasa la corriente si al menos una de las entradas
+        est\xE1 encendida. La compuerta verde (NOT) invierte lo que sea que diga
+        la entrada."
+      - "Ambas entradas est\xE1n encendidas. Para resolver el acertijo, puedes colocar
+        la compuerta AND (la roja) u OR (la naranja) en la casilla correspondiente."
+    - hints:
+      - "Recoge la palanca que cay\xF3 sobre la arena y ll\xE9vala a su pedestal,
+        cerca de donde guard\xE9 mis m\xE1s preciadas riquezas. Col\xF3cala en el
+        pedestal y act\xEDvala para comenzar el siguiente reto."
+      - "De las tres compuertas que salieron de la pared, escoge aquellas que completen
+        el circuito para transmitir la luz al final de la mesa. Col\xF3calas en los
+        huecos correspondientes."
+      - "La compuerta roja (AND) pasa la corriente si ambas entradas est\xE1n encendidas.
+        La compuerta naranja (OR) pasa la corriente si al menos una de las entradas
+        est\xE1 encendida. La compuerta morada (XOR) pasa la corriente si solo una
+        de las dos entradas est\xE1 encendida."
+      - "Hay una entrada apagada y dos encendidas. Cualquier combinaci\xF3n de las
+        tres compuertas funciona, excepto poner OR (la naranja) en la primera casilla
+        y XOR (la morada) en la segunda."
+    - hints:
+      - "Recoge la palanca que cay\xF3 sobre la arena y ll\xE9vala a su pedestal,
+        cerca de donde guard\xE9 mis m\xE1s preciadas riquezas. Col\xF3cala en el
+        pedestal y act\xEDvala para comenzar el siguiente reto."
+      - "De las tres compuertas que salieron de la pared, escoge aquellas que completen
+        el circuito para transmitir la luz al final de la mesa. Col\xF3calas en los
+        huecos correspondientes."
+      - "La compuerta roja (AND) pasa la corriente si ambas entradas est\xE1n encendidas.
+        La compuerta naranja (OR) pasa la corriente si al menos una de las entradas
+        est\xE1 encendida. La compuerta morada (XOR) pasa la corriente si solo una
+        de las dos entradas est\xE1 encendida."
+      - "Las primeras dos entradas y la \xFAltima est\xE1n encendidas. Las otras
+        dos est\xE1n apagadas. Hay varias formas de resolver el acertijo. Por ejemplo,
+        puedes poner AND (la roja) entre las dos primeras entradas y luego usar las
+        otras dos en cualquier posici\xF3n en las casillas restantes."
+    skipFirstHint: 0
+  - name: 1.3
+    versionSource: {fileID: 949862375}
+    byVersion:
+    - hints:
+      - "Sigue el camino del cable encendido. Notar\xE1s que ahora no todos los cubos
+        del caj\xF3n muestran un \"?\"."
+      - "Hay nueve cubos, tres filas, tres columnas. La columna de la izquierda representa
+        el sistema binario, la del centro representa el decimal y la derecha representa
+        el hexadecimal. Dos de los cubos por cada fila muestran un n\xFAmero en su
+        respectivo sistema y el otro tiene un \"?\". Mueve el cubo del \"?\" para
+        encontrar el equivalente a los otros dos n\xFAmeros de la fila. Cuando los
+        hayas encontrado, presiona el bot\xF3n de la derecha."
+      - "Para pasar un n\xFAmero a binario, divide el n\xFAmero entero entre 2 sucesivamente
+        y anota los residuos (0 o 1), luego l\xE9elos de abajo hacia arriba. Para
+        hexadecimal, haz el mismo proceso de divisiones sucesivas, pero dividiendo
+        entre 16. Si alg\xFAn residuo es de 10 a 15, reempl\xE1zalo por su letra
+        correspondiente (A=10, B=11, C=12, D=13, E=14, F=15). Finalmente, lee los
+        residuos de abajo hacia arriba para obtener el valor hexadecimal completo."
+      - '1101 y D son equivalentes a 13 en decimal.
+
+
+        1010 y A son equivalentes
+        a 10 en decimal.
+
+
+        1111 y 15 son equivalentes a F en hexadecimal.'
+    - hints:
+      - "Sigue el camino del cable encendido. Notar\xE1s que ahora no todos los cubos
+        del caj\xF3n muestran un \"?\"."
+      - "Hay nueve cubos, tres filas, tres columnas. La columna de la izquierda representa
+        el sistema binario, la del centro representa el decimal y la derecha representa
+        el hexadecimal. Dos de los cubos por cada fila muestran un n\xFAmero en su
+        respectivo sistema y el otro tiene un \"?\". Mueve el cubo del \"?\" para
+        encontrar el equivalente a los otros dos n\xFAmeros de la fila. Cuando los
+        hayas encontrado, presiona el bot\xF3n de la derecha."
+      - "Para pasar un n\xFAmero a binario, divide el n\xFAmero entero entre 2 sucesivamente
+        y anota los residuos (0 o 1), luego l\xE9elos de abajo hacia arriba. Para
+        hexadecimal, haz el mismo proceso de divisiones sucesivas, pero dividiendo
+        entre 16. Si alg\xFAn residuo es de 10 a 15, reempl\xE1zalo por su letra
+        correspondiente (A=10, B=11, C=12, D=13, E=14, F=15). Finalmente, lee los
+        residuos de abajo hacia arriba para obtener el valor hexadecimal completo."
+      - '28 y 1C son equivalentes a 11100 en binario.
+
+
+        11110 y 1E son equivalentes
+        a 30 en decimal.
+
+
+        11011 y 27 son equivalentes a 1B en hexadecimal.'
+    - hints:
+      - "Sigue el camino del cable encendido. Notar\xE1s que ahora no todos los cubos
+        del caj\xF3n muestran un \"?\"."
+      - "Hay nueve cubos, tres filas, tres columnas. La columna de la izquierda representa
+        el sistema binario, la del centro representa el decimal y la derecha representa
+        el hexadecimal. Dos de los cubos por cada fila muestran un n\xFAmero en su
+        respectivo sistema y el otro tiene un \"?\". Mueve el cubo del \"?\" para
+        encontrar el equivalente a los otros dos n\xFAmeros de la fila. Cuando los
+        hayas encontrado, presiona el bot\xF3n de la derecha."
+      - "Para pasar un n\xFAmero a binario, divide el n\xFAmero entero entre 2 sucesivamente
+        y anota los residuos (0 o 1), luego l\xE9elos de abajo hacia arriba. Para
+        hexadecimal, haz el mismo proceso de divisiones sucesivas, pero dividiendo
+        entre 16. Si alg\xFAn residuo es de 10 a 15, reempl\xE1zalo por su letra
+        correspondiente (A=10, B=11, C=12, D=13, E=14, F=15). Finalmente, lee los
+        residuos de abajo hacia arriba para obtener el valor hexadecimal completo."
+      - '25 + 30 y 19 + 1E son equivalentes a 110111 en binario.
+
+        
+
+        110110
+        - 001110 y 36 - E son equivalentes a 40 en decimal.
+
+        
+
+        100101
+        + 011011 y 37 + 27 son equivalentes a 40 en hexadecimal.'
+    skipFirstHint: 0
+  - name: 1.4
+    versionSource: {fileID: 1923287035}
+    byVersion:
+    - hints:
+      - "A la derecha se abri\xF3 una puerta con un cofre dentro. Si miras dentro
+        de los cofres encontrar\xE1s cuatro pergaminos con preguntas curiosas. Si
+        quieres saber qu\xE9 hacer con ellos, dir\xEDgete a la mesa con las llaves
+        en la pared, cerca de mi tumba."
+      - "Cada pergamino tiene asignado un n\xFAmero, y su pregunta se puede responder
+        con un valor num\xE9rico. Encuentra la llave correspondiente al valor de
+        la respuesta, e introd\xFAcela en el orificio del valor del pergamino."
+      - "Para saber cu\xE1ntos bits se necesitan para representar X valores, basta
+        con obtener el resultado del logaritmo en base 2 de ese valor X. Si el resultado
+        no es entero, se toma el entero siguiente, es decir, si el resultado es 2.1,
+        entonces se necesitan 3 bits."
+      - "El orden correcto de las llaves es 2 - 1 - 7 - 5. Col\xF3calas en sus cerraduras
+        respetando ese orden."
+    - hints:
+      - "A la derecha se abri\xF3 una puerta con un cofre dentro. Si miras dentro
+        de los cofres encontrar\xE1s cuatro pergaminos con preguntas curiosas. Si
+        quieres saber qu\xE9 hacer con ellos, dir\xEDgete a la mesa con las llaves
+        en la pared, cerca de mi tumba."
+      - "Cada pergamino tiene asignado un n\xFAmero, y su pregunta se puede responder
+        con un valor num\xE9rico. Encuentra la llave correspondiente al valor de
+        la respuesta, e introd\xFAcela en el orificio del valor del pergamino."
+      - "Para saber cu\xE1ntos bits se necesitan para representar X valores, basta
+        con obtener el resultado del logaritmo en base 2 de ese valor X. Si el resultado
+        no es entero, se toma el entero siguiente, es decir, si el resultado es 2.1,
+        entonces se necesitan 3 bits."
+      - "El orden correcto de las llaves es 5 - 7 - 8 - 4. Col\xF3calas en sus cerraduras
+        respetando ese orden."
+    - hints:
+      - "A la derecha se abri\xF3 una puerta con un cofre dentro. Si miras dentro
+        de los cofres encontrar\xE1s cuatro pergaminos con preguntas curiosas. Si
+        quieres saber qu\xE9 hacer con ellos, dir\xEDgete a la mesa con las llaves
+        en la pared, cerca de mi tumba."
+      - "Cada pergamino tiene asignado un n\xFAmero, y su pregunta se puede responder
+        con un valor num\xE9rico. Encuentra la llave correspondiente al valor de
+        la respuesta, e introd\xFAcela en el orificio del valor del pergamino."
+      - "Para saber cu\xE1ntos bits se necesitan para representar X valores, basta
+        con obtener el resultado del logaritmo en base 2 de ese valor X. Si el resultado
+        no es entero, se toma el entero siguiente, es decir, si el resultado es 2.1,
+        entonces se necesitan 3 bits."
+      - "El orden correcto de las llaves es 7 - 10 - 6 - 3. Col\xF3calas en sus cerraduras
+        respetando ese orden."
+    skipFirstHint: 0
+  - name: 1.5
+    versionSource: {fileID: 1110174165}
+    byVersion:
+    - hints:
+      - "Recoge la antorcha de la caja y dir\xEDgete al tapiz grande de marco dorado
+        cerca de la entrada. Ahora piensa, \xBFqu\xE9 podr\xEDas hacer con ese tapiz
+        y el fuego de tu antorcha?"
+      - "\xA1Tienes que quemar el tapiz! Una vez lo quemes, ver\xE1s un n\xFAmero
+        escondido detr\xE1s. Las antorchas frente al n\xFAmero representan bits.
+        Enciende las antorchas que ser\xEDan \"1\" en la representaci\xF3n de ese
+        n\xFAmero en binario, y deja los \"0\" apagados."
+      - "Para saber el valor del n\xFAmero en binario, basta con hacer lo mismo que
+        hiciste en el reto de los cubos. Si el n\xFAmero es negativo, tendr\xE1s
+        que representarlo en complemento a 2. Enciende la antorcha dorada (que representa
+        el bit de signo) y luego convierte todos los 0\"0\"s en \"1S1 y viceveras,
+        asegur\xE1ndote de sumar 1 al final."
+      - "15 en binario es 0 00001111, as\xED que basta con encender las \xFAltimas
+        cuatro antorchas."
+    - hints:
+      - "Recoge la antorcha de la caja y dir\xEDgete al tapiz grande de marco dorado
+        cerca de la entrada. Ahora piensa, \xBFqu\xE9 podr\xEDas hacer con ese tapiz
+        y el fuego de tu antorcha?"
+      - "\xA1Tienes que quemar el tapiz! Una vez lo quemes, ver\xE1s un n\xFAmero
+        escondido detr\xE1s. Las antorchas frente al n\xFAmero representan bits.
+        Enciende las antorchas que ser\xEDan \"1\" en la representaci\xF3n de ese
+        n\xFAmero en binario, y deja los \"0\" apagados."
+      - "Para saber el valor del n\xFAmero en binario, basta con hacer lo mismo que
+        hiciste en el reto de los cubos. Si el n\xFAmero es negativo, tendr\xE1s
+        que representarlo en complemento a 2. Enciende la antorcha dorada (que representa
+        el bit de signo) y luego convierte todos los 0\"0\"s en \"1S1 y viceveras,
+        asegur\xE1ndote de sumar 1 al final."
+      - "234 en binario es 0 1110 1010, as\xED que tienes que encender esas antorchas."
+    - hints:
+      - "Recoge la antorcha de la caja y dir\xEDgete al tapiz grande de marco dorado
+        cerca de la entrada. Ahora piensa, \xBFqu\xE9 podr\xEDas hacer con ese tapiz
+        y el fuego de tu antorcha?"
+      - "\xA1Tienes que quemar el tapiz! Una vez lo quemes, ver\xE1s un n\xFAmero
+        escondido detr\xE1s. Las antorchas frente al n\xFAmero representan bits.
+        Enciende las antorchas que ser\xEDan \"1\" en la representaci\xF3n de ese
+        n\xFAmero en binario, y deja los \"0\" apagados."
+      - "Para saber el valor del n\xFAmero en binario, basta con hacer lo mismo que
+        hiciste en el reto de los cubos. Si el n\xFAmero es negativo, tendr\xE1s
+        que representarlo en complemento a 2. Enciende la antorcha dorada (que representa
+        el bit de signo) y luego convierte todos los 0\"0\"s en \"1S1 y viceveras,
+        asegur\xE1ndote de sumar 1 al final."
+      - "-156 escrito en complemento a 2 es 1 0110 0100, as\xED que enciende esas
+        antorchas."
+    skipFirstHint: 0
+  spawner: {fileID: 2082442540}
+  cooldown: 10
+--- !u!4 &2082442542
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082442539}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2084326535
 GameObject:
   m_ObjectHideFlags: 0
@@ -190923,11 +190921,67 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2147380359}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &543450653259298323 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
-  m_PrefabInstance: {fileID: 449057272}
-  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &164776125307731290
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1394332093853374171, guid: 9ef815c7c23600c49b709663eba06898, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1394332093853374171, guid: 9ef815c7c23600c49b709663eba06898, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.35761416
+      objectReference: {fileID: 0}
+    - target: {fileID: 1394332093853374171, guid: 9ef815c7c23600c49b709663eba06898, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.412
+      objectReference: {fileID: 0}
+    - target: {fileID: 1394332093853374171, guid: 9ef815c7c23600c49b709663eba06898, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.6026301
+      objectReference: {fileID: 0}
+    - target: {fileID: 1394332093853374171, guid: 9ef815c7c23600c49b709663eba06898, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1394332093853374171, guid: 9ef815c7c23600c49b709663eba06898, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1394332093853374171, guid: 9ef815c7c23600c49b709663eba06898, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1394332093853374171, guid: 9ef815c7c23600c49b709663eba06898, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1394332093853374171, guid: 9ef815c7c23600c49b709663eba06898, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1394332093853374171, guid: 9ef815c7c23600c49b709663eba06898, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1394332093853374171, guid: 9ef815c7c23600c49b709663eba06898, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3764638092201832992, guid: 9ef815c7c23600c49b709663eba06898, type: 3}
+      propertyPath: m_Name
+      value: Scroll 1 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3764638092201832992, guid: 9ef815c7c23600c49b709663eba06898, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9ef815c7c23600c49b709663eba06898, type: 3}
 --- !u!4 &543450653356525545
 Transform:
   m_ObjectHideFlags: 0
@@ -190943,7 +190997,7 @@ Transform:
   - {fileID: 4396037226835556245}
   - {fileID: 31694499}
   m_Father: {fileID: 997062798}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!4 &543450653377418315
 Transform:
@@ -190981,7 +191035,7 @@ Transform:
   - {fileID: 3745622628074657695}
   - {fileID: 7967766326209990897}
   m_Father: {fileID: 393575952}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &832149484468984181
 GameObject:
@@ -191591,24 +191645,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &919132149603970217 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f6d3a579ef7442c4fb26d3aa063a2a8a, type: 3}
-  m_PrefabInstance: {fileID: 449057272}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &919132149603970218
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919132149603970217}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.023087623, y: 0.0030236854, z: 0.019148264}
-  m_Center: {x: 0.000000015012098, y: 0.00148897, z: -0.000000029669199}
 --- !u!1 &1114959404433776045
 GameObject:
   m_ObjectHideFlags: 0
