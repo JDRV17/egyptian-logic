@@ -14,8 +14,13 @@ public class RevealPart : MonoBehaviour
     [HideInInspector] public Vector3 finalPosition;   // posición en mundo
     [HideInInspector] public Vector3 hiddenPosition;  // posición en mundo
 
+
+    [HideInInspector] public bool captured;
+
     public void Capture()
     {
+        if (captured) return;          // la posición final no se vuelve a calcular
+        captured = true;
         finalPosition = transform.position;
         Vector3 worldOffset = offsetInWorldSpace ? hiddenOffset : transform.TransformVector(hiddenOffset);
         hiddenPosition = finalPosition + worldOffset;

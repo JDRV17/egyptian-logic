@@ -25,12 +25,10 @@ public class PuzzleRevealer : MonoBehaviour
 
     public bool IsRevealed => revealed;
 
-    private void Awake()
+    private void Awake() => Setup();
+
+    private void Setup()
     {
-        // El PuzzleVersionManager (orden -100) ya desactivó las versiones no elegidas,
-        // así que aquí solo entran las piezas de la versión activa
-        parts = GetComponentsInChildren<RevealPart>(false);
-        Debug.Log($"[PuzzleRevealer] {name}: {parts.Length} pieza(s) activas capturadas.");
         parts = GetComponentsInChildren<RevealPart>(false);
 
         foreach (var rb in GetComponentsInChildren<Rigidbody>(false))
@@ -44,6 +42,23 @@ public class PuzzleRevealer : MonoBehaviour
             p.Capture();
             p.Hide();
         }
+    }
+
+    /// <summary>Se llama tras cambiar la versión activa, antes de revelar.</summary>
+    public void Rebuild()
+    {
+        if (revealed) return;
+
+        foreach (var b in bodies)
+            if (b.rb != null) { b.rb.isKinematic = b.wasKinematic; b.rb.useGravity = b.hadGravity; }
+        bodies.Clear();
+
+        foreach (var i in disabledInteractors)
+            if (i != null) i.enabled = true;
+        disabledInteractors.Clear();
+
+        Setup();
+        DisableInteractions();
     }
 
     private void Start()

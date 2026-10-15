@@ -76982,18 +76982,6 @@ MonoBehaviour:
   onSolved:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 949862375}
-        m_TargetAssemblyTypeName: SpinningCubes, Assembly-CSharp
-        m_MethodName: Reveal
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
       - m_Target: {fileID: 667776308}
         m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
         m_MethodName: Play
@@ -132327,6 +132315,475 @@ Transform:
   - {fileID: 618084182}
   m_Father: {fileID: 1117268649}
   m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1468275089
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1468275091}
+  - component: {fileID: 1468275090}
+  m_Layer: 0
+  m_Name: AdaptationEngine
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1468275090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468275089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8586282375d3c884a9d66afc284abbaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tracker: {fileID: 471760757}
+  bindings:
+  - name: 1.1
+    versionTarget: {fileID: 0}
+    onVersionApplied:
+      m_PersistentCalls:
+        m_Calls: []
+  - name: 1.2
+    versionTarget: {fileID: 85283598}
+    onVersionApplied:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 366627216}
+          m_TargetAssemblyTypeName: PuzzleRevealer, Assembly-CSharp
+          m_MethodName: Rebuild
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 833466841}
+          m_TargetAssemblyTypeName: FixedInputCircuit, Assembly-CSharp
+          m_MethodName: Reconfigure
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - name: 1.3
+    versionTarget: {fileID: 949862375}
+    onVersionApplied:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 949862375}
+          m_TargetAssemblyTypeName: SpinningCubes, Assembly-CSharp
+          m_MethodName: Reveal
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - name: 1.4
+    versionTarget: {fileID: 1923287035}
+    onVersionApplied:
+      m_PersistentCalls:
+        m_Calls: []
+  - name: 1.5
+    versionTarget: {fileID: 1110174165}
+    onVersionApplied:
+      m_PersistentCalls:
+        m_Calls: []
+  theta: 0
+  pMin: 0.3
+  pMax: 1
+  rules:
+  - name: K_reto1
+    priority: 90
+    enabled: 1
+    explanation: 'Primer dato: la habilidad inicial es solo un supuesto, se reacciona
+      fuerte.'
+    conditions:
+    - fact: stagesCompleted
+      op: 1
+      value: 1
+      rhsFact: 
+    actions:
+    - type: 0
+      target: K
+      value: 1.5
+      sourceFact: 
+      factB: 
+  - name: K_reto2
+    priority: 90
+    enabled: 1
+    explanation: Segundo dato.
+    conditions:
+    - fact: stagesCompleted
+      op: 4
+      value: 2
+      rhsFact: 
+    actions:
+    - type: 0
+      target: K
+      value: 1.2
+      sourceFact: 
+      factB: 
+  - name: K_reto3
+    priority: 90
+    enabled: 1
+    explanation: Tercer dato.
+    conditions:
+    - fact: stagesCompleted
+      op: 4
+      value: 3
+      rhsFact: 
+    actions:
+    - type: 0
+      target: K
+      value: 1
+      sourceFact: 
+      factB: 
+  - name: K_reto4
+    priority: 90
+    enabled: 1
+    explanation: Cuarto dato.
+    conditions:
+    - fact: stagesCompleted
+      op: 4
+      value: 4
+      rhsFact: 
+    actions:
+    - type: 0
+      target: K
+      value: 0.8
+      sourceFact: 
+      factB: 
+  - name: K_reto5_o_mas
+    priority: 90
+    enabled: 1
+    explanation: "Con varios datos la estimaci\xF3n se estabiliza (K bajo)."
+    conditions:
+    - fact: stagesCompleted
+      op: 3
+      value: 5
+      rhsFact: 
+    actions:
+    - type: 0
+      target: K
+      value: 0.6
+      sourceFact: 
+      factB: 
+  - name: S_solucion_no_suma
+    priority: 80
+    enabled: 1
+    explanation: "Si necesit\xF3 la soluci\xF3n, un buen P no cuenta como evidencia
+      de habilidad."
+    conditions:
+    - fact: usedSolution
+      op: 4
+      value: 1
+      rhsFact: 
+    - fact: delta
+      op: 2
+      value: 0
+      rhsFact: 
+    actions:
+    - type: 0
+      target: delta
+      value: 0
+      sourceFact: 
+      factB: 
+  - name: U_actualizar_theta
+    priority: 70
+    enabled: 1
+    explanation: "\u03B8 \u2190 \u03B8 + K\xB7(P \u2212 P_esperado)"
+    conditions:
+    - fact: K
+      op: 2
+      value: 0
+      rhsFact: 
+    - fact: thetaUpdated
+      op: 4
+      value: 0
+      rhsFact: 
+    actions:
+    - type: 2
+      target: theta
+      value: 0
+      sourceFact: K
+      factB: delta
+    - type: 0
+      target: thetaUpdated
+      value: 1
+      sourceFact: 
+      factB: 
+  - name: U_techo_theta
+    priority: 65
+    enabled: 1
+    explanation: "\u03B8 no pasa de +2 (evita acumular ventaja imposible de revertir)."
+    conditions:
+    - fact: thetaUpdated
+      op: 4
+      value: 1
+      rhsFact: 
+    - fact: theta
+      op: 2
+      value: 2
+      rhsFact: 
+    actions:
+    - type: 0
+      target: theta
+      value: 2
+      sourceFact: 
+      factB: 
+  - name: U_piso_theta
+    priority: 65
+    enabled: 1
+    explanation: "\u03B8 no baja de \u22122."
+    conditions:
+    - fact: thetaUpdated
+      op: 4
+      value: 1
+      rhsFact: 
+    - fact: theta
+      op: 0
+      value: -2
+      rhsFact: 
+    actions:
+    - type: 0
+      target: theta
+      value: -2
+      sourceFact: 
+      factB: 
+  - name: V_facil
+    priority: 50
+    enabled: 1
+    explanation: "\u03B8 < \u22120.5: la dificultad m\xE1s cercana es V1."
+    conditions:
+    - fact: thetaUpdated
+      op: 4
+      value: 1
+      rhsFact: 
+    - fact: decided
+      op: 4
+      value: 0
+      rhsFact: 
+    - fact: theta
+      op: 0
+      value: -0.5
+      rhsFact: 
+    actions:
+    - type: 0
+      target: nextVersion
+      value: 0
+      sourceFact: 
+      factB: 
+    - type: 0
+      target: decided
+      value: 1
+      sourceFact: 
+      factB: 
+  - name: V_medio
+    priority: 50
+    enabled: 1
+    explanation: "\u22120.5 \u2264 \u03B8 < 0.5: la dificultad m\xE1s cercana es
+      V2."
+    conditions:
+    - fact: thetaUpdated
+      op: 4
+      value: 1
+      rhsFact: 
+    - fact: decided
+      op: 4
+      value: 0
+      rhsFact: 
+    - fact: theta
+      op: 3
+      value: -0.5
+      rhsFact: 
+    - fact: theta
+      op: 0
+      value: 0.5
+      rhsFact: 
+    actions:
+    - type: 0
+      target: nextVersion
+      value: 1
+      sourceFact: 
+      factB: 
+    - type: 0
+      target: decided
+      value: 1
+      sourceFact: 
+      factB: 
+  - name: V_dificil
+    priority: 50
+    enabled: 1
+    explanation: "\u03B8 \u2265 0.5: la dificultad m\xE1s cercana es V3."
+    conditions:
+    - fact: thetaUpdated
+      op: 4
+      value: 1
+      rhsFact: 
+    - fact: decided
+      op: 4
+      value: 0
+      rhsFact: 
+    - fact: theta
+      op: 3
+      value: 0.5
+      rhsFact: 
+    actions:
+    - type: 0
+      target: nextVersion
+      value: 2
+      sourceFact: 
+      factB: 
+    - type: 0
+      target: decided
+      value: 1
+      sourceFact: 
+      factB: 
+  - name: A_salto_max_arriba
+    priority: 30
+    enabled: 1
+    explanation: "No se sube m\xE1s de una versi\xF3n de golpe."
+    conditions:
+    - fact: decided
+      op: 4
+      value: 1
+      rhsFact: 
+    - fact: nextVersion
+      op: 3
+      value: 2
+      rhsFact: version
+    actions:
+    - type: 0
+      target: nextVersion
+      value: 1
+      sourceFact: version
+      factB: 
+  - name: A_salto_max_abajo
+    priority: 30
+    enabled: 1
+    explanation: "No se baja m\xE1s de una versi\xF3n de golpe."
+    conditions:
+    - fact: decided
+      op: 4
+      value: 1
+      rhsFact: 
+    - fact: nextVersion
+      op: 1
+      value: -2
+      rhsFact: version
+    actions:
+    - type: 0
+      target: nextVersion
+      value: -1
+      sourceFact: version
+      factB: 
+  - name: A_pistas_no_sube
+    priority: 30
+    enabled: 1
+    explanation: "Con 2 o m\xE1s pistas que cuentan, no se sube de versi\xF3n."
+    conditions:
+    - fact: decided
+      op: 4
+      value: 1
+      rhsFact: 
+    - fact: hints
+      op: 3
+      value: 2
+      rhsFact: 
+    - fact: nextVersion
+      op: 2
+      value: 0
+      rhsFact: version
+    actions:
+    - type: 0
+      target: nextVersion
+      value: 0
+      sourceFact: version
+      factB: 
+  - name: A_solucion_baja
+    priority: 30
+    enabled: 1
+    explanation: "Si necesit\xF3 la soluci\xF3n, la siguiente versi\xF3n es m\xE1s
+      f\xE1cil."
+    conditions:
+    - fact: decided
+      op: 4
+      value: 1
+      rhsFact: 
+    - fact: usedSolution
+      op: 4
+      value: 1
+      rhsFact: 
+    - fact: nextVersion
+      op: 2
+      value: -1
+      rhsFact: version
+    actions:
+    - type: 0
+      target: nextVersion
+      value: -1
+      sourceFact: version
+      factB: 
+  - name: A_piso_version
+    priority: 10
+    enabled: 1
+    explanation: "No existe una versi\xF3n menor que V1."
+    conditions:
+    - fact: decided
+      op: 4
+      value: 1
+      rhsFact: 
+    - fact: nextVersion
+      op: 0
+      value: 0
+      rhsFact: 
+    actions:
+    - type: 0
+      target: nextVersion
+      value: 0
+      sourceFact: 
+      factB: 
+  writeCsv: 1
+  participantId: test
+  simStage: 0
+  simVersion: 1
+  simP: 0.9
+  simAttempts: 1
+  simHints: 0
+  simUsedSolution: 0
+--- !u!4 &1468275091
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468275089}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.7996172, y: 2.351563, z: -3.5989578}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1471151295
 GameObject:

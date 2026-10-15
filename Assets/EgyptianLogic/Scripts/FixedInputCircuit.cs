@@ -260,4 +260,15 @@ public class FixedInputCircuit : MonoBehaviour
             o.material.DisableKeyword("_EMISSION");
         }
     }
+
+    public void Reconfigure()
+    {
+        OnDisable();            // quita los listeners de la configuración anterior
+        active = null;
+        IsSolved = false;
+        solvedFired = false;
+        ChooseConfig();         // lee la versión nueva del manager
+        OnEnable();
+        EvaluateCircuit();
+    }
 }
