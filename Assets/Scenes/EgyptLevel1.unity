@@ -8005,7 +8005,7 @@ MonoBehaviour:
   - {fileID: 1567771039}
   - {fileID: 330378245}
   - {fileID: 262776427}
-  randomizeOnStart: 1
+  randomizeOnStart: 0
   forcedVersion: 2
 --- !u!1 &85490543
 GameObject:
@@ -21816,6 +21816,7 @@ MonoBehaviour:
   delay: 0
   finalPosition: {x: 0, y: 0, z: 0}
   hiddenPosition: {x: 0, y: 0, z: 0}
+  captured: 0
 --- !u!4 &202945268 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: af5327fd7214004438238228ea14eace, type: 3}
@@ -43911,6 +43912,7 @@ MonoBehaviour:
   delay: 0
   finalPosition: {x: 0, y: 0, z: 0}
   hiddenPosition: {x: 0, y: 0, z: 0}
+  captured: 0
 --- !u!64 &417683475
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -56895,6 +56897,7 @@ MonoBehaviour:
   delay: 0
   finalPosition: {x: 0, y: 0, z: 0}
   hiddenPosition: {x: 0, y: 0, z: 0}
+  captured: 0
 --- !u!1001 &647458013
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -96651,6 +96654,7 @@ MonoBehaviour:
   delay: 0
   finalPosition: {x: 0, y: 0, z: 0}
   hiddenPosition: {x: 0, y: 0, z: 0}
+  captured: 0
 --- !u!1 &1119441797
 GameObject:
   m_ObjectHideFlags: 0
@@ -108549,6 +108553,7 @@ MonoBehaviour:
   delay: 0
   finalPosition: {x: 0, y: 0, z: 0}
   hiddenPosition: {x: 0, y: 0, z: 0}
+  captured: 0
 --- !u!64 &1208267616
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -116056,6 +116061,7 @@ MonoBehaviour:
   delay: 0
   finalPosition: {x: 0, y: 0, z: 0}
   hiddenPosition: {x: 0, y: 0, z: 0}
+  captured: 0
 --- !u!1 &1262338398
 GameObject:
   m_ObjectHideFlags: 0
@@ -173594,8 +173600,8 @@ MonoBehaviour:
   - {fileID: 578179522}
   - {fileID: 1119441797}
   - {fileID: 1149665731}
-  randomizeOnStart: 1
-  forcedVersion: 0
+  randomizeOnStart: 0
+  forcedVersion: 1
 --- !u!1 &1919347208 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 235d1f903e4404c4c907670b59ecf500, type: 3}
