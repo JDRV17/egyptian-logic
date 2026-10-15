@@ -56,6 +56,10 @@ public class SpinningCubes : MonoBehaviour
     public UnityEvent onIncorrect;
 
     [SerializeField] private AudioSource rotateSound;
+
+    [Header("Rendimiento")]
+    [SerializeField] private PerformanceTracker tracker;
+    [SerializeField] private int trackerStage = 2;
     public int Attempts { get; private set; }
 
     public Version CurrentVersion { get; private set; }
@@ -142,6 +146,15 @@ public class SpinningCubes : MonoBehaviour
                 rotators[i].SetInteractable(true);
 
         rotateSound.Stop();
+
+        if (tracker != null)
+        {
+            int ideal = 1;   // el submit
+            for (int i = 0; i < rotators.Length; i++)
+                if (rotators[i] != null && IsHidden(i)) ideal += rotators[i].CorrectStep;
+            tracker.SetIdealInteractions(trackerStage, ideal);
+        }
+
         IsReady = true;
 
         onRevealFinished?.Invoke();

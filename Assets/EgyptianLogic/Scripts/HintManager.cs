@@ -79,4 +79,6 @@ public class HintManager : MonoBehaviour
         }
         return Mathf.Clamp(v, 0, st.byVersion.Length - 1);
     }
+
+    public int StageVersion(int stage) => Valid(stage) ? GetVersion(stages[stage]) : 0;
 }

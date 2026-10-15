@@ -8,6 +8,7 @@ public class HintScrollSpawner : MonoBehaviour
     [SerializeField] private float distance = 1.0f;
     [SerializeField] private float height = 2.5f;
     [SerializeField] private float lifeTime = 120f;          // se destruye solo
+    [SerializeField] private PerformanceTracker tracker;
 
     public void Spawn(string text, bool isSolution)
     {
@@ -16,6 +17,8 @@ public class HintScrollSpawner : MonoBehaviour
         pos.y = head.position.y + (height - 1.6f);           // cae desde arriba
 
         var go = Instantiate(scrollPrefab, pos, Quaternion.LookRotation(fwd));
+        var reader = go.GetComponent<HintScrollReader>();
+        if (reader != null) reader.tracker = tracker;
         var label = go.GetComponentInChildren<TMP_Text>(true);
         if (label != null) label.text = text;
 

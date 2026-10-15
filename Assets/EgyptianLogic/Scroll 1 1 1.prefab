@@ -268,6 +268,7 @@ GameObject:
   - component: {fileID: 4176125796315053713}
   - component: {fileID: 3719236167787955720}
   - component: {fileID: 4972773903840651523}
+  - component: {fileID: 1328748995363121975}
   m_Layer: 7
   m_Name: Scroll 1 1 1
   m_TagString: Untagged
@@ -452,7 +453,6 @@ MonoBehaviour:
   scrollAbierto: {fileID: 451340491000393774}
   audioSource: {fileID: 0}
   soundOpenClose: {fileID: 0}
-  pcOpenKey: 101
 --- !u!82 &3719236167787955720
 AudioSource:
   m_ObjectHideFlags: 0
@@ -566,6 +566,18 @@ MonoBehaviour:
   minImpactSpeed: 0.2
   maxImpactSpeed: 3
   cooldown: 0.15
+--- !u!114 &1328748995363121975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3764638092201832992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13754673b2648c34b8426fffdddf60f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7251455490695839060
 GameObject:
   m_ObjectHideFlags: 0
