@@ -46,6 +46,8 @@ public class AdaptationEngine : MonoBehaviour
 
     public float Theta => theta;
 
+
+
     private readonly RuleEngine engine = new RuleEngine();
     private int decisions;
     private string csvPath;
@@ -59,6 +61,13 @@ public class AdaptationEngine : MonoBehaviour
     private void OnDisable() { if (tracker != null) tracker.onStageCompleted -= OnStageCompleted; }
 
     private void OnStageCompleted(StageResult r) => Decide(r, true);
+
+    private void Awake()
+    {
+        if (SessionData.Instance.DiagnosticCorrect >= 0)
+            theta = SessionData.Instance.InitialTheta;
+        SessionData.Instance.RecordTheta(theta);
+    }
 
     [ContextMenu("Simular decisión")]
     private void Simulate()
@@ -122,6 +131,7 @@ public class AdaptationEngine : MonoBehaviour
         float before = theta;
         theta = thetaAfter;
         decisions++;
+        SessionData.Instance.RecordTheta(theta);
 
         if (writeCsv) WriteCsv(r, before, f, nextStage, next, trace);
         ApplyVersion(nextStage, next);
@@ -148,10 +158,14 @@ public class AdaptationEngine : MonoBehaviour
 
     private void WriteCsv(StageResult r, float thetaBefore, FactBase f, int nextStage, int next, List<string> trace)
     {
+        string pid = SessionData.Instance.PlayerName != ""
+        ? SessionData.Instance.ParticipantId
+        : participantId;
+
         if (csvPath == null)
         {
             string stamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-            csvPath = Path.Combine(Application.persistentDataPath, $"gatekeeper_decisiones_{participantId}_{stamp}.csv");
+            csvPath = Path.Combine(Application.persistentDataPath, $"gatekeeper_decisiones_{pid}_{stamp}.csv");
             File.WriteAllText(csvPath,
                 "participante,reto_resuelto,version_jugada,P,theta_antes,K,delta,theta_despues,reto_siguiente,version_siguiente,reglas\n",
                 Encoding.UTF8);
@@ -161,7 +175,7 @@ public class AdaptationEngine : MonoBehaviour
         var c = CultureInfo.InvariantCulture;
         string nextName = nextStage < bindings.Length && bindings[nextStage] != null ? bindings[nextStage].name : "-";
         string line = string.Join(",",
-            participantId, r.stageName, "V" + (r.version + 1), r.P.ToString("F3", c),
+            pid, r.stageName, "V" + (r.version + 1), r.P.ToString("F3", c),
             thetaBefore.ToString("F3", c), f.Get("K").ToString("F2", c), f.Get("delta").ToString("F3", c),
             f.Get("theta").ToString("F3", c), nextName, "V" + (next + 1), "\"" + string.Join(" > ", trace) + "\"");
         File.AppendAllText(csvPath, line + "\n", Encoding.UTF8);

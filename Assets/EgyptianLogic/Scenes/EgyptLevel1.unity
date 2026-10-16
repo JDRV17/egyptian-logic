@@ -8007,6 +8007,7 @@ MonoBehaviour:
   - {fileID: 262776427}
   randomizeOnStart: 0
   forcedVersion: 2
+  useDiagnostic: 0
 --- !u!1 &85490543
 GameObject:
   m_ObjectHideFlags: 0
@@ -165601,7 +165602,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh27432
+  m_Name: pb_Mesh27512
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -173602,6 +173603,7 @@ MonoBehaviour:
   - {fileID: 1149665731}
   randomizeOnStart: 0
   forcedVersion: 1
+  useDiagnostic: 1
 --- !u!1 &1919347208 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 235d1f903e4404c4c907670b59ecf500, type: 3}

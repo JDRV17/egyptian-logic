@@ -17,10 +17,16 @@ public class CsvStageLogger : MonoBehaviour
 
     private void Write(StageResult r)
     {
+        SessionData.Instance.AddResult(r);
+
+        string pid = SessionData.Instance.PlayerName != ""
+        ? SessionData.Instance.ParticipantId
+        : participantId;
+
         if (path == null)
         {
             string stamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-            path = Path.Combine(Application.persistentDataPath, $"gatekeeper_{participantId}_{stamp}.csv");
+            path = Path.Combine(Application.persistentDataPath, $"gatekeeper_{pid}_{stamp}.csv");
             File.WriteAllText(path,
                 "participante,reto,version,tiempo_s,tiempo_pausado_pistas_s,intentos,interacciones,interacciones_ideal,pistas,tope_solucion,S_T,S_A,S_I,S_H,P\n",
                 Encoding.UTF8);
@@ -29,7 +35,7 @@ public class CsvStageLogger : MonoBehaviour
 
         var c = CultureInfo.InvariantCulture;   // evita comas decimales
         string line = string.Join(",",
-            participantId, r.stageName, "V" + (r.version + 1),
+            pid, r.stageName, "V" + (r.version + 1),
             r.time.ToString("F2", c), r.hintPauseTime.ToString("F2", c),
             r.attempts, r.interactions, r.idealInteractions, r.hints, r.cappedBySolution ? 1 : 0,
             r.sT.ToString("F3", c), r.sA.ToString("F3", c), r.sI.ToString("F3", c),

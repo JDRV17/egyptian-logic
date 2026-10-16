@@ -17,11 +17,16 @@ public class PuzzleVersionManager : MonoBehaviour
 
     [SerializeField] private LightCombinationLock.LevelVersion forcedVersion = LightCombinationLock.LevelVersion.V1;
 
+    [SerializeField] private bool useDiagnostic = false;
+
     public LightCombinationLock.LevelVersion CurrentVersion { get; private set; }
 
     private void Awake()
     {
         LightCombinationLock.LevelVersion chosen;
+
+        if (!randomizeOnStart && SessionData.Instance.DiagnosticCorrect >= 0 && useDiagnostic)
+            forcedVersion = (LightCombinationLock.LevelVersion)SessionData.Instance.InitialVersion;
 
         if (randomizeOnStart)
             chosen = (LightCombinationLock.LevelVersion)Random.Range(0, puzzleRoots.Length);
