@@ -1,0 +1,45 @@
+{
+    "name": "HintInput",
+    "maps": [
+        {
+            "name": "Hints",
+            "id": "d39b885f-e4a3-4343-8ec3-4e2a902fb8ee",
+            "actions": [
+                {
+                    "name": "RequestHint",
+                    "type": "Button",
+                    "id": "56fbd200-95d3-4f50-81fc-06e4fd6121d9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "832323d9-352a-4764-8e96-1797ce257916",
+                    "path": "<Keyboard>/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RequestHint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f442e2ce-fb45-4c49-a13a-d45985cec3df",
+                    "path": "<XRController>{LeftHand}/secondaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RequestHint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
