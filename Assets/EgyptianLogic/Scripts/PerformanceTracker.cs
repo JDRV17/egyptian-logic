@@ -8,6 +8,8 @@ public class PerformanceTracker : MonoBehaviour
 
     [Header("Referencias")]
     [SerializeField] private HintManager hintManager;
+    [Tooltip("Nivel de esta escena (1, 2 o 3). Los índices de reto son locales al nivel: 0 = X.1, 1 = X.2...")]
+    [SerializeField] private int level = 1;
     [SerializeField] private StageConfig[] stages;
 
     [Header("Pesos (deben sumar 1)")]
@@ -42,6 +44,9 @@ public class PerformanceTracker : MonoBehaviour
     private Runtime[] rt;
     private int active = -1;
 
+    public int Level => level;
+    public int StageCount => stages != null ? stages.Length : 0;
+    public string StageName(int i) => stages != null && i >= 0 && i < stages.Length ? stages[i].name : "-";
     public int ActiveStage => active;
     public State GetState(int i) => Valid(i) ? rt[i].state : State.NotStarted;
     public StageResult GetResult(int i) => Valid(i) ? rt[i].result : null;
@@ -57,6 +62,14 @@ public class PerformanceTracker : MonoBehaviour
         float sum = wTime + wAttempts + wInteractions + wHints;
         if (Mathf.Abs(sum - 1f) > 0.001f)
             Debug.LogWarning($"[PerformanceTracker] Los pesos suman {sum:F2}, deberían sumar 1.");
+
+        foreach (var s in stages)
+        {
+            if (s == null || !s.overrideWeights) continue;
+            float own = s.wTime + s.wAttempts + s.wInteractions + s.wHints;
+            if (Mathf.Abs(own - 1f) > 0.001f)
+                Debug.LogWarning($"[PerformanceTracker] Los pesos propios del reto {s.name} suman {own:F2}, deberían sumar 1.");
+        }
     }
 
 
@@ -133,7 +146,11 @@ public class PerformanceTracker : MonoBehaviour
     {
         // Espera al final del frame para que las interacciones del mismo evento ya estén contadas
         yield return new WaitForEndOfFrame();
+        Finish(i);
+    }
 
+    private void Finish(int i)
+    {
         var r = rt[i];
         if (stages[i].hasSubmit) r.interactions++;       // el submit correcto
 
@@ -154,13 +171,20 @@ public class PerformanceTracker : MonoBehaviour
         float sI = Mathf.Clamp01(iIdeal / (float)Mathf.Max(r.interactions, 1));
         float sH = Mathf.Clamp01(1f - hints / (float)hintsForZero);
 
-        float p = wTime * sT + wAttempts * sA + wInteractions * sI + wHints * sH;
+        // Pesos: los del reto si los tiene, si no los globales
+        float wt = cfg.overrideWeights ? cfg.wTime : wTime;
+        float wa = cfg.overrideWeights ? cfg.wAttempts : wAttempts;
+        float wi = cfg.overrideWeights ? cfg.wInteractions : wInteractions;
+        float wh = cfg.overrideWeights ? cfg.wHints : wHints;
+
+        float p = wt * sT + wa * sA + wi * sI + wh * sH;
         bool capped = hints >= hintsForZero;
         if (capped) p = Mathf.Min(p, solutionCap);
 
         r.result = new StageResult
         {
             stageName = cfg.name,
+            level = level,
             stageIndex = i,
             version = version,
             attempts = attempts,

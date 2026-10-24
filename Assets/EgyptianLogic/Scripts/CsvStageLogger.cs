@@ -10,19 +10,20 @@ public class CsvStageLogger : MonoBehaviour
     [Tooltip("Identificador del voluntario (sin datos personales).")]
     [SerializeField] private string participantId = "test";
 
-    private string path;
-
     private void OnEnable() { if (tracker != null) tracker.onStageCompleted += Write; }
     private void OnDisable() { if (tracker != null) tracker.onStageCompleted -= Write; }
 
     private void Write(StageResult r)
     {
-        SessionData.Instance.AddResult(r);
+        var session = SessionData.Instance;
+        session.AddResult(r);
 
-        string pid = SessionData.Instance.PlayerName != ""
-        ? SessionData.Instance.ParticipantId
+        string pid = session.PlayerName != ""
+        ? session.ParticipantId
         : participantId;
 
+        // El archivo vive en SessionData: los tres niveles de una partida van al mismo CSV
+        string path = session.StageCsvPath;
         if (path == null)
         {
             string stamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
@@ -30,6 +31,7 @@ public class CsvStageLogger : MonoBehaviour
             File.WriteAllText(path,
                 "participante,reto,version,tiempo_s,tiempo_pausado_pistas_s,intentos,interacciones,interacciones_ideal,pistas,tope_solucion,S_T,S_A,S_I,S_H,P\n",
                 Encoding.UTF8);
+            session.StageCsvPath = path;
             Debug.Log($"[CsvStageLogger] Guardando en: {path}");
         }
 
