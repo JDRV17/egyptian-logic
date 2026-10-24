@@ -67,12 +67,22 @@ public class SessionData : MonoBehaviour
     public float FinalTheta { get; private set; }
     public bool HasResults => results.Count > 0;
 
+    /// <summary>Decisiones del motor en toda la partida (todos los niveles). Alimenta el K por reto.</summary>
+    public int DecisionsMade { get; private set; }
+
+    /// <summary>Última versión jugada (0 = V1 … 2 = V3); −1 si aún no hay ninguna.</summary>
+    public int LastPlayedVersion { get; private set; } = -1;
+
+    /// <summary>Un CSV de datos y uno de decisiones por partida, aunque se cambie de escena.</summary>
+    public string StageCsvPath { get; set; }
+    public string DecisionCsvPath { get; set; }
+
     public void AddResult(StageResult r)
     {
-        // Si el reto ya estaba, se reemplaza (por si se reinicia una partida)
-        results.RemoveAll(x => x.stageIndex == r.stageIndex);
+        // Si el reto ya estaba, se reemplaza (por si se repite un nivel). Los índices son locales al nivel.
+        results.RemoveAll(x => x.level == r.level && x.stageIndex == r.stageIndex);
         results.Add(r);
-        results.Sort((a, b) => a.stageIndex.CompareTo(b.stageIndex));
+        results.Sort((a, b) => a.level != b.level ? a.level.CompareTo(b.level) : a.stageIndex.CompareTo(b.stageIndex));
     }
 
     public void RecordTheta(float theta)
@@ -81,12 +91,22 @@ public class SessionData : MonoBehaviour
         thetaHistory.Add(theta);
     }
 
+    public void RegisterDecision(int playedVersion)
+    {
+        DecisionsMade++;
+        LastPlayedVersion = playedVersion;
+    }
+
     /// <summary>Borra los datos de una partida, conserva nombre, opciones y diagnóstico.</summary>
     public void ClearRun()
     {
         results.Clear();
         thetaHistory.Clear();
         FinalTheta = 0f;
+        DecisionsMade = 0;
+        LastPlayedVersion = -1;
+        StageCsvPath = null;
+        DecisionCsvPath = null;
     }
 
     /// <summary>Borra todo (volver al menú para que juegue otra persona).</summary>

@@ -9,9 +9,14 @@ public class HintManager : MonoBehaviour
     [SerializeField] private HintScrollSpawner spawner;
     [SerializeField] private float cooldown = 10f;
 
+    [Tooltip("Opcional. Si se asigna, la pista es del reto activo del tracker o de la última zona visitada " +
+             "(niveles no lineales). Vacío = el primer reto no resuelto (Nivel 1).")]
+    [SerializeField] private PerformanceTracker tracker;
+
     public event Action<int, int> onHintGiven;   // (índice de reto, número de pista 1..4)
 
     private float lastTime = -999f;
+    private int lastArrived = -1;
 
     private void OnEnable()
     {
@@ -29,13 +34,26 @@ public class HintManager : MonoBehaviour
     private void OnPressed(InputAction.CallbackContext ctx) => RequestHint();
 
     // --- Llamadas desde los retos (conéctalas en Inspector) ---
-    public void MarkArrived(int stage) { if (Valid(stage)) stages[stage].arrived = true; }
+    public void MarkArrived(int stage)
+    {
+        if (!Valid(stage)) return;
+        stages[stage].arrived = true;
+        lastArrived = stage;
+    }
+
     public void MarkSolved(int stage) { if (Valid(stage)) stages[stage].solved = true; }
 
     private bool Valid(int i) => stages != null && i >= 0 && i < stages.Length;
+    private bool Open(int i) => Valid(i) && !stages[i].solved;
 
     public int CurrentStage()
     {
+        if (tracker != null)
+        {
+            if (Open(tracker.ActiveStage)) return tracker.ActiveStage;   // el reto que está jugando
+            if (Open(lastArrived)) return lastArrived;                   // está en la zona pero aún no arranca
+        }
+
         for (int i = 0; i < stages.Length; i++)
             if (!stages[i].solved) return i;
         return -1;
