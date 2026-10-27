@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 72deae4d18418f94688abef8e8483df0, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -46248,6 +46248,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hintManager: {fileID: 2082442541}
+  level: 1
   stages:
   - name: 1.1
     startOnZoneEnter: 1
@@ -46259,6 +46260,11 @@ MonoBehaviour:
       iIdeal: 9
     - tIdeal: 150
       iIdeal: 11
+    overrideWeights: 0
+    wTime: 0.15
+    wAttempts: 0.4
+    wInteractions: 0.15
+    wHints: 0.3
   - name: 1.2
     startOnZoneEnter: 0
     hasSubmit: 0
@@ -46269,6 +46275,11 @@ MonoBehaviour:
       iIdeal: 2
     - tIdeal: 60
       iIdeal: 3
+    overrideWeights: 0
+    wTime: 0.15
+    wAttempts: 0.4
+    wInteractions: 0.15
+    wHints: 0.3
   - name: 1.3
     startOnZoneEnter: 1
     hasSubmit: 1
@@ -46279,6 +46290,11 @@ MonoBehaviour:
       iIdeal: 6
     - tIdeal: 90
       iIdeal: 6
+    overrideWeights: 0
+    wTime: 0.15
+    wAttempts: 0.4
+    wInteractions: 0.15
+    wHints: 0.3
   - name: 1.4
     startOnZoneEnter: 0
     hasSubmit: 0
@@ -46289,6 +46305,11 @@ MonoBehaviour:
       iIdeal: 8
     - tIdeal: 50
       iIdeal: 8
+    overrideWeights: 0
+    wTime: 0.15
+    wAttempts: 0.4
+    wInteractions: 0.15
+    wHints: 0.3
   - name: 1.5
     startOnZoneEnter: 0
     hasSubmit: 1
@@ -46299,6 +46320,11 @@ MonoBehaviour:
       iIdeal: 6
     - tIdeal: 45
       iIdeal: 5
+    overrideWeights: 0
+    wTime: 0.15
+    wAttempts: 0.4
+    wInteractions: 0.15
+    wHints: 0.3
   wTime: 0.15
   wAttempts: 0.4
   wInteractions: 0.15
@@ -132635,6 +132661,10 @@ MonoBehaviour:
     onVersionApplied:
       m_PersistentCalls:
         m_Calls: []
+  thetaStart: 0
+  initialStages: 
+  useCustomSuccessors: 0
+  successors: []
   theta: 0
   pMin: 0.3
   pMax: 1
@@ -188678,6 +188708,7 @@ MonoBehaviour:
     skipFirstHint: 0
   spawner: {fileID: 2082442540}
   cooldown: 10
+  tracker: {fileID: 0}
 --- !u!4 &2082442542
 Transform:
   m_ObjectHideFlags: 0
