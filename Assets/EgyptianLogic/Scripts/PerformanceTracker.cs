@@ -31,6 +31,7 @@ public class PerformanceTracker : MonoBehaviour
 
     public void BeginHintReading() => readingCount++;
     public void EndHintReading() => readingCount = Mathf.Max(0, readingCount - 1);
+    public bool IsReadingHint => readingCount > 0;
 
     private class Runtime
     {
