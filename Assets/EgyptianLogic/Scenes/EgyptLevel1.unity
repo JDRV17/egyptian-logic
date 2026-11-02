@@ -21648,7 +21648,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 10, z: 1}
+  m_Size: {x: 1, y: 20, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &191914184
 MeshRenderer:
@@ -32431,7 +32431,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.03, y: 0.01, z: 0.04}
+  m_Size: {x: 0.03, y: 0.05, z: 0.04}
   m_Center: {x: 0, y: -0.005, z: -0.005}
 --- !u!1 &359044311 stripped
 GameObject:
@@ -44637,7 +44637,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.03, y: 0.01, z: 0.04}
+  m_Size: {x: 0.03, y: 0.05, z: 0.04}
   m_Center: {x: 0, y: -0.005, z: -0.005}
 --- !u!1 &449087187
 GameObject:
@@ -47816,7 +47816,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh210498
+  m_Name: pb_Mesh31894
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -69679,7 +69679,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.3, y: 10, z: 1}
+  m_Size: {x: 1.3, y: 20, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &764499751
 MeshRenderer:
@@ -78194,7 +78194,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 10, z: 1}
+  m_Size: {x: 1, y: 20, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &841135088
 MeshRenderer:
@@ -107849,7 +107849,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 10, z: 1}
+  m_Size: {x: 1, y: 20, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1172999527
 MeshRenderer:
@@ -109587,7 +109587,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.03, y: 0.01, z: 0.04}
+  m_Size: {x: 0.03, y: 0.05, z: 0.04}
   m_Center: {x: 0, y: -0.005, z: -0.005}
 --- !u!1 &1221957037 stripped
 GameObject:
@@ -123991,7 +123991,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 10, z: 1}
+  m_Size: {x: 1, y: 20, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1335431505
 MeshRenderer:
@@ -131115,7 +131115,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.03, y: 0.01, z: 0.04}
+  m_Size: {x: 0.03, y: 0.05, z: 0.04}
   m_Center: {x: 0, y: -0.005, z: -0.005}
 --- !u!1 &1422001075
 GameObject:
@@ -134823,6 +134823,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2076354620564962745, guid: 17b8bceeac8c5284fad259ae1914e918, type: 3}
+      propertyPath: m_RequestedTrackingOriginMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2601731980272630141, guid: 17b8bceeac8c5284fad259ae1914e918, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -134897,6 +134901,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17b8bceeac8c5284fad259ae1914e918, type: 3}
+--- !u!4 &1544337966 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8321812454832816764, guid: 17b8bceeac8c5284fad259ae1914e918, type: 3}
+  m_PrefabInstance: {fileID: 1544337965}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1546553495 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8391222552659086748, guid: b217c5edc52c3fd4fa7874626222c844, type: 3}
@@ -143628,7 +143637,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 10, z: 1}
+  m_Size: {x: 1, y: 20, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1613354532
 MeshRenderer:
@@ -163868,7 +163877,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 10, z: 1}
+  m_Size: {x: 1, y: 20, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1763367264
 MeshRenderer:
@@ -165988,7 +165997,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh212414
+  m_Name: pb_Mesh33812
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -188495,7 +188504,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scrollPrefab: {fileID: 3764638092201832992, guid: 9ef815c7c23600c49b709663eba06898, type: 3}
-  head: {fileID: 2113764723}
+  head: {fileID: 1544337966}
   distance: 1
   height: 2.5
   lifeTime: 120
