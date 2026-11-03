@@ -146,6 +146,24 @@ public class GameClock : MonoBehaviour
 
     public void Stop() => running = false;
 
+    /// <summary>
+    /// Suma renderers al cable de un reto. Lo usa el hueco al encajar la pieza: así la pieza
+    /// brilla junto con el cable al que quedó conectada.
+    /// </summary>
+    public void AddCableRenderers(int stage, Renderer[] extra)
+    {
+        var p = Find(stage);
+        if (p == null || extra == null || extra.Length == 0) return;
+
+        var list = new System.Collections.Generic.List<Renderer>();
+        if (p.cableRenderers != null) list.AddRange(p.cableRenderers);
+        foreach (var r in extra)
+            if (r != null && !list.Contains(r)) list.Add(r);
+        p.cableRenderers = list.ToArray();
+
+        SetPulse(p, p == current ? pulse : 0f);
+    }
+
     /// <summary>Usa el sonido alterno a partir del siguiente tic (3.5.3).</summary>
     public void SetAltSound(bool on) => altSound = on;
 

@@ -55,12 +55,17 @@ public class ClockCableSocket : MonoBehaviour
         yield return new WaitForSeconds(snapDelay);
         piece.LockAt(transform);
         socket.socketActive = false;   // el hueco ya está ocupado para siempre
-        Notify();
+        Notify(piece);
     }
 
-    private void Notify()
+    private void Notify(ClockCablePiece piece = null)
     {
-        if (clock != null) clock.Connect(stageIndex);
+        if (clock != null)
+        {
+            // La pieza pasa a ser parte de este cable (brilla con él en cada tic)
+            if (piece != null) clock.AddCableRenderers(stageIndex, piece.Renderers);
+            clock.Connect(stageIndex);
+        }
         onConnected?.Invoke();
     }
 }
