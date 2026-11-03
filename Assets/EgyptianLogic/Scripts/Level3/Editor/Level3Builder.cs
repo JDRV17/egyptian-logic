@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEditor;
+using UnityEditor.Events;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -19,6 +20,12 @@ public static class Level3Builder
     private const string BulbPrefab = PrefabFolder + "Low_Poly_Light_Bulb.prefab";
     private const string KeyPrefab = PrefabFolder + "key_low.prefab";
     private const string KeyholePrefab = PrefabFolder + "keyhole (2).prefab";
+    private const string LeverPrefab = PrefabFolder + "switch.prefab";
+    private const string ButtonPrefab = PrefabFolder + "Button (1).prefab";
+    private const string GlowMaterial = "Assets/EgyptianLogic/Materials/Indicador.mat";
+    private const string BoxMaterial = "Assets/EgyptianLogic/Materials/Walls.mat";
+    private const string MagicPrefab = PrefabFolder + "Magia.prefab";
+    private const string DustPrefab = PrefabFolder + "Polvo.prefab";
 
     // ================================================================ 3.1
 
@@ -183,7 +190,7 @@ public static class Level3Builder
         label3d.transform.SetParent(parent, false);
         label3d.transform.localPosition = new Vector3(0f, 1.78f, 0f);
         var tmp = label3d.AddComponent<TextMeshPro>();
-        tmp.text = "Guarda: " + string.Join(" ", code.ToCharArray());
+        tmp.text = string.Join(" ", code.ToCharArray());
         tmp.fontSize = 1.2f;
         tmp.alignment = TextAlignmentOptions.Center;
         tmp.rectTransform.sizeDelta = new Vector2(2f, 0.3f);
@@ -226,7 +233,8 @@ public static class Level3Builder
         var simple = go.GetComponent<XRSimpleInteractable>();
         if (simple != null) Disable(simple);
 
-        var bit = go.AddComponent<BitCube>();
+        var bit = go.GetComponent<BitCube>();
+        if (bit == null) bit = go.AddComponent<BitCube>();
         var bso = new SerializedObject(bit);
         bso.FindProperty("rotationAxis").vector3Value = axis;
         bso.FindProperty("rotateSound").objectReferenceValue = go.GetComponent<AudioSource>();
@@ -254,6 +262,284 @@ public static class Level3Builder
         }
         bso.ApplyModifiedPropertiesWithoutUndo();
         return bulb;
+    }
+
+
+    // ================================================================ 3.2
+
+    private static readonly string[][] Hints32 =
+    {
+        new[]
+        {
+            "Junto al reloj hay un cajón con cubos ensartados en un cilindro, una palanca y un botón. Ahí está el registro de desplazamiento.",
+            "Los cubos del cajón deben formar 1 0 1 1, de izquierda a derecha, antes de que se acaben los pulsos.",
+            "Cada vez que oprimes el botón (un pulso de reloj), todos los cubos avanzan una posición y entra uno nuevo con el valor de la palanca. El registro solo cambia en el instante del pulso: así funcionan los flip-flops de un registro de desplazamiento.",
+            "Los bits entran por la izquierda, así que el primero que metas terminará a la derecha. Mete 1, 1, 0, 1, con un pulso para cada uno."
+        },
+        new[]
+        {
+            "Junto al reloj hay un cajón con cubos ensartados en un cilindro, dos palancas y un botón. Ahí está el registro de desplazamiento.",
+            "Los cubos deben formar 1 0 1 1, y solo tienes 3 pulsos.",
+            "La segunda palanca cambia la dirección: hacia la derecha, los bits entran por la izquierda; hacia la izquierda, entran por la derecha. Fíjate en los cubos que ya están en el registro: quizás no necesitas reemplazarlos todos.",
+            "Pon la dirección hacia la izquierda y mete 1 y luego 1: 0010 → 0101 → 1011."
+        },
+        new[]
+        {
+            "Junto al reloj hay un cajón con seis cubos ensartados en un cilindro, dos palancas y un botón.",
+            "Los cubos deben formar 1 1 0 0 1 1, y solo tienes 4 pulsos.",
+            "Con 4 pulsos no alcanzas a reemplazar los 6 cubos, y en una sola dirección no hay forma de lograrlo. Desplazar hacia un lado y luego hacia el otro cambia solo el bit del extremo.",
+            "Con la dirección hacia la derecha, pon la palanca en 1 y da tres pulsos (001010 → 111001). Luego cambia la dirección hacia la izquierda y da un último pulso con la palanca en 1: 110011."
+        }
+    };
+
+    [MenuItem(Menu + "Construir 3.2 El registro de desplazamiento")]
+    public static void Build32()
+    {
+        const string rootName = "Reto_3.2";
+        const int stage = 1;
+        const int registrosCable = 4;   // el cable de la pareja Registros va a 3.5
+
+        var cubePrefab = Load(CubePrefab);
+        var bulbPrefab = Load(BulbPrefab);
+        var leverPrefab = Load(LeverPrefab);
+        var buttonPrefab = Load(ButtonPrefab);
+        if (cubePrefab == null || bulbPrefab == null || leverPrefab == null || buttonPrefab == null) return;
+        var glow = AssetDatabase.LoadAssetAtPath<Material>(GlowMaterial);
+        var stone = AssetDatabase.LoadAssetAtPath<Material>(BoxMaterial);
+
+        var old = GameObject.Find(rootName);
+        if (old != null)
+        {
+            if (!EditorUtility.DisplayDialog("Construir 3.2",
+                    $"Ya existe \"{rootName}\" en la escena. ¿Reemplazarlo?", "Reemplazar", "Cancelar"))
+                return;
+            Undo.DestroyObjectImmediate(old);
+        }
+
+        var root = new GameObject(rootName);
+        Undo.RegisterCreatedObjectUndo(root, "Construir 3.2");
+        root.transform.position = SpawnPoint();
+        var puzzle = root.AddComponent<ShiftRegisterPuzzle>();
+
+        // ---- Medidas: la ventana se calcula para 6 bits; con 4 se reparten en el mismo espacio
+        float cubeW = Width(cubePrefab);
+        float pitch6 = cubeW + 0.04f;
+        float window = 6f * pitch6;
+        float cap = window / 8f + cubeW * 0.5f + 0.04f;   // tapa que esconde el cubo de reserva (4 bits es el caso más largo)
+        float total = window + 2f * cap;
+        float h = cubeW + 0.1f;
+        const float trackY = 1.3f;
+
+        var track = new GameObject("Track").transform;
+        track.SetParent(root.transform, false);
+        track.localPosition = new Vector3(0f, trackY, 0f);
+
+        // ---- Cajón y cilindro (primitivas: reemplázalas o cámbiales el material)
+        var box = new GameObject("Cajon").transform;
+        box.SetParent(track, false);
+        Box(box, "Fondo", new Vector3(0f, 0f, cubeW * 0.5f + 0.03f), new Vector3(total + 0.04f, h + 0.06f, 0.03f), stone);
+        Box(box, "Riel_Superior", new Vector3(0f, h * 0.5f, 0f), new Vector3(total + 0.04f, 0.03f, cubeW + 0.08f), stone);
+        Box(box, "Riel_Inferior", new Vector3(0f, -h * 0.5f, 0f), new Vector3(total + 0.04f, 0.03f, cubeW + 0.08f), stone);
+        Box(box, "Pared_Izquierda", new Vector3(-total * 0.5f - 0.01f, 0f, 0f), new Vector3(0.03f, h + 0.06f, cubeW + 0.08f), stone);
+        Box(box, "Pared_Derecha", new Vector3(total * 0.5f + 0.01f, 0f, 0f), new Vector3(0.03f, h + 0.06f, cubeW + 0.08f), stone);
+        Box(box, "Tapa_Izquierda", new Vector3(-(window + cap) * 0.5f, 0f, -cubeW * 0.5f - 0.025f), new Vector3(cap, h, 0.03f), stone);
+        Box(box, "Tapa_Derecha", new Vector3((window + cap) * 0.5f, 0f, -cubeW * 0.5f - 0.025f), new Vector3(cap, h, 0.03f), stone);
+        var rod = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        rod.name = "Cilindro";
+        rod.transform.SetParent(box, false);
+        rod.transform.localRotation = Quaternion.Euler(0f, 0f, 90f);
+        rod.transform.localScale = new Vector3(0.025f, total * 0.5f, 0.025f);
+        Object.DestroyImmediate(rod.GetComponent<Collider>());
+
+        // ---- 7 cubos (6 bits + 1 de reserva)
+        var cubes = new BitCube[7];
+        for (int i = 0; i < cubes.Length; i++)
+        {
+            var c = Spawn(cubePrefab, track, "Cubo_" + (i + 1), new Vector3((i - 3f) * pitch6, 0f, 0f));
+            cubes[i] = ToBitCube(c);
+        }
+
+        // ---- Código a formar
+        var label = new GameObject("Codigo");
+        label.transform.SetParent(root.transform, false);
+        label.transform.localPosition = new Vector3(0f, trackY + h * 0.5f + 0.15f, 0f);
+        var tmp = label.AddComponent<TextMeshPro>();
+        tmp.text = "? ? ? ?";
+        tmp.fontSize = 1.2f;
+        tmp.alignment = TextAlignmentOptions.Center;
+        tmp.rectTransform.sizeDelta = new Vector2(2f, 0.3f);
+
+        // ---- Controles: entrada (izquierda), dirección (centro, emerge en V2/V3), pulso (derecha)
+        const float ctrlY = 0.95f, glyphY = 1.1f, ctrlZ = -0.15f;
+        var input = Spawn(leverPrefab, root.transform, "Palanca_Entrada", new Vector3(-0.45f, ctrlY, ctrlZ));
+        var zero = Glyph(root.transform, "Indicador_0", new Vector3(-0.52f, glyphY, ctrlZ), glow, GlyphZero);
+        var one = Glyph(root.transform, "Indicador_1", new Vector3(-0.38f, glyphY, ctrlZ), glow, GlyphOne);
+
+        var dirRoot = new GameObject("Palanca_Direccion").transform;
+        dirRoot.SetParent(root.transform, false);
+        dirRoot.localPosition = new Vector3(0f, ctrlY, ctrlZ);
+        var dir = Spawn(leverPrefab, dirRoot, "Palanca", Vector3.zero);
+        var dirToggle = dir.GetComponentInChildren<XRSwitchToggle>(true);
+        if (dirToggle != null)
+        {
+            var dso = new SerializedObject(dirToggle);
+            dso.FindProperty("isOn").boolValue = true;   // encendida = derecha, la dirección por defecto
+            dso.ApplyModifiedPropertiesWithoutUndo();
+        }
+        var left = Glyph(root.transform, "Flecha_Izquierda", new Vector3(-0.07f, glyphY, ctrlZ), glow, (t, m) => GlyphArrow(t, m, false));
+        var right = Glyph(root.transform, "Flecha_Derecha", new Vector3(0.07f, glyphY, ctrlZ), glow, (t, m) => GlyphArrow(t, m, true));
+
+        var button = Spawn(buttonPrefab, root.transform, "Boton_Pulso", new Vector3(0.45f, ctrlY, ctrlZ));
+        var pulses = new BitBulb[4];
+        for (int i = 0; i < pulses.Length; i++)
+        {
+            var b = Spawn(bulbPrefab, root.transform, "Pulso_" + (i + 1), new Vector3(0.33f + i * 0.08f, glyphY, ctrlZ));
+            b.transform.localScale = b.transform.localScale * 0.5f;
+            PrefabUtility.RecordPrefabInstancePropertyModifications(b.transform);
+            pulses[i] = ToBitBulb(b);
+        }
+
+        // ---- El reto
+        var report = new StringBuilder();
+        var tracker = Object.FindObjectOfType<PerformanceTracker>();
+        var hints = Object.FindObjectOfType<HintManager>();
+        var engine = Object.FindObjectOfType<AdaptationEngine>();
+
+        var so = new SerializedObject(puzzle);
+        so.FindProperty("tracker").objectReferenceValue = tracker;
+        so.FindProperty("hintManager").objectReferenceValue = hints;
+        so.FindProperty("stageIndex").intValue = stage;
+        so.FindProperty("track").objectReferenceValue = track;
+        so.FindProperty("windowWidth").floatValue = window;
+        SetArray(so.FindProperty("cubes"), cubes);
+        so.FindProperty("inputLever").objectReferenceValue = input.GetComponentInChildren<XRSwitchToggle>(true);
+        so.FindProperty("directionLever").objectReferenceValue = dirToggle;
+        so.FindProperty("pulseButton").objectReferenceValue = button.GetComponentInChildren<XRPhysicalButton>(true);
+        so.FindProperty("directionLeverRoot").objectReferenceValue = dirRoot;
+        so.FindProperty("zeroGlyph").objectReferenceValue = zero;
+        so.FindProperty("oneGlyph").objectReferenceValue = one;
+        so.FindProperty("leftArrow").objectReferenceValue = left;
+        so.FindProperty("rightArrow").objectReferenceValue = right;
+        SetArray(so.FindProperty("pulseBulbs"), pulses);
+        so.FindProperty("codeText").objectReferenceValue = tmp;
+        var magic = AssetDatabase.LoadAssetAtPath<GameObject>(MagicPrefab);
+        var dust = AssetDatabase.LoadAssetAtPath<GameObject>(DustPrefab);
+        if (magic != null) so.FindProperty("appearEffect").objectReferenceValue = magic.GetComponent<ParticleSystem>();
+        if (dust != null) so.FindProperty("riseEffect").objectReferenceValue = dust.GetComponent<ParticleSystem>();
+        so.ApplyModifiedPropertiesWithoutUndo();
+
+        // ---- Zona: al entrar se fija la versión
+        var zone = MakeHintZone(root.transform, hints, tracker, stage);
+        var zso = new SerializedObject(zone);
+        zso.FindProperty("gate").objectReferenceValue = puzzle;
+        zso.ApplyModifiedPropertiesWithoutUndo();
+        UnityEventTools.AddPersistentListener(zone.onPlayerEnter, puzzle.PlayerEntered);
+        UnityEventTools.AddPersistentListener(zone.onPlayerExit, puzzle.PlayerExited);
+
+        // ---- Se desbloquea al conectar el cable de la pareja Registros
+        var cable = FindCableSocket(registrosCable);
+        if (cable != null)
+        {
+            UnityEventTools.AddPersistentListener(cable.onConnected, puzzle.Unlock);
+            report.AppendLine("• Se desbloquea al conectar el cable de la pareja Registros.");
+        }
+        else report.AppendLine($"• No encontré el ClockCableSocket con Stage Index {registrosCable}: conecta su On Connected a ShiftRegisterPuzzle.Unlock a mano.");
+
+        // ---- Bloqueo mutuo con 3.5
+        SetExclusion("Exclusion_Registros", puzzle, true, report);
+
+        ConfigureTracker(tracker, stage, "3.2", new[] { 30f, 40f, 60f }, new[] { 7, 4, 6 }, report);
+        ConfigureEngine(engine, stage, "3.2", puzzle, report);
+        ConfigureHints(hints, stage, "3.2", puzzle, Hints32, report);
+        if (glow == null) report.AppendLine($"• No encontré {GlowMaterial}: asigna un material con emisión a los indicadores.");
+
+        Selection.activeGameObject = root;
+        EditorSceneManager.MarkSceneDirty(root.scene);
+
+        report.Insert(0, "Reto 3.2 construido.\n\n");
+        report.AppendLine("\nMuévelo a su lugar en la sala. Los cubos y la palanca de dirección aparecen al jugar, " +
+                          "cuando el jugador entra a la zona (clic derecho en ShiftRegisterPuzzle → Previsualizar para verlos en el editor).");
+        EditorUtility.DisplayDialog("Construir 3.2", report.ToString(), "OK");
+    }
+
+    // ---- Piezas del cajón y de los indicadores
+
+    private static void Box(Transform parent, string name, Vector3 pos, Vector3 size, Material mat)
+    {
+        var b = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        b.name = name;
+        b.transform.SetParent(parent, false);
+        b.transform.localPosition = pos;
+        b.transform.localScale = size;
+        Object.DestroyImmediate(b.GetComponent<Collider>());
+        if (mat != null) b.GetComponent<Renderer>().sharedMaterial = mat;
+    }
+
+    private static void Bar(Transform parent, Vector3 pos, Vector2 size, float rotZ, Material mat)
+    {
+        var b = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        b.name = "Barra";
+        b.transform.SetParent(parent, false);
+        b.transform.localPosition = pos;
+        b.transform.localRotation = Quaternion.Euler(0f, 0f, rotZ);
+        b.transform.localScale = new Vector3(size.x, size.y, 0.01f);
+        Object.DestroyImmediate(b.GetComponent<Collider>());
+        if (mat != null) b.GetComponent<Renderer>().sharedMaterial = mat;
+    }
+
+    private static GlowGroup Glyph(Transform parent, string name, Vector3 pos, Material mat, System.Action<Transform, Material> draw)
+    {
+        var g = new GameObject(name);
+        g.transform.SetParent(parent, false);
+        g.transform.localPosition = pos;
+        draw(g.transform, mat);
+        return g.AddComponent<GlowGroup>();
+    }
+
+    private static void GlyphOne(Transform t, Material m)
+    {
+        Bar(t, Vector3.zero, new Vector2(0.012f, 0.07f), 0f, m);
+        Bar(t, new Vector3(-0.01f, 0.027f, 0f), new Vector2(0.022f, 0.01f), 35f, m);
+    }
+
+    private static void GlyphZero(Transform t, Material m)
+    {
+        Bar(t, new Vector3(-0.02f, 0f, 0f), new Vector2(0.012f, 0.07f), 0f, m);
+        Bar(t, new Vector3(0.02f, 0f, 0f), new Vector2(0.012f, 0.07f), 0f, m);
+        Bar(t, new Vector3(0f, 0.029f, 0f), new Vector2(0.052f, 0.012f), 0f, m);
+        Bar(t, new Vector3(0f, -0.029f, 0f), new Vector2(0.052f, 0.012f), 0f, m);
+    }
+
+    private static void GlyphArrow(Transform t, Material m, bool pointsRight)
+    {
+        float s = pointsRight ? 1f : -1f;
+        Bar(t, Vector3.zero, new Vector2(0.07f, 0.012f), 0f, m);
+        Bar(t, new Vector3(0.023f * s, 0.011f, 0f), new Vector2(0.035f, 0.012f), -45f * s, m);
+        Bar(t, new Vector3(0.023f * s, -0.011f, 0f), new Vector2(0.035f, 0.012f), 45f * s, m);
+    }
+
+    private static ClockCableSocket FindCableSocket(int stage)
+    {
+        foreach (var s in Object.FindObjectsOfType<ClockCableSocket>())
+            if (s.StageIndex == stage) return s;
+        return null;
+    }
+
+    /// <summary>Crea (o completa) el objeto de bloqueo mutuo de una pareja.</summary>
+    private static void SetExclusion(string name, Level3Puzzle puzzle, bool asFirst, StringBuilder report)
+    {
+        var go = GameObject.Find(name);
+        if (go == null)
+        {
+            go = new GameObject(name);
+            Undo.RegisterCreatedObjectUndo(go, "Bloqueo de pareja");
+        }
+        var ex = go.GetComponent<PairExclusion>();
+        if (ex == null) ex = go.AddComponent<PairExclusion>();
+        var so = new SerializedObject(ex);
+        so.FindProperty(asFirst ? "first" : "second").objectReferenceValue = puzzle;
+        so.ApplyModifiedPropertiesWithoutUndo();
+        report.AppendLine($"• Bloqueo mutuo: {name} (el otro reto se asigna al construirlo).");
     }
 
     // ================================================================ Conexiones con el sistema
@@ -323,7 +609,7 @@ public static class Level3Builder
         report.AppendLine($"• Pistas: {name} conectado" + (kept ? " (se conservaron los textos que ya había)." : " con las 12 pistas."));
     }
 
-    private static void MakeHintZone(Transform root, HintManager hints, PerformanceTracker tracker, int stage)
+    private static HintZone MakeHintZone(Transform root, HintManager hints, PerformanceTracker tracker, int stage)
     {
         var zone = new GameObject("HintZone");
         zone.transform.SetParent(root, false);
@@ -337,6 +623,7 @@ public static class Level3Builder
         so.FindProperty("tracker").objectReferenceValue = tracker;
         so.FindProperty("stageIndex").intValue = stage;
         so.ApplyModifiedPropertiesWithoutUndo();
+        return hz;
     }
 
     // ================================================================ Utilidades

@@ -39,6 +39,15 @@ public class BitCube : MonoBehaviour
         if (rotateSound != null) rotateSound.Play();
     }
 
+    /// <summary>Muestra un bit sin animación (cuando el cubo está oculto, p. ej. antes de entrar a la cinta de 3.2).</summary>
+    public void SetBitInstant(int value)
+    {
+        Init();
+        bit = value != 0 ? 1 : 0;
+        angle = targetAngle = bit * 90f;
+        transform.localRotation = baseRotation * Quaternion.AngleAxis(angle, rotationAxis);
+    }
+
     /// <summary>Vuelve a 0 sin animación (al cambiar de versión).</summary>
     public void ResetToZero()
     {
