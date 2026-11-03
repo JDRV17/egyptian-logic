@@ -11,7 +11,7 @@ public class HintStage
 {
     public string name = "1.2";
 
-    [Tooltip("Quien conoce la versión activa de este reto: LightCombinationLock (1.1), PuzzleVersionManager (1.2), SpinningCubes (1.3) o TextSelector (1.4 y 1.5).")]
+    [Tooltip("Quien conoce la versión activa de este reto: LightCombinationLock (1.1), PuzzleVersionManager (1.2), SpinningCubes (1.3) o TextSelector (1.4 y 1.5) o el script del reto en el Nivel 3.")]
     public MonoBehaviour versionSource;
 
     [Tooltip("Elemento 0 = V1, 1 = V2, 2 = V3.")]

@@ -94,6 +94,7 @@ public class HintManager : MonoBehaviour
             case PuzzleVersionManager p: v = (int)p.CurrentVersion; break;
             case SpinningCubes s: v = (int)s.CurrentVersion; break;
             case TextSelector t: v = t.CurrentVersion; break;
+            case IVersioned iv: v = iv.CurrentVersion; break;   // retos del Nivel 3
         }
         return Mathf.Clamp(v, 0, st.byVersion.Length - 1);
     }

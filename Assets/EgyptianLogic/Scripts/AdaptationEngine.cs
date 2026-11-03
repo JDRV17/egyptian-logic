@@ -12,7 +12,7 @@ public class AdaptationEngine : MonoBehaviour
     public class StageBinding
     {
         public string name = "1.2";
-        [Tooltip("Quien guarda la versión de este reto: PuzzleVersionManager (1.2), SpinningCubes (1.3) o TextSelector (1.4, 1.5). Vacío = el motor no lo controla.")]
+        [Tooltip("Quien guarda la versión de este reto: PuzzleVersionManager (1.2), SpinningCubes (1.3), TextSelector (1.4, 1.5) o el script del reto en el Nivel 3. Vacío = el motor no lo controla.")]
         public MonoBehaviour versionTarget;
         [Tooltip("Se dispara justo después de aplicar la versión (aquí van Rebuild, Reconfigure o Reveal).")]
         public UnityEvent onVersionApplied;
@@ -262,6 +262,7 @@ public class AdaptationEngine : MonoBehaviour
             case PuzzleVersionManager p: p.SelectVersion((LightCombinationLock.LevelVersion)version); break;
             case SpinningCubes s: s.SelectVersion((SpinningCubes.Version)version); break;
             case TextSelector t: t.SelectVersion(version); break;
+            case IVersioned v: v.SelectVersion(version); break;   // retos del Nivel 3
             default:
                 if (b.versionTarget != null)
                     Debug.LogWarning($"[AdaptationEngine] Tipo no soportado en el reto {b.name}: {b.versionTarget.GetType().Name}");
