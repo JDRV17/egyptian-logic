@@ -142568,7 +142568,7 @@ MonoBehaviour:
     stages: 010000000200000004000000
   - name: 
     stages: 010000000200000003000000
-  theta: 1
+  theta: 0
   pMin: 0.3
   pMax: 1
   rules:
@@ -178867,10 +178867,34 @@ MonoBehaviour:
       m_Calls: []
   onSolved:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 667776308}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onIncorrect:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1743764555}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   versions:
   - name: V1
     bits: 4
@@ -178921,7 +178945,7 @@ MonoBehaviour:
   moveSound: {fileID: 0}
   resetSound: {fileID: 0}
   appearSound: {fileID: 0}
-  appearEffect: {fileID: 0}
+  appearEffect: {fileID: 224123091602688966, guid: f867cc0b7d45eee4db2e89ecdd4658e3, type: 3}
   riseEffect: {fileID: 0}
   appearStagger: 0.12
 --- !u!4 &1835793010
