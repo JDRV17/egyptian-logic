@@ -28300,7 +28300,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 223153981}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.97, y: 1, z: 1}
+  m_LocalPosition: {x: 0.97, y: 1, z: 1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 20076112}
@@ -28339,7 +28339,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5, y: 2, z: 2.5}
+  m_Size: {x: 5, y: 2, z: 3}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &223504635
 GameObject:
@@ -50948,7 +50948,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh47266
+  m_Name: pb_Mesh25912
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -131637,6 +131637,71 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e2bf9ca2076364b4c95244074ad50eb2, type: 3}
+--- !u!1 &1295492932
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1295492934}
+  - component: {fileID: 1295492933}
+  m_Layer: 0
+  m_Name: Guia_Nivel3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1295492933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1295492932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fa2e5b825824744ca2100f521bd04b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tracker: {fileID: 471760757}
+  puzzles:
+  - {fileID: 1835793009}
+  cableSockets:
+  - {fileID: 1061093588}
+  - {fileID: 1425005106}
+  firstStage: 0
+  startText: "\xBFQu\xE9 no es obvio? Sigue el cable que titila que sale del reloj."
+  firstPieceText: "El reloj tiene dos cables rotos. Pon la pieza que cay\xF3 en cualquiera
+    de los dos: cada cable despierta dos retos nuevos."
+  twoOpenHeader: "Despertaron dos retos. Sigue el nuevo cable que titila o dir\xEDgete
+    al muro que est\xE1 por la puerta, con la palanca en el suelo."
+  oneOpenHeader: Te falta un reto por resolver antes de continuar.
+  secondPieceText: "Cay\xF3 una nueva pieza. Ponla en el cable del reloj que sigue
+    roto."
+  endText: "Todos los mecanismos funcionan. La salida est\xE1 abierta."
+  whereIs:
+  - 
+  - "Busca el caj\xF3n de cubos ensartados en un cilindro: es el registro de desplazamiento."
+  - "Sigue el cable del reloj que brilla: te lleva al guardi\xE1n de estados."
+  - "Busca el sem\xE1foro que espera ser dise\xF1ado."
+  - 'Sigue el cable del reloj que brilla: te lleva a la contrarreloj binaria.'
+--- !u!4 &1295492934
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1295492932}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1296027996 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a2cb00f5513c1364294a727ac880942c, type: 3}
@@ -179078,7 +179143,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh49518
+  m_Name: pb_Mesh28312
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -203350,6 +203415,7 @@ MonoBehaviour:
   spawner: {fileID: 2082442540}
   cooldown: 10
   tracker: {fileID: 471760757}
+  guide: {fileID: 1295492933}
 --- !u!4 &2082442542
 Transform:
   m_ObjectHideFlags: 0

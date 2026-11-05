@@ -26,6 +26,7 @@ public class HintZone : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Player")) return;
+        if (manager != null) manager.MarkLeft(stageIndex);
         onPlayerExit?.Invoke();
     }
 }

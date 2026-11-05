@@ -452,6 +452,7 @@ public static class Level3Builder
         ConfigureEngine(engine, stage, "3.2", puzzle, report);
         ConfigureHints(hints, stage, "3.2", puzzle, Hints32, report);
         if (glow == null) report.AppendLine($"• No encontré {GlowMaterial}: asigna un material con emisión a los indicadores.");
+        SetupGuide(report, false);   // si ya hay guía, el reto nuevo queda registrado en ella
 
         Selection.activeGameObject = root;
         EditorSceneManager.MarkSceneDirty(root.scene);
@@ -540,6 +541,59 @@ public static class Level3Builder
         so.FindProperty(asFirst ? "first" : "second").objectReferenceValue = puzzle;
         so.ApplyModifiedPropertiesWithoutUndo();
         report.AppendLine($"• Bloqueo mutuo: {name} (el otro reto se asigna al construirlo).");
+    }
+
+
+    // ================================================================ Guía del nivel
+
+    [MenuItem(Menu + "Crear o actualizar la guía del nivel")]
+    public static void BuildGuide()
+    {
+        var report = new StringBuilder();
+        var g = SetupGuide(report, true);
+        if (g != null) Selection.activeGameObject = g.gameObject;
+        EditorUtility.DisplayDialog("Guía del nivel", report.ToString(), "OK");
+    }
+
+    /// <summary>
+    /// Crea la guía si no existe (o solo la actualiza) y la conecta: tracker, retos 3.2–3.5, huecos del reloj
+    /// y el campo Guide del HintManager. No toca los textos que ya hayas escrito.
+    /// </summary>
+    private static Level3Guide SetupGuide(StringBuilder report, bool create)
+    {
+        var guide = Object.FindObjectOfType<Level3Guide>();
+        if (guide == null)
+        {
+            if (!create) return null;
+            var go = new GameObject("Guia_Nivel3");
+            Undo.RegisterCreatedObjectUndo(go, "Guía del nivel");
+            guide = go.AddComponent<Level3Guide>();
+            report.AppendLine("• Guía creada (objeto Guia_Nivel3). Sus textos se editan en el Inspector.");
+        }
+
+        var tracker = Object.FindObjectOfType<PerformanceTracker>();
+        var hints = Object.FindObjectOfType<HintManager>();
+        var puzzles = Object.FindObjectsOfType<Level3Puzzle>();
+        var sockets = Object.FindObjectsOfType<ClockCableSocket>();
+
+        var so = new SerializedObject(guide);
+        so.FindProperty("tracker").objectReferenceValue = tracker;
+        SetArray(so.FindProperty("puzzles"), puzzles);
+        SetArray(so.FindProperty("cableSockets"), sockets);
+        so.ApplyModifiedPropertiesWithoutUndo();
+
+        if (hints != null)
+        {
+            var hso = new SerializedObject(hints);
+            hso.FindProperty("guide").objectReferenceValue = guide;
+            hso.FindProperty("tracker").objectReferenceValue = tracker;
+            hso.ApplyModifiedPropertiesWithoutUndo();
+        }
+        else report.AppendLine("• No hay HintManager en la escena.");
+
+        report.AppendLine($"• Guía conectada: {puzzles.Length} reto(s) y {sockets.Length} hueco(s) de cable.");
+        EditorSceneManager.MarkSceneDirty(guide.gameObject.scene);
+        return guide;
     }
 
     // ================================================================ Conexiones con el sistema
