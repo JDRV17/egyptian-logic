@@ -74,6 +74,7 @@ public class GameClock : MonoBehaviour
     private int ticksLeft = -1;     // −1 = sin límite
     private int tickCount;
     private bool altSound;
+    private bool muted;
 
     private Quaternion minuteRest, hourRest;
     private float hourAngle, hourTarget;
@@ -81,6 +82,9 @@ public class GameClock : MonoBehaviour
     private MaterialPropertyBlock block;
 
     public int FollowedStage => current != null ? current.stageIndex : -1;
+    public Transform MinuteHand => minuteHand;
+    public Transform HourHand => hourHand;
+    public bool IsMuted => muted;
     public bool IsFollowing(int stage) => current != null && current.stageIndex == stage;
     public bool IsRunning => running;
     public int TickCount => tickCount;
@@ -167,6 +171,9 @@ public class GameClock : MonoBehaviour
     /// <summary>Usa el sonido alterno a partir del siguiente tic (3.5.3).</summary>
     public void SetAltSound(bool on) => altSound = on;
 
+    /// <summary>Silencia el tic del reloj grande (3.5 pone sus propios sonidos durante el conteo).</summary>
+    public void SetMuted(bool on) => muted = on;
+
     // ---------- Internos ----------
 
     private void Update()
@@ -199,7 +206,7 @@ public class GameClock : MonoBehaviour
         if (!current.freezeHourHand) hourTarget += 30f;
 
         var clip = altSound && altTickClip != null ? altTickClip : tickClip;
-        if (audioSource != null && clip != null)
+        if (!muted && audioSource != null && clip != null)
             audioSource.PlayOneShot(clip, volume * SessionData.Instance.SfxVolume01);
 
         pulse = 1f;

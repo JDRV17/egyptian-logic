@@ -26,6 +26,8 @@ public static class Level3Builder
     private const string BoxMaterial = "Assets/EgyptianLogic/Materials/Walls.mat";
     private const string MagicPrefab = PrefabFolder + "Magia.prefab";
     private const string DustPrefab = PrefabFolder + "Polvo.prefab";
+    private const string ClockModel = "Assets/EgyptianLogic/Models/clock.fbx";
+    private const string TorchModel = "Assets/EgyptianLogic/Models/torch.fbx";
 
     // ================================================================ 3.1
 
@@ -544,6 +546,254 @@ public static class Level3Builder
     }
 
 
+
+    // ================================================================ 3.5
+
+    private static readonly string[][] Hints35 =
+    {
+        new[]
+        {
+            "",
+            "Presiona el botón y cuenta los pitidos. Cuando se detengan, enciende con los interruptores el número que marcaba el contador y presiona el botón otra vez.",
+            "Es un contador de 2 bits: suma 1 en cada flanco de reloj (cada pitido). Después de 11 vuelve a 00, porque con 2 bits solo caben los números del 0 al 3.",
+            "Son 6 pitidos: 00 → 01 → 10 → 11 → 00 → 01 → 10. Enciende el interruptor de la izquierda y deja apagado el de la derecha: 10."
+        },
+        new[]
+        {
+            "",
+            "Presiona el botón y cuenta los pitidos. Cuando se detengan, enciende con los interruptores el número que marcaba el contador y presiona el botón otra vez.",
+            "Es un contador de 4 bits: suma 1 en cada flanco de reloj. Puedes contar los pitidos y convertir el total a binario, o seguir la cuenta en binario mientras las bombillas te ayudan.",
+            "Son 13 pitidos, y 13 en binario es 1101. Enciende el primero, el segundo y el cuarto interruptor."
+        },
+        new[]
+        {
+            "",
+            "Presiona el botón y sigue el conteo. Cuando se detenga, enciende con los interruptores el número que marcaba el contador y presiona el botón otra vez. Atento al sonido y a la luz roja.",
+            "Es un contador ascendente/descendente: mientras suena distinto y la luz roja está encendida, resta 1 en cada flanco en lugar de sumar.",
+            "Sube 4, baja 2, sube 2, baja 3 y sube 4: termina en 5, que en binario es 0101. Enciende el segundo y el cuarto interruptor."
+        }
+    };
+
+    [MenuItem(Menu + "Construir 3.5 Contrarreloj binaria")]
+    public static void Build35()
+    {
+        const string rootName = "Reto_3.5";
+        const int stage = 4;
+
+        var bulbPrefab = Load(BulbPrefab);
+        var leverPrefab = Load(LeverPrefab);
+        var buttonPrefab = Load(ButtonPrefab);
+        var torchModel = Load(TorchModel);
+        var clockModel = Load(ClockModel);
+        if (bulbPrefab == null || leverPrefab == null || buttonPrefab == null || torchModel == null || clockModel == null) return;
+
+        var old = GameObject.Find(rootName);
+        if (old != null)
+        {
+            if (!EditorUtility.DisplayDialog("Construir 3.5",
+                    $"Ya existe \"{rootName}\" en la escena. ¿Reemplazarlo?", "Reemplazar", "Cancelar"))
+                return;
+            Undo.DestroyObjectImmediate(old);
+        }
+
+        var root = new GameObject(rootName);
+        Undo.RegisterCreatedObjectUndo(root, "Construir 3.5");
+        root.transform.position = SpawnPoint();
+        var puzzle = root.AddComponent<CountdownPuzzle>();
+        var report = new StringBuilder();
+        var bigClock = Object.FindObjectOfType<GameClock>();
+
+        // ---- Columnas: barra de antorcha, bombilla encima y switch al frente (izquierda → derecha = MSB → LSB)
+        const float spacing = 0.3f, barHeight = 1.0f, switchY = 0.9f, switchZ = -0.22f;
+        var bulbs = new BitBulb[4];
+        var levers = new XRSwitchToggle[4];
+        var columns = new Transform[4];
+        for (int i = 0; i < 4; i++)
+        {
+            float x = (i - 1.5f) * spacing;
+            columns[i] = Column(root.transform, $"Bit_{3 - i}", x, torchModel, bulbPrefab, barHeight, out bulbs[i]);
+            var lv = Spawn(leverPrefab, columns[i], "Switch", new Vector3(0f, switchY, switchZ));
+            levers[i] = lv.GetComponentInChildren<XRSwitchToggle>(true);
+        }
+        var redCol = Column(root.transform, "Luz_Atras", 2.5f * spacing + 0.1f, torchModel, bulbPrefab, barHeight, out var red);
+        var rso = new SerializedObject(red);
+        rso.FindProperty("onEmission").colorValue = new Color(1f, 0.08f, 0.05f) * 2.5f;
+        rso.ApplyModifiedPropertiesWithoutUndo();
+        var redLight = red.GetComponentInChildren<Light>(true);
+        if (redLight != null) { redLight.color = Color.red; PrefabUtility.RecordPrefabInstancePropertyModifications(redLight); }
+
+        // ---- Botón (a la izquierda)
+        var button = Spawn(buttonPrefab, root.transform, "Boton", new Vector3(-2.5f * spacing - 0.1f, switchY, switchZ));
+
+        // ---- Reloj mini: el mismo modelo del reloj grande, copiando sus manecillas
+        var mini = (GameObject)PrefabUtility.InstantiatePrefab(clockModel, root.transform);
+        mini.name = "Reloj_Mini";
+        FitHeight(mini, 0.4f);
+        mini.transform.localPosition = new Vector3(0f, barHeight + 0.55f, 0.12f);
+        PrefabUtility.RecordPrefabInstancePropertyModifications(mini.transform);
+        var mirror = mini.AddComponent<ClockMirror>();
+        var mso = new SerializedObject(mirror);
+        mso.FindProperty("source").objectReferenceValue = bigClock;
+        if (bigClock != null)
+        {
+            mso.FindProperty("minuteHand").objectReferenceValue = FindChild(mini.transform, bigClock.MinuteHand != null ? bigClock.MinuteHand.name : null);
+            mso.FindProperty("hourHand").objectReferenceValue = FindChild(mini.transform, bigClock.HourHand != null ? bigClock.HourHand.name : null);
+            if (mso.FindProperty("minuteHand").objectReferenceValue == null)
+                report.AppendLine("• No encontré las manecillas en el reloj mini: asígnalas a mano en ClockMirror.");
+        }
+        else report.AppendLine("• No hay GameClock en la escena: el reloj mini no se moverá.");
+        mso.ApplyModifiedPropertiesWithoutUndo();
+
+        var countSource = mini.AddComponent<AudioSource>();
+        countSource.playOnAwake = false;
+        countSource.spatialBlend = 1f;
+
+        // ---- El reto
+        var tracker = Object.FindObjectOfType<PerformanceTracker>();
+        var hints = Object.FindObjectOfType<HintManager>();
+        var engine = Object.FindObjectOfType<AdaptationEngine>();
+        var dust = AssetDatabase.LoadAssetAtPath<GameObject>(DustPrefab);
+
+        var so = new SerializedObject(puzzle);
+        so.FindProperty("tracker").objectReferenceValue = tracker;
+        so.FindProperty("hintManager").objectReferenceValue = hints;
+        so.FindProperty("stageIndex").intValue = stage;
+        so.FindProperty("clock").objectReferenceValue = bigClock;
+        SetArray(so.FindProperty("bitBulbs"), bulbs);
+        SetArray(so.FindProperty("switches"), levers);
+        SetArray(so.FindProperty("bitColumns"), columns);
+        so.FindProperty("redBulb").objectReferenceValue = red;
+        so.FindProperty("redColumn").objectReferenceValue = redCol;
+        so.FindProperty("button").objectReferenceValue = button.GetComponentInChildren<XRPhysicalButton>(true);
+        so.FindProperty("countSource").objectReferenceValue = countSource;
+        so.FindProperty("beepClip").objectReferenceValue = FindClip("beep");
+        so.FindProperty("tockClip").objectReferenceValue = FindClip("clock_tock");
+        if (dust != null) so.FindProperty("sinkEffect").objectReferenceValue = dust.GetComponent<ParticleSystem>();
+        so.ApplyModifiedPropertiesWithoutUndo();
+        if (FindClip("beep") == null) report.AppendLine("• No encontré el audio \"beep\".");
+
+        // ---- Sonidos de acierto y error
+        PlayOn(puzzle.onSolved, "SuccessPlayer", report);
+        PlayOn(puzzle.onIncorrect, "FailurePlayer", report);
+
+        // ---- Zona: al entrar se fija la versión y se bloquea 3.2
+        var zone = MakeHintZone(root.transform, hints, tracker, stage);
+        var zso = new SerializedObject(zone);
+        zso.FindProperty("gate").objectReferenceValue = puzzle;
+        zso.ApplyModifiedPropertiesWithoutUndo();
+        UnityEventTools.AddPersistentListener(zone.onPlayerEnter, puzzle.PlayerEntered);
+        UnityEventTools.AddPersistentListener(zone.onPlayerExit, puzzle.PlayerExited);
+
+        var cable = FindCableSocket(stage);
+        if (cable != null)
+        {
+            UnityEventTools.AddPersistentListener(cable.onConnected, puzzle.Unlock);
+            report.AppendLine("• Se desbloquea al conectar el cable de la pareja Registros.");
+        }
+        else report.AppendLine($"• No encontré el ClockCableSocket con Stage Index {stage}: conecta su On Connected a CountdownPuzzle.Unlock a mano.");
+
+        SetExclusion("Exclusion_Registros", puzzle, false, report);
+        FreezeHourHandFor(bigClock, stage, report);
+
+        // El tiempo lo marca el reloj: pesos propios sin tiempo
+        ConfigureTracker(tracker, stage, "3.5", new[] { 40f, 75f, 85f }, new[] { 3, 5, 4 }, report, new[] { 0f, 0.45f, 0.20f, 0.35f });
+        ConfigureEngine(engine, stage, "3.5", puzzle, report);
+        ConfigureHints(hints, stage, "3.5", puzzle, Hints35, report);
+        SetupGuide(report, false);
+
+        Selection.activeGameObject = root;
+        EditorSceneManager.MarkSceneDirty(root.scene);
+
+        report.Insert(0, "Reto 3.5 construido.\n\n");
+        report.AppendLine("\nMuévelo a su lugar en la sala. En 3.5.1 las dos columnas de la izquierda y la luz roja se hunden " +
+                          "cuando el jugador entra a la zona.");
+        EditorUtility.DisplayDialog("Construir 3.5", report.ToString(), "OK");
+    }
+
+    /// <summary>Una barra de antorcha (sin fuego) con una bombilla encima. Devuelve la raíz de la columna.</summary>
+    private static Transform Column(Transform parent, string name, float x, GameObject torchModel, GameObject bulbPrefab, float height, out BitBulb bulb)
+    {
+        var col = new GameObject(name).transform;
+        col.SetParent(parent, false);
+        col.localPosition = new Vector3(x, 0f, 0f);
+
+        var bar = (GameObject)PrefabUtility.InstantiatePrefab(torchModel, col);
+        bar.name = "Barra";
+        FitHeight(bar, height);
+        SitOnFloor(bar, col);
+
+        var b = Spawn(bulbPrefab, col, "Bombilla", new Vector3(0f, height + 0.06f, 0f));
+        bulb = ToBitBulb(b);
+        return col;
+    }
+
+    /// <summary>Escala un objeto para que mida esa altura (según sus renderers).</summary>
+    private static void FitHeight(GameObject go, float height)
+    {
+        var rs = go.GetComponentsInChildren<Renderer>(true);
+        if (rs.Length == 0) return;
+        var b = rs[0].bounds;
+        foreach (var r in rs) b.Encapsulate(r.bounds);
+        if (b.size.y <= 0.0001f) return;
+        go.transform.localScale = go.transform.localScale * (height / b.size.y);
+        PrefabUtility.RecordPrefabInstancePropertyModifications(go.transform);
+    }
+
+    /// <summary>Baja o sube el objeto para que su base quede en el suelo de la columna.</summary>
+    private static void SitOnFloor(GameObject go, Transform column)
+    {
+        var rs = go.GetComponentsInChildren<Renderer>(true);
+        if (rs.Length == 0) return;
+        var b = rs[0].bounds;
+        foreach (var r in rs) b.Encapsulate(r.bounds);
+        go.transform.position = go.transform.position + new Vector3(0f, column.position.y - b.min.y, 0f);
+        PrefabUtility.RecordPrefabInstancePropertyModifications(go.transform);
+    }
+
+    private static Transform FindChild(Transform root, string name)
+    {
+        if (string.IsNullOrEmpty(name)) return null;
+        foreach (var t in root.GetComponentsInChildren<Transform>(true))
+            if (t.name == name) return t;
+        return null;
+    }
+
+    private static AudioClip FindClip(string name)
+    {
+        foreach (var guid in AssetDatabase.FindAssets(name + " t:AudioClip"))
+        {
+            var clip = AssetDatabase.LoadAssetAtPath<AudioClip>(AssetDatabase.GUIDToAssetPath(guid));
+            if (clip != null && clip.name == name) return clip;
+        }
+        return null;
+    }
+
+    /// <summary>Conecta un evento al Play del AudioSource de un objeto de la escena (SuccessPlayer, FailurePlayer).</summary>
+    private static void PlayOn(UnityEngine.Events.UnityEvent evt, string objectName, StringBuilder report)
+    {
+        var go = GameObject.Find(objectName);
+        var src = go != null ? go.GetComponent<AudioSource>() : null;
+        if (src == null) { report.AppendLine($"• No encontré {objectName} con un Audio Source."); return; }
+        UnityEventTools.AddPersistentListener(evt, src.Play);
+    }
+
+    /// <summary>En el perfil del reloj para este reto, el horario queda quieto (el jugador cuenta de memoria).</summary>
+    private static void FreezeHourHandFor(GameClock clock, int stage, StringBuilder report)
+    {
+        if (clock == null) return;
+        var so = new SerializedObject(clock);
+        var profiles = so.FindProperty("profiles");
+        for (int i = 0; i < profiles.arraySize; i++)
+        {
+            var p = profiles.GetArrayElementAtIndex(i);
+            if (p.FindPropertyRelative("stageIndex").intValue != stage) continue;
+            p.FindPropertyRelative("freezeHourHand").boolValue = true;
+            so.ApplyModifiedProperties();
+            return;
+        }
+        report.AppendLine($"• El GameClock no tiene perfil para el reto {stage}: agrégalo (periodo 4, 4, 4 y Freeze Hour Hand).");
+    }
+
     // ================================================================ Guía del nivel
 
     [MenuItem(Menu + "Crear o actualizar la guía del nivel")]
@@ -599,6 +849,10 @@ public static class Level3Builder
     // ================================================================ Conexiones con el sistema
 
     private static void ConfigureTracker(PerformanceTracker tracker, int stage, string name, float[] t, int[] i, StringBuilder report)
+        => ConfigureTracker(tracker, stage, name, t, i, report, null);
+
+    /// <param name="weights">Pesos propios (tiempo, intentos, interacciones, pistas) o null para usar los globales.</param>
+    private static void ConfigureTracker(PerformanceTracker tracker, int stage, string name, float[] t, int[] i, StringBuilder report, float[] weights)
     {
         if (tracker == null) { report.AppendLine("• No hay PerformanceTracker en la escena."); return; }
         var so = new SerializedObject(tracker);
@@ -616,6 +870,14 @@ public static class Level3Builder
             var ideal = byVersion.GetArrayElementAtIndex(v);
             ideal.FindPropertyRelative("tIdeal").floatValue = t[v];
             ideal.FindPropertyRelative("iIdeal").intValue = i[v];
+        }
+        s.FindPropertyRelative("overrideWeights").boolValue = weights != null;
+        if (weights != null)
+        {
+            s.FindPropertyRelative("wTime").floatValue = weights[0];
+            s.FindPropertyRelative("wAttempts").floatValue = weights[1];
+            s.FindPropertyRelative("wInteractions").floatValue = weights[2];
+            s.FindPropertyRelative("wHints").floatValue = weights[3];
         }
         so.ApplyModifiedProperties();
         report.AppendLine($"• Tracker: reto {stage} = {name} con sus valores ideales.");
