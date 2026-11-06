@@ -28,6 +28,8 @@ public static class Level3Builder
     private const string DustPrefab = PrefabFolder + "Polvo.prefab";
     private const string ClockModel = "Assets/EgyptianLogic/Models/clock.fbx";
     private const string TorchModel = "Assets/EgyptianLogic/Models/torch.fbx";
+    private const string TablePrefab = PrefabFolder + "Table.prefab";
+    private const string MaterialFolder = "Assets/EgyptianLogic/Materials/";
 
     // ================================================================ 3.1
 
@@ -792,6 +794,300 @@ public static class Level3Builder
             return;
         }
         report.AppendLine($"• El GameClock no tiene perfil para el reto {stage}: agrégalo (periodo 4, 4, 4 y Freeze Hour Hand).");
+    }
+
+
+    // ================================================================ 3.3
+
+    private static readonly string[][] Hints33 =
+    {
+        new[]
+        {
+            "",
+            "Haz que la luz encendida recorra la secuencia de colores que aparece bajo el cuadro, empezando en rojo. Los interruptores eligen el camino, pero el cambio solo ocurre en el siguiente tic del reloj.",
+            "Es una máquina de estados finitos: cada color es un estado y cada combinación de los dos interruptores es una entrada. En cada flanco del reloj la máquina lee las entradas y sigue la flecha que corresponde en el diagrama del cuadro.",
+            "Desde rojo: 11 (azul), luego 01 (amarillo), luego 10 (verde) y por último 11 (amarillo). Deja lista cada combinación antes del siguiente tic."
+        },
+        new[]
+        {
+            "",
+            "Haz que la luz encendida recorra la secuencia de colores que aparece bajo el cuadro, empezando en rojo. El cambio solo ocurre en el siguiente tic del reloj, y esta vez el reloj va más rápido.",
+            "Es una máquina de estados finitos: en cada flanco del reloj lee los interruptores y sigue la flecha que corresponde en el diagrama. La entrada 00 mantiene el estado en el que estás.",
+            "Desde rojo: 01 (verde), 01 (rojo), 10 (amarillo), 11 (rojo), 11 (azul) y 00 (azul)."
+        },
+        new[]
+        {
+            "",
+            "Haz que la luz encendida recorra la secuencia de colores que aparece bajo el cuadro, empezando en rojo. Ojo: esta máquina tiene otras flechas.",
+            "Es una máquina de estados finitos: en cada flanco del reloj lee los interruptores y sigue la flecha que corresponde. No te guíes por un patrón: revisa el diagrama en cada paso. La entrada 00 mantiene el estado.",
+            "Desde rojo: 11 (amarillo), 01 (verde), 00 (verde), 10 (azul), 01 (rojo) y 11 (amarillo)."
+        }
+    };
+
+    private static readonly Color[] StateColors =
+    {
+        new Color(1f, 0.1f, 0.05f),    // rojo
+        new Color(1f, 0.82f, 0.1f),    // amarillo
+        new Color(0.15f, 1f, 0.25f),   // verde
+        new Color(0.15f, 0.4f, 1f),    // azul
+    };
+
+    [MenuItem(Menu + "Construir 3.3 El guardián de estados")]
+    public static void Build33()
+    {
+        const string rootName = "Reto_3.3";
+        const int stage = 2;
+
+        var tablePrefab = Load(TablePrefab);
+        var bulbPrefab = Load(BulbPrefab);
+        var leverPrefab = Load(LeverPrefab);
+        var clockModel = Load(ClockModel);
+        if (tablePrefab == null || bulbPrefab == null || leverPrefab == null || clockModel == null) return;
+
+        var report = new StringBuilder();
+        var tapestry = AssetDatabase.LoadAssetAtPath<Material>(MaterialFolder + "Painting 2.mat");
+        var fsmReg = AssetDatabase.LoadAssetAtPath<Material>(MaterialFolder + "FSM_Reg.mat");
+        if (fsmReg == null) fsmReg = AssetDatabase.LoadAssetAtPath<Material>(MaterialFolder + "FMS_Reg.mat");
+        var fsmIrr = AssetDatabase.LoadAssetAtPath<Material>(MaterialFolder + "FSM_Irr.mat");
+        var glow = AssetDatabase.LoadAssetAtPath<Material>(GlowMaterial);
+        if (tapestry == null) report.AppendLine("• No encontré el material Painting 2.");
+        if (fsmReg == null) report.AppendLine("• No encontré el material FSM_Reg (ni FMS_Reg).");
+        if (fsmIrr == null) report.AppendLine("• No encontré el material FSM_Irr.");
+
+        var old = GameObject.Find(rootName);
+        if (old != null)
+        {
+            if (!EditorUtility.DisplayDialog("Construir 3.3",
+                    $"Ya existe \"{rootName}\" en la escena. ¿Reemplazarlo?", "Reemplazar", "Cancelar"))
+                return;
+            Undo.DestroyObjectImmediate(old);
+        }
+
+        var root = new GameObject(rootName);
+        Undo.RegisterCreatedObjectUndo(root, "Construir 3.3");
+        root.transform.position = SpawnPoint();
+        var puzzle = root.AddComponent<StateMachinePuzzle>();
+        var bigClock = Object.FindObjectOfType<GameClock>();
+
+        // ---- La mesa de 1.2, con su cuadro
+        var table = Spawn(tablePrefab, root.transform, "Mesa", Vector3.zero);
+        Transform frame = null, plane = null, oldBulb = null;
+        foreach (var t in table.GetComponentsInChildren<Transform>(true))
+        {
+            if (frame == null && t.name.ToLower().StartsWith("frame")) frame = t;
+            if (plane == null && t.name == "Plane") plane = t;
+            if (oldBulb == null && t.name.StartsWith("Low_Poly_Light_Bulb")) oldBulb = t;
+        }
+        var painting = plane != null ? plane.GetComponent<Renderer>() : null;
+        if (painting == null) report.AppendLine("• No encontré el objeto Plane del cuadro: asigna Painting a mano.");
+        else if (tapestry != null)
+        {
+            painting.sharedMaterial = tapestry;
+            PrefabUtility.RecordPrefabInstancePropertyModifications(painting);
+        }
+        if (oldBulb != null)
+        {
+            oldBulb.gameObject.SetActive(false);   // la de 1.2 (con FixedInputCircuit): la reemplazan las cuatro de colores
+            PrefabUtility.RecordPrefabInstancePropertyModifications(oldBulb.gameObject);
+        }
+
+        var tb = RendererBounds(table.GetComponent<Renderer>() != null ? new[] { table.GetComponent<Renderer>() } : table.GetComponentsInChildren<Renderer>());
+        float top = tb.max.y, front = tb.min.z, cx = tb.center.x;
+        Vector3 Local(Vector3 world) => root.transform.InverseTransformPoint(world);
+
+        // ---- Cuatro bombillas de colores sobre la mesa (rojo, amarillo, verde, azul)
+        var bulbs = new BitBulb[4];
+        string[] names = { "Rojo", "Amarillo", "Verde", "Azul" };
+        for (int i = 0; i < 4; i++)
+        {
+            var b = Spawn(bulbPrefab, root.transform, "Bombilla_" + names[i], Local(new Vector3(cx + (i - 1.5f) * 0.16f, top, tb.center.z - tb.extents.z * 0.35f)));
+            SitOnFloorAt(b, top);
+            bulbs[i] = ToBitBulb(b);
+            var bso = new SerializedObject(bulbs[i]);
+            bso.FindProperty("onEmission").colorValue = StateColors[i] * 2.5f;
+            bso.ApplyModifiedPropertiesWithoutUndo();
+            var l = b.GetComponentInChildren<Light>(true);
+            if (l != null) { l.color = StateColors[i]; PrefabUtility.RecordPrefabInstancePropertyModifications(l); }
+        }
+
+        // ---- Dos switches al frente (izquierda = bit más significativo)
+        var left = Spawn(leverPrefab, root.transform, "Switch_Izquierda", Local(new Vector3(cx - 0.12f, top, front + 0.08f)));
+        var right = Spawn(leverPrefab, root.transform, "Switch_Derecha", Local(new Vector3(cx + 0.12f, top, front + 0.08f)));
+
+        // ---- Reloj mini en una esquina de la mesa
+        var mini = MiniClock(root.transform, clockModel, bigClock, 0.3f, Local(new Vector3(tb.max.x - 0.15f, top + 0.2f, tb.center.z)), report);
+
+        // ---- Secuencias: una fila de cuadros de colores por versión, bajo el cuadro
+        var fb = frame != null ? RendererBounds(frame.GetComponentsInChildren<Renderer>()) : tb;
+        var seqRoot = new GameObject("Secuencia").transform;
+        seqRoot.SetParent(root.transform, false);
+        seqRoot.position = new Vector3(fb.center.x, fb.min.y - 0.06f, fb.min.z - 0.02f);
+        string[] sequences = { "BYGY", "GRYRBB", "YGGBRY" };
+        var rows = new GameObject[3];
+        for (int v = 0; v < 3; v++)
+        {
+            rows[v] = SequenceRow(seqRoot, "V" + (v + 1), sequences[v], glow);
+            rows[v].SetActive(v == 1);   // en el editor se ve V2; al jugar manda la versión
+        }
+
+        // ---- El reto
+        var tracker = Object.FindObjectOfType<PerformanceTracker>();
+        var hints = Object.FindObjectOfType<HintManager>();
+        var engine = Object.FindObjectOfType<AdaptationEngine>();
+        var magic = AssetDatabase.LoadAssetAtPath<GameObject>(MagicPrefab);
+
+        var so = new SerializedObject(puzzle);
+        so.FindProperty("tracker").objectReferenceValue = tracker;
+        so.FindProperty("hintManager").objectReferenceValue = hints;
+        so.FindProperty("stageIndex").intValue = stage;
+        so.FindProperty("clock").objectReferenceValue = bigClock;
+        SetArray(so.FindProperty("stateBulbs"), bulbs);
+        so.FindProperty("leftSwitch").objectReferenceValue = left.GetComponentInChildren<XRSwitchToggle>(true);
+        so.FindProperty("rightSwitch").objectReferenceValue = right.GetComponentInChildren<XRSwitchToggle>(true);
+        so.FindProperty("painting").objectReferenceValue = painting;
+        so.FindProperty("tapestry").objectReferenceValue = tapestry;
+        if (magic != null) so.FindProperty("revealEffect").objectReferenceValue = magic.GetComponent<ParticleSystem>();
+        var vers = so.FindProperty("versions");
+        Material[] diagrams = { fsmReg, fsmReg, fsmIrr };
+        for (int v = 0; v < 3 && v < vers.arraySize; v++)
+        {
+            vers.GetArrayElementAtIndex(v).FindPropertyRelative("diagram").objectReferenceValue = diagrams[v];
+            vers.GetArrayElementAtIndex(v).FindPropertyRelative("sequenceRow").objectReferenceValue = rows[v];
+        }
+        so.ApplyModifiedPropertiesWithoutUndo();
+
+        PlayOn(puzzle.onSolved, "SuccessPlayer", report);
+        PlayOn(puzzle.onIncorrect, "FailurePlayer", report);
+
+        // ---- Zona: al entrar se fija la versión, aparece el diagrama y se bloquea 3.4
+        var zone = MakeHintZone(root.transform, hints, tracker, stage);
+        var zso = new SerializedObject(zone);
+        zso.FindProperty("gate").objectReferenceValue = puzzle;
+        zso.ApplyModifiedPropertiesWithoutUndo();
+        UnityEventTools.AddPersistentListener(zone.onPlayerEnter, puzzle.PlayerEntered);
+        UnityEventTools.AddPersistentListener(zone.onPlayerExit, puzzle.PlayerExited);
+
+        var cable = FindCableSocket(stage);
+        if (cable != null)
+        {
+            UnityEventTools.AddPersistentListener(cable.onConnected, puzzle.Unlock);
+            report.AppendLine("• Se desbloquea al conectar el cable de la pareja Estados.");
+        }
+        else report.AppendLine($"• No encontré el ClockCableSocket con Stage Index {stage}: conecta su On Connected a StateMachinePuzzle.Unlock a mano.");
+
+        SetExclusion("Exclusion_Estados", puzzle, true, report);
+        SetClockPeriods(bigClock, stage, new[] { 8f, 4f, 4f }, report);
+
+        ConfigureTracker(tracker, stage, "3.3", new[] { 32f, 24f, 24f }, new[] { 6, 6, 8 }, report, new[] { 0f, 0.45f, 0.20f, 0.35f });
+        ConfigureEngine(engine, stage, "3.3", puzzle, report);
+        ConfigureHints(hints, stage, "3.3", puzzle, Hints33, report);
+        SetupGuide(report, false);
+
+        Selection.activeGameObject = root;
+        EditorSceneManager.MarkSceneDirty(root.scene);
+
+        report.Insert(0, "Reto 3.3 construido.\n\n");
+        report.AppendLine("\nMuévelo a su lugar en la sala. Revisa la posición de las bombillas, los switches, el reloj mini " +
+                          "y la fila \"Secuencia\" sobre la mesa: se calcularon con el tamaño de la mesa.");
+        EditorUtility.DisplayDialog("Construir 3.3", report.ToString(), "OK");
+    }
+
+    /// <summary>Fila de cuadros de colores: el rojo inicial (más pequeño, separado) y luego los pasos de la secuencia.</summary>
+    private static GameObject SequenceRow(Transform parent, string name, string sequence, Material mat)
+    {
+        var row = new GameObject(name);
+        row.transform.SetParent(parent, false);
+        const float size = 0.045f, gap = 0.06f;
+        float total = 0.05f + sequence.Length * gap;
+        float x = -total * 0.5f;
+
+        Swatch(row.transform, "Inicio_R", new Vector3(x, 0f, 0f), size * 0.6f, StateColors[0], mat);
+        x += 0.05f + gap * 0.5f;
+        for (int i = 0; i < sequence.Length; i++)
+        {
+            int c = StateMachinePuzzle.Colors.IndexOf(sequence[i]);
+            Swatch(row.transform, $"Paso_{i + 1}_{sequence[i]}", new Vector3(x + i * gap, 0f, 0f), size, StateColors[c], mat);
+        }
+        return row;
+    }
+
+    private static void Swatch(Transform parent, string name, Vector3 pos, float size, Color color, Material mat)
+    {
+        var q = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        q.name = name;
+        q.transform.SetParent(parent, false);
+        q.transform.localPosition = pos;
+        q.transform.localScale = new Vector3(size, size, 0.01f);
+        Object.DestroyImmediate(q.GetComponent<Collider>());
+        if (mat != null) q.GetComponent<Renderer>().sharedMaterial = mat;
+        q.AddComponent<ColorSwatch>().SetColor(color);
+    }
+
+    /// <summary>Reloj mini: el mismo modelo del reloj grande, copiando sus manecillas.</summary>
+    private static GameObject MiniClock(Transform parent, GameObject clockModel, GameClock bigClock, float height, Vector3 localPos, StringBuilder report)
+    {
+        var mini = (GameObject)PrefabUtility.InstantiatePrefab(clockModel, parent);
+        mini.name = "Reloj_Mini";
+        FitHeight(mini, height);
+        mini.transform.localPosition = localPos;
+        PrefabUtility.RecordPrefabInstancePropertyModifications(mini.transform);
+        var mirror = mini.AddComponent<ClockMirror>();
+        var mso = new SerializedObject(mirror);
+        mso.FindProperty("source").objectReferenceValue = bigClock;
+        if (bigClock != null)
+        {
+            mso.FindProperty("minuteHand").objectReferenceValue = FindChild(mini.transform, bigClock.MinuteHand != null ? bigClock.MinuteHand.name : null);
+            mso.FindProperty("hourHand").objectReferenceValue = FindChild(mini.transform, bigClock.HourHand != null ? bigClock.HourHand.name : null);
+            if (mso.FindProperty("minuteHand").objectReferenceValue == null)
+                report.AppendLine("• No encontré las manecillas en el reloj mini: asígnalas a mano en ClockMirror.");
+        }
+        mso.ApplyModifiedPropertiesWithoutUndo();
+        return mini;
+    }
+
+    private static Bounds RendererBounds(Renderer[] rs)
+    {
+        var b = new Bounds();
+        bool first = true;
+        foreach (var r in rs)
+        {
+            if (r == null) continue;
+            if (first) { b = r.bounds; first = false; }
+            else b.Encapsulate(r.bounds);
+        }
+        return b;
+    }
+
+    /// <summary>Apoya el objeto sobre una altura (la base de sus renderers queda en y).</summary>
+    private static void SitOnFloorAt(GameObject go, float y)
+    {
+        var b = RendererBounds(go.GetComponentsInChildren<Renderer>(true));
+        go.transform.position = go.transform.position + new Vector3(0f, y - b.min.y, 0f);
+        PrefabUtility.RecordPrefabInstancePropertyModifications(go.transform);
+    }
+
+    /// <summary>Periodos del reloj para un reto (crea el perfil si no existe).</summary>
+    private static void SetClockPeriods(GameClock clock, int stage, float[] periods, StringBuilder report)
+    {
+        if (clock == null) return;
+        var so = new SerializedObject(clock);
+        var profiles = so.FindProperty("profiles");
+        SerializedProperty p = null;
+        for (int i = 0; i < profiles.arraySize; i++)
+            if (profiles.GetArrayElementAtIndex(i).FindPropertyRelative("stageIndex").intValue == stage) p = profiles.GetArrayElementAtIndex(i);
+        if (p == null)
+        {
+            profiles.arraySize++;
+            p = profiles.GetArrayElementAtIndex(profiles.arraySize - 1);
+            p.FindPropertyRelative("stageIndex").intValue = stage;
+            p.FindPropertyRelative("freezeHourHand").boolValue = false;
+            SetArray(p.FindPropertyRelative("cableRenderers"), new Object[0]);
+            report.AppendLine($"• Creé el perfil del reloj para el reto {stage}: agrégale los renderers de su cable.");
+        }
+        var arr = p.FindPropertyRelative("periodByVersion");
+        arr.arraySize = periods.Length;
+        for (int i = 0; i < periods.Length; i++) arr.GetArrayElementAtIndex(i).floatValue = periods[i];
+        so.ApplyModifiedProperties();
     }
 
     // ================================================================ Guía del nivel

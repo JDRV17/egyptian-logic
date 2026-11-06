@@ -111,15 +111,19 @@ public abstract class Level3Puzzle : MonoBehaviour, IVersioned
 
     protected virtual void OnBlockedChanged(bool blocked) { }
 
+    /// <summary>Arranca el reloj del tracker sin contar una interacción (p. ej., al llegar al reto).</summary>
+    protected void StartTracking()
+    {
+        if (tracker == null || started) return;
+        started = true;
+        tracker.StartStage(stageIndex);
+    }
+
     /// <summary>Cuenta una interacción (y arranca el reloj del tracker con la primera).</summary>
     protected void CountInteraction()
     {
         if (tracker == null) return;
-        if (!started)
-        {
-            started = true;
-            tracker.StartStage(stageIndex);
-        }
+        StartTracking();
         tracker.RegisterInteraction(stageIndex);
     }
 
