@@ -1090,6 +1090,333 @@ public static class Level3Builder
         so.ApplyModifiedProperties();
     }
 
+    // ================================================================ 3.4
+
+    private static readonly string[][] Hints34 =
+    {
+        new[]
+        {
+            "",
+            "Llena la tablilla para que el escarabajo llegue al altar. Cada fila es hacia dónde va, cada columna es lo que ve delante, y el cubo dice hacia dónde irá en el siguiente paso. Pruébala con el botón.",
+            "La tablilla es la tabla de transiciones de una máquina de estados: el estado es el rumbo del escarabajo y la entrada es lo que lee su sensor. Si no hay muro puede mantener el rumbo; si hay muro, tiene que cambiarlo.",
+            "Yendo →: con el camino libre, →; con muro delante, ↓. Yendo ↓: con el camino libre, ↓; con muro delante, →."
+        },
+        new[]
+        {
+            "",
+            "Llena la tablilla para que el escarabajo recorra la espiral hasta el altar. Cada fila es hacia dónde va, cada columna es lo que ve delante, y el cubo dice hacia dónde irá en el siguiente paso.",
+            "Con el mismo sensor, el escarabajo debe girar distinto según hacia dónde va: su estado (el rumbo) es su memoria. En una espiral, cada vez que choca gira siempre hacia el mismo lado.",
+            "Sin muro, cada fila mantiene su rumbo. Con muro: yendo ↑ cambia a →, yendo → cambia a ↓, yendo ↓ cambia a ← y yendo ← cambia a ↑."
+        },
+        new[]
+        {
+            "",
+            "Ahora el escarabajo también siente si tiene un muro a su derecha, y la misma tablilla debe llevarlo al altar en dos laberintos distintos.",
+            "Piensa en cómo saldrías de un laberinto a ciegas: con la mano derecha siempre en la pared. Si la pared de la derecha se abre, gira hacia allá; si sigue ahí y delante está libre, sigue recto; si hay muro delante y a la derecha, gira a la izquierda. La derecha es la del escarabajo, según su rumbo.",
+            "En cada fila: derecha libre → gira a la derecha de su rumbo; muro a la derecha y delante libre → mantiene el rumbo; muro delante y a la derecha → gira a la izquierda. Yendo ↑, por ejemplo: → ↑ → ←."
+        }
+    };
+
+    private static readonly Color ScarabColor = new Color(0.05f, 0.45f, 0.38f);
+    private static readonly Color GoldColor = new Color(1f, 0.75f, 0.2f);
+
+    [MenuItem(Menu + "Construir 3.4 El escarabajo mecánico")]
+    public static void Build34()
+    {
+        const string rootName = "Reto_3.4";
+        const int stage = 3;
+        const int estadosCable = 2;   // el cable de la pareja Estados va a 3.3
+
+        var tablePrefab = Load(TablePrefab);
+        var cubePrefab = Load(CubePrefab);
+        var bulbPrefab = Load(BulbPrefab);
+        var buttonPrefab = Load(ButtonPrefab);
+        if (tablePrefab == null || cubePrefab == null || bulbPrefab == null || buttonPrefab == null) return;
+        var stone = AssetDatabase.LoadAssetAtPath<Material>(BoxMaterial);
+        var report = new StringBuilder();
+
+        var old = GameObject.Find(rootName);
+        if (old != null)
+        {
+            if (!EditorUtility.DisplayDialog("Construir 3.4",
+                    $"Ya existe \"{rootName}\" en la escena. ¿Reemplazarlo?", "Reemplazar", "Cancelar"))
+                return;
+            Undo.DestroyObjectImmediate(old);
+        }
+
+        var root = new GameObject(rootName);
+        Undo.RegisterCreatedObjectUndo(root, "Construir 3.4");
+        root.transform.position = SpawnPoint();
+        var puzzle = root.AddComponent<ScarabMazePuzzle>();
+        Vector3 Local(Vector3 world) => root.transform.InverseTransformPoint(world);
+
+        // ---- La mesa de 1.2, sin su cuadro ni su bombilla: encima va la maqueta
+        var table = Spawn(tablePrefab, root.transform, "Mesa", Vector3.zero);
+        foreach (var t in table.GetComponentsInChildren<Transform>(true))
+        {
+            if (t == table.transform) continue;
+            string n = t.name.ToLower();
+            if (n.StartsWith("frame") || t.name == "Plane" || t.name.StartsWith("Low_Poly_Light_Bulb"))
+            {
+                t.gameObject.SetActive(false);
+                PrefabUtility.RecordPrefabInstancePropertyModifications(t.gameObject);
+            }
+        }
+        var tableRenderers = new List<Renderer>();
+        foreach (var r in table.GetComponentsInChildren<Renderer>()) if (r.gameObject.activeInHierarchy) tableRenderers.Add(r);
+        var tb = RendererBounds(tableRenderers.ToArray());
+        float top = tb.max.y;
+        float cell = Mathf.Min(0.08f, Mathf.Min(tb.size.x, tb.size.z) * 0.9f / 9f);
+
+        // ---- Tablero: su eje Z es el norte (lejos del jugador)
+        var board = new GameObject("Tablero").transform;
+        board.SetParent(root.transform, false);
+        board.localPosition = Local(new Vector3(tb.center.x, top + 0.01f, tb.center.z));
+        Box(board, "Base", new Vector3(0f, -0.005f, 0f), new Vector3(cell * 9.2f, 0.01f, cell * 9.2f), stone);
+
+        // Borde común (todos los laberintos tienen el marco completo)
+        float span = cell * 9f, wallH = cell * 0.8f;
+        Box(board, "Borde_Norte", new Vector3(0f, wallH * 0.5f, cell * 4f), new Vector3(span, wallH, cell), stone);
+        Box(board, "Borde_Sur", new Vector3(0f, wallH * 0.5f, -cell * 4f), new Vector3(span, wallH, cell), stone);
+        Box(board, "Borde_Oeste", new Vector3(-cell * 4f, wallH * 0.5f, 0f), new Vector3(cell, wallH, span), stone);
+        Box(board, "Borde_Este", new Vector3(cell * 4f, wallH * 0.5f, 0f), new Vector3(cell, wallH, span), stone);
+
+        // Muros interiores de cada laberinto
+        string[][][] layouts =
+        {
+            new[] { ScarabMazePuzzle.Stairs },
+            new[] { ScarabMazePuzzle.Spiral },
+            new[] { ScarabMazePuzzle.LabyrinthA, ScarabMazePuzzle.LabyrinthB },
+        };
+        var walls = new GameObject[3][];
+        for (int v = 0; v < 3; v++)
+        {
+            walls[v] = new GameObject[layouts[v].Length];
+            for (int m = 0; m < layouts[v].Length; m++)
+            {
+                var w = new GameObject(layouts[v].Length > 1 ? $"Muros_V{v + 1}_{(char)('A' + m)}" : $"Muros_V{v + 1}").transform;
+                w.SetParent(board, false);
+                var rows = layouts[v][m];
+                for (int r = 1; r < rows.Length - 1; r++)
+                    for (int c = 1; c < rows[r].Length - 1; c++)
+                        if (rows[r][c] == '#')
+                            Box(w, $"Muro_{r}_{c}", new Vector3((c - 4f) * cell, wallH * 0.5f, (4f - r) * cell), new Vector3(cell * 0.96f, wallH, cell * 0.96f), stone);
+                walls[v][m] = w.gameObject;
+                w.gameObject.SetActive(v == 1);   // en el editor se ve la espiral; al jugar manda la versión
+            }
+        }
+
+        // ---- Escarabajo y altar (primitivas: se cambian por los modelos cuando estén)
+        var scarab = new GameObject("Escarabajo").transform;
+        scarab.SetParent(board, false);
+        Primitive(scarab, PrimitiveType.Sphere, "Cuerpo", new Vector3(0f, cell * 0.16f, -cell * 0.05f), new Vector3(cell * 0.55f, cell * 0.28f, cell * 0.7f), ScarabColor, 0.2f);
+        Primitive(scarab, PrimitiveType.Sphere, "Cabeza", new Vector3(0f, cell * 0.14f, cell * 0.33f), new Vector3(cell * 0.28f, cell * 0.2f, cell * 0.22f), ScarabColor * 0.7f, 0.1f);
+        Primitive(scarab, PrimitiveType.Cube, "Linea", new Vector3(0f, cell * 0.29f, -cell * 0.05f), new Vector3(cell * 0.03f, cell * 0.02f, cell * 0.6f), GoldColor, 0.8f);
+
+        var altar = new GameObject("Altar").transform;
+        altar.SetParent(board, false);
+        Primitive(altar, PrimitiveType.Cube, "Base", new Vector3(0f, cell * 0.15f, 0f), new Vector3(cell * 0.75f, cell * 0.3f, cell * 0.75f), new Color(0.75f, 0.68f, 0.55f), 0f);
+        Primitive(altar, PrimitiveType.Cylinder, "Ofrenda", new Vector3(0f, cell * 0.42f, 0f), new Vector3(cell * 0.35f, cell * 0.12f, cell * 0.35f), GoldColor, 1.2f);
+
+        // ---- Tablilla: a la derecha de la mesa, de frente al jugador
+        float rawW = Width(cubePrefab);
+        float cubeScale = rawW > 0.12f ? 0.12f / rawW : 1f;   // cubos un poco más pequeños que en 1.3 si hace falta
+        float cubeW = rawW * cubeScale;
+        float pitch = cubeW + 0.04f;
+        const float labelW = 0.24f;
+        float panelW = labelW + 4f * pitch + 0.1f;
+        float gridTop = Mathf.Max(1.55f, 5.3f * pitch + 0.7f);   // cabeceras arriba; cubos debajo; botón y sensores al final
+        float bottomY = gridTop - 5.3f * pitch;
+        float panelTop = gridTop + pitch * 0.55f, panelBottom = bottomY - pitch * 0.6f;
+        var tablet = new GameObject("Tablilla").transform;
+        tablet.SetParent(root.transform, false);
+        tablet.localPosition = new Vector3(Local(tb.max).x + panelW * 0.5f + 0.3f, 0f, Local(tb.center).z);
+        float gx(int c) => -panelW * 0.5f + 0.05f + labelW + (c + 0.5f) * pitch;
+        float gy(int r) => gridTop - (r + 1) * pitch;   // la fila 0 de cubos va debajo de las cabeceras
+        float back = cubeW * 0.5f + 0.02f, front = -cubeW * 0.5f - 0.005f;
+        Box(tablet, "Panel", new Vector3(0f, (panelTop + panelBottom) * 0.5f, back), new Vector3(panelW, panelTop - panelBottom, 0.03f), stone);
+        Box(tablet, "Pie", new Vector3(0f, panelBottom * 0.5f, back), new Vector3(0.12f, panelBottom, 0.12f), stone);
+
+        var columnLabels = new TMP_Text[4];
+        for (int c = 0; c < 4; c++)
+            columnLabels[c] = Label(tablet, "Columna_" + (c + 1), new Vector3(gx(c), gridTop, front), c < 2 ? new[] { "Delante libre", "Muro delante" }[c] : "", 0.3f, pitch * 0.95f, pitch * 0.9f);
+        var rowLabels = new TMP_Text[4];
+        var cubes = new CubeRotator[16];
+        string[] arrowNames = { "N", "E", "S", "O" };
+        for (int r = 0; r < 4; r++)
+        {
+            rowLabels[r] = Label(tablet, "Fila_" + arrowNames[r], new Vector3(-panelW * 0.5f + 0.05f + labelW * 0.5f, gy(r), front),
+                                 "Yendo " + ScarabMazePuzzle.Arrows[r], 0.5f, labelW, pitch);
+            for (int c = 0; c < 4; c++)
+            {
+                var go = Spawn(cubePrefab, tablet, $"Cubo_{arrowNames[r]}_{c + 1}", new Vector3(gx(c), gy(r), 0f));
+                if (cubeScale < 1f)
+                {
+                    go.transform.localScale = go.transform.localScale * cubeScale;
+                    PrefabUtility.RecordPrefabInstancePropertyModifications(go.transform);
+                }
+                cubes[r * 4 + c] = ToArrowCube(go, report, r == 0 && c == 0);
+            }
+        }
+
+        // ---- Abajo: sensor delante, botón Probar, sensor a la derecha
+        float sensorX = panelW * 0.32f;
+        var frontBulbGo = Spawn(bulbPrefab, tablet, "Sensor_Delante", new Vector3(-sensorX, bottomY + 0.03f, front - 0.03f));
+        frontBulbGo.transform.localScale = frontBulbGo.transform.localScale * 0.6f;
+        PrefabUtility.RecordPrefabInstancePropertyModifications(frontBulbGo.transform);
+        Label(tablet, "Letrero_Delante", new Vector3(-sensorX, bottomY - 0.07f, front), "Muro delante", 0.3f, 0.2f, 0.06f);
+        var rightRoot = new GameObject("Sensor_Derecha").transform;
+        rightRoot.SetParent(tablet, false);
+        rightRoot.localPosition = new Vector3(sensorX, bottomY, 0f);
+        var rightBulbGo = Spawn(bulbPrefab, rightRoot, "Bombilla", new Vector3(0f, 0.03f, front - 0.03f));
+        rightBulbGo.transform.localScale = rightBulbGo.transform.localScale * 0.6f;
+        PrefabUtility.RecordPrefabInstancePropertyModifications(rightBulbGo.transform);
+        Label(rightRoot, "Letrero", new Vector3(0f, -0.07f, front), "Muro a la derecha", 0.3f, 0.2f, 0.06f);
+
+        var button = Spawn(buttonPrefab, tablet, "Boton_Probar", new Vector3(0f, bottomY, front - 0.05f));
+        Label(tablet, "Letrero_Probar", new Vector3(0f, bottomY - 0.09f, front), "Probar", 0.4f, 0.2f, 0.06f);
+
+        // ---- Cuatro prismas que marcan el área del reto
+        float x0 = Local(tb.min).x - 0.35f, x1 = tablet.localPosition.x + panelW * 0.5f + 0.35f;
+        float z0 = Local(tb.min).z - 0.9f, z1 = Local(tb.max).z + 0.35f;
+        var corners = new GameObject("Limites").transform;
+        corners.SetParent(root.transform, false);
+        Vector3[] cornerPos = { new Vector3(x0, 0f, z0), new Vector3(x1, 0f, z0), new Vector3(x0, 0f, z1), new Vector3(x1, 0f, z1) };
+        for (int i = 0; i < 4; i++)
+            Box(corners, "Prisma_" + (i + 1), cornerPos[i] + new Vector3(0f, 0.45f, 0f), new Vector3(0.12f, 0.9f, 0.12f), stone);
+
+        // ---- El reto
+        var tracker = Object.FindObjectOfType<PerformanceTracker>();
+        var hints = Object.FindObjectOfType<HintManager>();
+        var engine = Object.FindObjectOfType<AdaptationEngine>();
+        var magic = AssetDatabase.LoadAssetAtPath<GameObject>(MagicPrefab);
+        var dust = AssetDatabase.LoadAssetAtPath<GameObject>(DustPrefab);
+
+        var so = new SerializedObject(puzzle);
+        so.FindProperty("tracker").objectReferenceValue = tracker;
+        so.FindProperty("hintManager").objectReferenceValue = hints;
+        so.FindProperty("stageIndex").intValue = stage;
+        so.FindProperty("board").objectReferenceValue = board;
+        so.FindProperty("cellSize").floatValue = cell;
+        so.FindProperty("scarab").objectReferenceValue = scarab;
+        so.FindProperty("altar").objectReferenceValue = altar;
+        SetArray(so.FindProperty("cubes"), cubes);
+        SetArray(so.FindProperty("rowLabels"), rowLabels);
+        SetArray(so.FindProperty("columnLabels"), columnLabels);
+        so.FindProperty("testButton").objectReferenceValue = button.GetComponentInChildren<XRPhysicalButton>(true);
+        so.FindProperty("frontBulb").objectReferenceValue = ToBitBulb(frontBulbGo);
+        so.FindProperty("rightBulb").objectReferenceValue = ToBitBulb(rightBulbGo);
+        so.FindProperty("rightSensorRoot").objectReferenceValue = rightRoot.gameObject;
+        if (magic != null) so.FindProperty("appearEffect").objectReferenceValue = magic.GetComponent<ParticleSystem>();
+        if (dust != null) so.FindProperty("crashEffect").objectReferenceValue = dust.GetComponent<ParticleSystem>();
+        var vers = so.FindProperty("versions");
+        for (int v = 0; v < 3 && v < vers.arraySize; v++)
+        {
+            var mazes = vers.GetArrayElementAtIndex(v).FindPropertyRelative("mazes");
+            for (int m = 0; m < mazes.arraySize && m < walls[v].Length; m++)
+                mazes.GetArrayElementAtIndex(m).FindPropertyRelative("walls").objectReferenceValue = walls[v][m];
+        }
+        so.ApplyModifiedPropertiesWithoutUndo();
+        if (button.GetComponentInChildren<XRPhysicalButton>(true) == null) report.AppendLine("• El botón no tiene XRPhysicalButton: asigna Test Button a mano.");
+
+        PlayOn(puzzle.onSolved, "SuccessPlayer", report);
+        PlayOn(puzzle.onIncorrect, "FailurePlayer", report);
+
+        // ---- Zona: cubre la mesa y la tablilla. Al entrar se fija la versión y se bloquea 3.3
+        var zone = MakeHintZone(root.transform, hints, tracker, stage);
+        zone.transform.localPosition = new Vector3((x0 + x1) * 0.5f, 1f, (z0 + z1) * 0.5f);
+        var zbox = zone.GetComponent<BoxCollider>();
+        zbox.size = new Vector3(x1 - x0, 2f, z1 - z0);
+        var zso = new SerializedObject(zone);
+        zso.FindProperty("gate").objectReferenceValue = puzzle;
+        zso.ApplyModifiedPropertiesWithoutUndo();
+        UnityEventTools.AddPersistentListener(zone.onPlayerEnter, puzzle.PlayerEntered);
+        UnityEventTools.AddPersistentListener(zone.onPlayerExit, puzzle.PlayerExited);
+
+        var cable = FindCableSocket(estadosCable);
+        if (cable != null)
+        {
+            UnityEventTools.AddPersistentListener(cable.onConnected, puzzle.Unlock);
+            report.AppendLine("• Se desbloquea al conectar el cable de la pareja Estados.");
+        }
+        else report.AppendLine($"• No encontré el ClockCableSocket con Stage Index {estadosCable}: conecta su On Connected a ScarabMazePuzzle.Unlock a mano.");
+
+        SetExclusion("Exclusion_Estados", puzzle, false, report);
+
+        ConfigureTracker(tracker, stage, "3.4", new[] { 60f, 120f, 240f }, new[] { 7, 13, 25 }, report);
+        ConfigureEngine(engine, stage, "3.4", puzzle, report);
+        ConfigureHints(hints, stage, "3.4", puzzle, Hints34, report);
+        SetupGuide(report, false);
+
+        Selection.activeGameObject = root;
+        EditorSceneManager.MarkSceneDirty(root.scene);
+
+        report.Insert(0, "Reto 3.4 construido.\n\n");
+        report.AppendLine("\nMuévelo a su lugar en la sala. El norte del tablero es su eje Z (lejos de quien está frente a la mesa): " +
+                          "si giras el conjunto, gira todo junto para que las flechas de la tablilla sigan apuntando igual que en la maqueta. " +
+                          "En el editor se ven la espiral y los 16 cubos; al jugar solo aparece lo de la versión.");
+        EditorUtility.DisplayDialog("Construir 3.4", report.ToString(), "OK");
+    }
+
+    /// <summary>
+    /// Prepara un cubo de 1.3 para la tablilla: flechas en sus caras (0° ↑, 90° →, 180° ↓, 270° ←)
+    /// y el CubeRotator activo para que el jugador lo gire.
+    /// </summary>
+    private static CubeRotator ToArrowCube(GameObject go, StringBuilder report, bool warn)
+    {
+        var rot = go.GetComponent<CubeRotator>();
+        if (rot == null)
+        {
+            if (warn) report.AppendLine("• El prefab Cube no tiene CubeRotator: la tablilla no funcionará.");
+            return null;
+        }
+        var rso = new SerializedObject(rot);
+        var faces = rso.FindProperty("faceTexts");
+        var listed = new HashSet<Object>();
+        for (int i = 0; i < faces.arraySize; i++)
+        {
+            var t = faces.GetArrayElementAtIndex(i).objectReferenceValue as TMP_Text;
+            if (t == null) continue;
+            listed.Add(t);
+            if (i < 3) SetText(t, ScarabMazePuzzle.Arrows[i + 1].ToString());
+        }
+        foreach (var t in go.GetComponentsInChildren<TMP_Text>(true))
+            if (!listed.Contains(t)) SetText(t, ScarabMazePuzzle.Arrows[0].ToString());   // la cara a 0°, la que mira al jugador
+        if (faces.arraySize < 3 && warn) report.AppendLine("• El CubeRotator del cubo no tiene las 3 caras en Face Texts: revisa las flechas.");
+        return rot;
+    }
+
+    private static TMP_Text Label(Transform parent, string name, Vector3 pos, string text, float size, float w, float h)
+    {
+        var go = new GameObject(name);
+        go.transform.SetParent(parent, false);
+        go.transform.localPosition = pos;
+        var tmp = go.AddComponent<TextMeshPro>();
+        tmp.text = text;
+        tmp.fontSize = size;
+        tmp.alignment = TextAlignmentOptions.Center;
+        tmp.rectTransform.sizeDelta = new Vector2(w, h);
+        tmp.enableAutoSizing = true;   // los letreros largos se encogen para caber
+        tmp.fontSizeMin = size * 0.3f;
+        tmp.fontSizeMax = size;
+        return tmp;
+    }
+
+    private static void Primitive(Transform parent, PrimitiveType type, string name, Vector3 pos, Vector3 size, Color color, float glow)
+    {
+        var p = GameObject.CreatePrimitive(type);
+        p.name = name;
+        p.transform.SetParent(parent, false);
+        p.transform.localPosition = pos;
+        p.transform.localScale = size;
+        Object.DestroyImmediate(p.GetComponent<Collider>());
+        var sw = p.AddComponent<ColorSwatch>();
+        var so = new SerializedObject(sw);
+        so.FindProperty("glow").floatValue = glow;
+        so.ApplyModifiedPropertiesWithoutUndo();
+        sw.SetColor(color);
+    }
+
     // ================================================================ Guía del nivel
 
     [MenuItem(Menu + "Crear o actualizar la guía del nivel")]
