@@ -1298,6 +1298,7 @@ public static class Level3Builder
         so.FindProperty("stageIndex").intValue = stage;
         so.FindProperty("board").objectReferenceValue = board;
         so.FindProperty("cellSize").floatValue = cell;
+        so.FindProperty("retractDistance").floatValue = cubeW + 0.04f;   // los cubos que sobran se esconden detrás del panel
         so.FindProperty("scarab").objectReferenceValue = scarab;
         so.FindProperty("altar").objectReferenceValue = altar;
         SetArray(so.FindProperty("cubes"), cubes);

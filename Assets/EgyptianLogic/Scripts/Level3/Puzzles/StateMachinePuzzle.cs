@@ -55,6 +55,13 @@ public class StateMachinePuzzle : Level3Puzzle
     [Tooltip("Lo que muestra el cuadro antes de que el jugador llegue (el tapiz).")]
     [SerializeField] private Material tapestry;
     [SerializeField] private ParticleSystem revealEffect;
+    [Tooltip("Lo que gira como panel de tumba al revelar el diagrama. Vacío = el marco del cuadro y el cuadro (se buscan solos).")]
+    [SerializeField] private Transform[] spinParts = new Transform[0];
+    [Tooltip("Eje del giro, en las coordenadas del cuadro (el objeto Painting). Debe quedar sobre la superficie del cuadro: " +
+             "X sirve tanto para un Plane como para un Quad. Prueba Z si prefieres que voltee hacia el otro lado.")]
+    [SerializeField] private Vector3 spinAxis = Vector3.right;
+    [Tooltip("Segundos de la vuelta completa. 0 = cambio instantáneo, como antes.")]
+    [SerializeField] private float spinDuration = 1.2f;
 
     public int State => state;
     public char StateColor => Colors[state];
@@ -98,7 +105,10 @@ public class StateMachinePuzzle : Level3Puzzle
         if (painting != null && s.diagram != null)
         {
             Fx.Play(revealEffect, painting.transform.position);
-            painting.sharedMaterial = s.diagram;
+            if (spinDuration > 0f)
+                StartCoroutine(Motion.SpinSwap(SpinParts(), painting.bounds.center, SpinAxisWorld(), spinDuration, () => painting.sharedMaterial = s.diagram));
+            else
+                painting.sharedMaterial = s.diagram;
         }
         for (int i = 0; i < versions.Length; i++)
             if (versions[i]?.sequenceRow != null) versions[i].sequenceRow.SetActive(i == CurrentVersion);
@@ -108,6 +118,32 @@ public class StateMachinePuzzle : Level3Puzzle
         armed = false;
         ShowState(true);
         StartTracking();   // el reto empieza al llegar (el tiempo no se puntúa: lo marca el reloj)
+    }
+
+    private Vector3 SpinAxisWorld() => painting.transform.TransformDirection(spinAxis == Vector3.zero ? Vector3.right : spinAxis);
+
+    /// <summary>El marco y el cuadro: si el cuadro está dentro del marco basta con el marco; si son hermanos, giran los dos.</summary>
+    private Transform[] SpinParts()
+    {
+        if (spinParts != null && spinParts.Length > 0) return spinParts;
+        var p = painting.transform;
+        var parent = p.parent;
+        if (parent != null && parent.gameObject.name.ToLower().StartsWith("frame")) return new[] { parent };
+        if (parent != null)
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                var sib = parent.GetChild(i);
+                if (sib != p && sib.gameObject.name.ToLower().StartsWith("frame")) return new[] { sib, p };
+            }
+        return new[] { p };
+    }
+
+    [ContextMenu("Probar el giro del cuadro")]
+    private void TestSpin()
+    {
+        if (painting == null) return;
+        var target = Setup?.diagram != null && painting.sharedMaterial != Setup.diagram ? Setup.diagram : tapestry;
+        StartCoroutine(Motion.SpinSwap(SpinParts(), painting.bounds.center, SpinAxisWorld(), Mathf.Max(0.2f, spinDuration), () => painting.sharedMaterial = target));
     }
 
     // ---------- Entradas ----------

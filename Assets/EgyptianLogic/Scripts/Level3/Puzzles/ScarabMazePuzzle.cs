@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -145,6 +146,18 @@ public class ScarabMazePuzzle : Level3Puzzle
     [SerializeField] private ParticleSystem appearEffect;
     [SerializeField] private ParticleSystem crashEffect;
 
+    [Header("Transiciones")]
+    [Tooltip("Segundos que tarda cada muro en subir o hundirse.")]
+    [SerializeField] private float riseDuration = 0.45f;
+    [Tooltip("Retraso entre un muro y el siguiente (de norte a sur), para que no se muevan todos a la vez.")]
+    [SerializeField] private float riseStagger = 0.015f;
+    [Tooltip("Cuánto se meten en el panel los cubos que la versión no usa.")]
+    [SerializeField] private float retractDistance = 0.15f;
+    [SerializeField] private float retractDuration = 0.4f;
+    [SerializeField] private float labelFade = 0.4f;
+    [Tooltip("Lo que tarda el escarabajo (o el altar) en encogerse o aparecer al cambiar de sitio.")]
+    [SerializeField] private float popDuration = 0.2f;
+
     // ---------- Estado ----------
 
     public int Row => row;
@@ -166,16 +179,48 @@ public class ScarabMazePuzzle : Level3Puzzle
     private TMP_Text[][] cubeTexts;
     private Color[][] cubeColors;
 
+    private readonly Dictionary<GameObject, List<Transform>> wallParts = new Dictionary<GameObject, List<Transform>>();
+    private readonly Dictionary<Transform, Vector3> restPos = new Dictionary<Transform, Vector3>();
+    private readonly Dictionary<Transform, Vector3> restScale = new Dictionary<Transform, Vector3>();
+    private readonly Dictionary<GameObject, Coroutine> wallAnims = new Dictionary<GameObject, Coroutine>();
+    private Vector3[] cubeRest;
+    private Vector3 scarabScale = Vector3.one, altarScale = Vector3.one;
+    private bool scarabShown, altarShown;
+    private Coroutine scarabAnim, altarAnim;
+
     // ---------- Ciclo de vida ----------
 
     protected override void Awake()
     {
         base.Awake();
         CacheCubeTexts();
+        cubeRest = new Vector3[cubes.Length];
+        for (int i = 0; i < cubes.Length; i++) if (cubes[i] != null) cubeRest[i] = cubes[i].transform.localPosition;
+
+        // Los muros empiezan hundidos (aplastados contra el tablero) y ocultos
         foreach (var v in versions)
             if (v?.mazes != null)
                 foreach (var m in v.mazes)
-                    if (m?.walls != null) m.walls.SetActive(false);
+                {
+                    if (m?.walls == null) continue;
+                    var parts = new List<Transform>();
+                    var wt = m.walls.transform;
+                    for (int i = 0; i < wt.childCount; i++)
+                    {
+                        var part = wt.GetChild(i);
+                        parts.Add(part);
+                        restPos[part] = part.localPosition;
+                        restScale[part] = part.localScale;
+                        Motion.SetRise(part, part.localPosition, part.localScale, 0f, 0f);
+                    }
+                    parts.Sort((a, b) => restPos[b].z.CompareTo(restPos[a].z));   // de norte a sur
+                    wallParts[m.walls] = parts;
+                    m.walls.SetActive(false);
+                }
+
+        // El escarabajo y el altar aparecen cuando llega el jugador
+        if (scarab != null) { scarabScale = scarab.localScale; scarab.localScale = Vector3.one * 0.001f; }
+        if (altar != null) { altarScale = altar.localScale; SetAltarHeight(0f); }
         SetSensors(false, false);
     }
 
@@ -210,15 +255,8 @@ public class ScarabMazePuzzle : Level3Puzzle
         {
             bool rowOn = r < rows;
             if (rowLabels.Length > r && rowLabels[r] != null)
-            {
-                rowLabels[r].gameObject.SetActive(rowOn);
-                if (rowOn) rowLabels[r].text = "Yendo " + Arrows[Headings.IndexOf(s.headings[r])];
-            }
-            for (int c = 0; c < 4; c++)
-            {
-                var cube = CubeAt(r * 4 + c);
-                if (cube != null) cube.gameObject.SetActive(rowOn && c < cols);
-            }
+                ShowLabel(rowLabels[r], rowOn, rowOn ? "Yendo " + Arrows[Headings.IndexOf(s.headings[r])] : null);
+            for (int c = 0; c < 4; c++) ShowCube(r * 4 + c, rowOn && c < cols);
         }
         string[] labels = s.twoSensors
             ? new[] { "Delante libre\nDerecha libre", "Delante libre\nMuro a la derecha", "Muro delante\nDerecha libre", "Muro delante\nMuro a la derecha" }
@@ -226,8 +264,7 @@ public class ScarabMazePuzzle : Level3Puzzle
         for (int c = 0; c < 4; c++)
         {
             if (columnLabels.Length <= c || columnLabels[c] == null) continue;
-            columnLabels[c].gameObject.SetActive(c < cols);
-            if (c < cols) columnLabels[c].text = labels[c];
+            ShowLabel(columnLabels[c], c < cols, c < cols ? labels[c] : null);
         }
         if (rightSensorRoot != null) rightSensorRoot.SetActive(s.twoSensors);
 
@@ -236,6 +273,48 @@ public class ScarabMazePuzzle : Level3Puzzle
     }
 
     private static int Columns(VersionSetup s) => s.twoSensors ? 4 : 2;
+
+    /// <summary>Los cubos que la versión no usa se meten en el panel; los que sí, salen si estaban adentro.</summary>
+    private void ShowCube(int cell, bool on)
+    {
+        var cube = CubeAt(cell);
+        if (cube == null) return;
+        var t = cube.transform;
+        Vector3 inside = cubeRest[cell] + Vector3.forward * retractDistance;
+        if (on)
+        {
+            if (cube.gameObject.activeSelf) return;
+            t.localPosition = inside;
+            cube.gameObject.SetActive(true);
+            StartCoroutine(Motion.Slide(t, cubeRest[cell], retractDuration));
+        }
+        else if (cube.gameObject.activeSelf)
+            StartCoroutine(RetractRoutine(cube.gameObject, t, inside));
+    }
+
+    private IEnumerator RetractRoutine(GameObject go, Transform t, Vector3 inside)
+    {
+        yield return Motion.Run(Motion.Slide(t, inside, retractDuration));
+        go.SetActive(false);
+    }
+
+    /// <summary>Letreros: cambian de texto con un desvanecido, o se desvanecen y se apagan.</summary>
+    private void ShowLabel(TMP_Text label, bool on, string text)
+    {
+        if (on)
+        {
+            label.gameObject.SetActive(true);
+            StartCoroutine(Motion.SwapText(label, text, labelFade));
+        }
+        else if (label.gameObject.activeSelf)
+            StartCoroutine(HideLabelRoutine(label));
+    }
+
+    private IEnumerator HideLabelRoutine(TMP_Text label)
+    {
+        yield return Motion.Run(Motion.Fade(label, 0f, labelFade * 0.5f));
+        label.gameObject.SetActive(false);
+    }
 
     // ---------- Tablilla ----------
 
@@ -292,15 +371,74 @@ public class ScarabMazePuzzle : Level3Puzzle
         var s = Setup;
         for (int v = 0; v < versions.Length; v++)
             for (int m = 0; m < versions[v].mazes.Length; m++)
-                if (versions[v].mazes[m]?.walls != null)
-                    versions[v].mazes[m].walls.SetActive(v == CurrentVersion && m == index);
+            {
+                var w = versions[v].mazes[m]?.walls;
+                if (w == null) continue;
+                if (v == CurrentVersion && m == index) AnimateWalls(w, true);
+                else if (w.activeSelf) AnimateWalls(w, false);
+            }
 
         mazeIndex = index;
         var maze = s.mazes[index];
         Find(maze, 'A', out int ar, out int ac);
-        if (altar != null) altar.position = CellWorld(maze, ar, ac);
+        if (altar != null)
+        {
+            if (altarAnim != null) StopCoroutine(altarAnim);
+            altarAnim = StartCoroutine(AltarRoutine(CellWorld(maze, ar, ac)));
+        }
         PlaceAtStart();
         if (withEffect && board != null) Fx.Play(appearEffect, board.position);
+    }
+
+    /// <summary>Segundos que tarda en terminar de subir el laberinto activo (para esperar antes de caminar).</summary>
+    private float WallsTime(GameObject walls)
+        => walls != null && wallParts.TryGetValue(walls, out var parts) ? riseDuration + riseStagger * parts.Count : 0f;
+
+    private void AnimateWalls(GameObject walls, bool up)
+    {
+        if (wallAnims.TryGetValue(walls, out var running) && running != null) StopCoroutine(running);
+        wallAnims[walls] = StartCoroutine(WallsRoutine(walls, up ? 1f : 0f));
+    }
+
+    /// <summary>Los muros suben desde el tablero (o se hunden en él), uno tras otro de norte a sur.</summary>
+    private IEnumerator WallsRoutine(GameObject walls, float target)
+    {
+        if (!wallParts.TryGetValue(walls, out var parts)) { walls.SetActive(target > 0f); yield break; }
+        if (target > 0f) walls.SetActive(true);
+        var start = new float[parts.Count];
+        for (int i = 0; i < parts.Count; i++) start[i] = parts[i].localScale.y / Mathf.Max(0.0001f, restScale[parts[i]].y);
+
+        float total = riseDuration + riseStagger * parts.Count;
+        for (float e = 0f; e < total; e += Time.deltaTime)
+        {
+            for (int i = 0; i < parts.Count; i++)
+            {
+                float k = Mathf.Lerp(start[i], target, Motion.Ease((e - i * riseStagger) / riseDuration));
+                Motion.SetRise(parts[i], restPos[parts[i]], restScale[parts[i]], 0f, k);
+            }
+            yield return null;
+        }
+        foreach (var p in parts) Motion.SetRise(p, restPos[p], restScale[p], 0f, target);
+        if (target <= 0f) walls.SetActive(false);
+    }
+
+    private void SetAltarHeight(float k)
+    {
+        k = Mathf.Max(0.001f, k);
+        altar.localScale = new Vector3(altarScale.x, altarScale.y * k, altarScale.z);
+    }
+
+    /// <summary>Si el altar cambia de losa, se hunde, se mueve y vuelve a subir.</summary>
+    private IEnumerator AltarRoutine(Vector3 target)
+    {
+        if (altarShown && (altar.position - target).sqrMagnitude < 1e-6f) yield break;
+        if (altarShown)
+            for (float e = 0f; e < popDuration; e += Time.deltaTime) { SetAltarHeight(1f - Motion.Ease(e / popDuration)); yield return null; }
+        SetAltarHeight(0f);
+        altar.position = target;
+        altarShown = true;
+        for (float e = 0f; e < popDuration * 1.5f; e += Time.deltaTime) { SetAltarHeight(Motion.Ease(e / (popDuration * 1.5f))); yield return null; }
+        SetAltarHeight(1f);
     }
 
     private void PlaceAtStart()
@@ -308,12 +446,30 @@ public class ScarabMazePuzzle : Level3Puzzle
         var maze = Setup.mazes[mazeIndex];
         Find(maze, 'S', out row, out col);
         heading = string.IsNullOrEmpty(maze.start) ? 1 : Math.Max(0, Headings.IndexOf(maze.start[0]));
-        if (scarab != null)
-        {
-            scarab.position = CellWorld(maze, row, col);
-            scarab.rotation = HeadingRotation(heading);
-        }
         SetSensors(false, false);
+        if (scarab == null) return;
+
+        Vector3 pos = CellWorld(maze, row, col);
+        Quaternion rot = HeadingRotation(heading);
+        if (scarabShown && (scarab.position - pos).sqrMagnitude < 1e-6f) { scarab.rotation = rot; return; }
+        if (scarabAnim != null) StopCoroutine(scarabAnim);
+        scarabAnim = StartCoroutine(ScarabRoutine(pos, rot));
+    }
+
+    /// <summary>El escarabajo se encoge donde está y reaparece en la salida.</summary>
+    private IEnumerator ScarabRoutine(Vector3 pos, Quaternion rot)
+    {
+        if (scarabShown)
+        {
+            Vector3 from = scarab.localScale;
+            for (float e = 0f; e < popDuration; e += Time.deltaTime) { scarab.localScale = Vector3.Lerp(from, Vector3.one * 0.001f, Motion.Ease(e / popDuration)); yield return null; }
+        }
+        scarab.localScale = Vector3.one * 0.001f;
+        scarab.position = pos;
+        scarab.rotation = rot;
+        scarabShown = true;
+        for (float e = 0f; e < popDuration; e += Time.deltaTime) { scarab.localScale = Vector3.Lerp(Vector3.one * 0.001f, scarabScale, Motion.Ease(e / popDuration)); yield return null; }
+        scarab.localScale = scarabScale;
     }
 
     private static void Find(Maze maze, char what, out int r, out int c)
@@ -371,6 +527,7 @@ public class ScarabMazePuzzle : Level3Puzzle
             {
                 yield return new WaitForSeconds(pauseAfterFail);
                 ShowMaze(m, true);
+                yield return new WaitForSeconds(WallsTime(s.mazes[m].walls));
             }
             else if (mazeIndex != 0) ShowMaze(0, false);
             else PlaceAtStart();
