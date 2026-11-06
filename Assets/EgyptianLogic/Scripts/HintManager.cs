@@ -13,10 +13,15 @@ public class HintManager : MonoBehaviour
              "(niveles no lineales). Vacío = el primer reto no resuelto (Nivel 1).")]
     [SerializeField] private PerformanceTracker tracker;
 
-    public event Action<int, int> onHintGiven;   // (índice de reto, número de pista 1..4)
+    [Tooltip("Opcional (Nivel 3). Si se asigna: cada reto usa solo sus pistas 2–4 y, fuera de los retos, " +
+             "sale la guía del nivel (no cuenta para el puntaje). Vacío = comportamiento del Nivel 1.")]
+    [SerializeField] private Level3Guide guide;
+
+    public event Action<int, int> onHintGiven;   // (índice de reto, número de pista 1..4); la guía usa (−1, 1)
 
     private float lastTime = -999f;
     private int lastArrived = -1;
+    private int insideStage = -1;   // zona en la que está el jugador ahora mismo (solo la usa la guía)
 
     private void OnEnable()
     {
@@ -39,6 +44,13 @@ public class HintManager : MonoBehaviour
         if (!Valid(stage)) return;
         stages[stage].arrived = true;
         lastArrived = stage;
+        insideStage = stage;
+    }
+
+    /// <summary>Lo llama la HintZone cuando el jugador sale.</summary>
+    public void MarkLeft(int stage)
+    {
+        if (insideStage == stage) insideStage = -1;
     }
 
     public void MarkSolved(int stage) { if (Valid(stage)) stages[stage].solved = true; }
@@ -64,6 +76,7 @@ public class HintManager : MonoBehaviour
     public void RequestHint()
     {
         if (Time.time - lastTime < cooldown) return;
+        if (guide != null) { RequestGuidedHint(); return; }
 
         int s = CurrentStage();
         if (s < 0) return;
@@ -85,6 +98,45 @@ public class HintManager : MonoBehaviour
         onHintGiven?.Invoke(s, next);
     }
 
+    // ---------- Nivel 3: guía del nivel + pistas 2–4 de cada reto ----------
+
+    /// <summary>Reto al que va la pista: el que está jugando, al que ya llegó o en cuya zona está. −1 = guía.</summary>
+    private int GuidedStage()
+    {
+        if (tracker != null && Open(tracker.ActiveStage)) return tracker.ActiveStage;
+        int engaged = guide.EngagedStage();
+        if (Open(engaged)) return engaged;
+        if (Open(insideStage)) return insideStage;
+        return -1;
+    }
+
+    private void RequestGuidedHint()
+    {
+        int s = GuidedStage();
+        if (s < 0)
+        {
+            string g = guide.CurrentText();
+            if (string.IsNullOrEmpty(g)) return;
+            lastTime = Time.time;
+            spawner.Spawn(g, false);
+            onHintGiven?.Invoke(-1, 1);
+            return;
+        }
+
+        var st = stages[s];
+        int next = Mathf.Clamp(Mathf.Max(st.used + 1, 2), 2, 4);
+        var texts = st.byVersion[GetVersion(st)];
+        string text = texts != null && texts.hints.Length >= next ? texts.hints[next - 1] : null;
+        if (string.IsNullOrEmpty(text)) return;
+
+        lastTime = Time.time;
+        st.used = Mathf.Max(st.used, next);
+        st.scored = Mathf.Min(st.scored + 1, 3);
+
+        spawner.Spawn(text, next == 4);
+        onHintGiven?.Invoke(s, next);
+    }
+
     private int GetVersion(HintStage st)
     {
         int v = 0;
@@ -94,6 +146,7 @@ public class HintManager : MonoBehaviour
             case PuzzleVersionManager p: v = (int)p.CurrentVersion; break;
             case SpinningCubes s: v = (int)s.CurrentVersion; break;
             case TextSelector t: v = t.CurrentVersion; break;
+            case IVersioned iv: v = iv.CurrentVersion; break;   // retos del Nivel 3
         }
         return Mathf.Clamp(v, 0, st.byVersion.Length - 1);
     }

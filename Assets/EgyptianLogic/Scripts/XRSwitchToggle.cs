@@ -6,6 +6,12 @@ using UnityEngine.XR.Interaction.Toolkit;
 [RequireComponent(typeof(XRBaseInteractable))]
 public class XRSwitchToggle : MonoBehaviour
 {
+    public enum ToggleTrigger
+    {
+        Select,   // al agarrar con el gatillo lateral (grip) o con el rayo — recomendado para VR
+        Activate  // al apretar el gatillo frontal mientras el objeto ya está agarrado
+    }
+
     [Header("Configuración de Rotación")]
     [SerializeField] private Vector3 offRotation = new Vector3(0f, 0f, 0f);
     [SerializeField] private Vector3 onRotation = new Vector3(0f, 0f, 45f);
@@ -16,6 +22,10 @@ public class XRSwitchToggle : MonoBehaviour
 
     [Header("Estado Inicial")]
     [SerializeField] private bool isOn = false;
+
+    [Header("Interacción")]
+    [Tooltip("Select: cambia al agarrarlo (grip). Activate: cambia con el gatillo frontal estando agarrado.")]
+    [SerializeField] private ToggleTrigger toggleTrigger = ToggleTrigger.Select;
 
     [Header("Palanca desmontable")]
     [Tooltip("Actívalo SOLO en la palanca que hay que encajar. No responde hasta que se llame EnableToggle().")]
@@ -48,14 +58,24 @@ public class XRSwitchToggle : MonoBehaviour
     {
         if (interactables == null) return;
         foreach (var i in interactables)
-            if (i != null) i.activated.AddListener(OnInteractActivated);
+        {
+            if (i == null) continue;
+            if (toggleTrigger == ToggleTrigger.Select)
+                i.selectEntered.AddListener(OnInteractSelected);
+            else
+                i.activated.AddListener(OnInteractActivated);
+        }
     }
 
     private void Unsubscribe()
     {
         if (interactables == null) return;
         foreach (var i in interactables)
-            if (i != null) i.activated.RemoveListener(OnInteractActivated);
+        {
+            if (i == null) continue;
+            i.selectEntered.RemoveListener(OnInteractSelected);
+            i.activated.RemoveListener(OnInteractActivated);
+        }
     }
 
     private void Start()
@@ -78,6 +98,13 @@ public class XRSwitchToggle : MonoBehaviour
         baseRotation = switchMesh.localRotation;
         isOn = false;
         canToggle = true;
+    }
+
+    private void OnInteractSelected(SelectEnterEventArgs args)
+    {
+        // Un socket "selecciona" la palanca al encajarla: eso no es el jugador accionándola
+        if (args.interactorObject is XRSocketInteractor) return;
+        ToggleSwitch();
     }
 
     private void OnInteractActivated(ActivateEventArgs args) => ToggleSwitch();
