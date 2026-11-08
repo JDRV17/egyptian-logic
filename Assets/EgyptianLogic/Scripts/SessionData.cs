@@ -77,6 +77,17 @@ public class SessionData : MonoBehaviour
     public string StageCsvPath { get; set; }
     public string DecisionCsvPath { get; set; }
 
+    /// <summary>
+    /// Recupera el θ y la última versión de una partida guardada en disco, cuando un nivel se abre sin pasar
+    /// por los anteriores (p. ej., al probarlo directo en el editor). Lo usa el AdaptationEngine.
+    /// </summary>
+    public void RestoreFromSave(float theta, int lastPlayedVersion, int decisions)
+    {
+        RecordTheta(theta);
+        LastPlayedVersion = lastPlayedVersion;
+        DecisionsMade = decisions;
+    }
+
     public void AddResult(StageResult r)
     {
         // Si el reto ya estaba, se reemplaza (por si se repite un nivel). Los índices son locales al nivel.

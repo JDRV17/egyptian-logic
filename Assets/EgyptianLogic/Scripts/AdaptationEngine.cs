@@ -39,6 +39,11 @@ public class AdaptationEngine : MonoBehaviour
     [Tooltip("Retos que reciben versión al iniciar el nivel según el θ actual (p. ej., la primera pareja del Nivel 3). " +
              "Vacío en el Nivel 1: la versión de 1.1 la pone el diagnóstico.")]
     [SerializeField] private int[] initialStages = new int[0];
+    [Tooltip("Solo con CarryOver. Si el nivel se abre sin datos de los anteriores (p. ej., probándolo directo), " +
+             "sigue desde el θ de la última partida guardada en disco (último CSV de decisiones).")]
+    [SerializeField] private bool loadLastSaveIfEmpty = false;
+    [Tooltip("Versión de los retos iniciales si no hay datos en memoria ni partida guardada (0 = V1).")]
+    [Range(0, 2)] [SerializeField] private int versionWithoutData = 0;
 
     [Header("Sucesores")]
     [Tooltip("Desactivado: al resolver el reto i se ajusta el reto i + 1 (Nivel 1). Activado: se usa la lista de abajo.")]
@@ -71,6 +76,7 @@ public class AdaptationEngine : MonoBehaviour
 
     private readonly RuleEngine engine = new RuleEngine();
     private int decisionsAtLevelStart;   // en modo Diagnostic, el K se cuenta desde este nivel
+    private bool startedWithoutData;     // ni partida en memoria ni guardada: los retos iniciales van en versionWithoutData
 
     private void Reset() => rules = DefaultRules.Build();
 
@@ -85,6 +91,22 @@ public class AdaptationEngine : MonoBehaviour
     private void Awake()
     {
         var s = SessionData.Instance;
+
+        if (thetaStart == ThetaStart.CarryOver && loadLastSaveIfEmpty && s.DecisionsMade == 0 && s.DiagnosticCorrect < 0)
+        {
+            if (TryLoadLastSave(out float savedTheta, out int savedVersion, out int savedDecisions, out string file))
+            {
+                s.RestoreFromSave(savedTheta, savedVersion, savedDecisions);
+                Debug.Log($"[AdaptationEngine] Sin datos en memoria: se sigue la partida guardada en {file} " +
+                          $"(θ = {savedTheta:F2}, última versión V{savedVersion + 1}).");
+            }
+            else
+            {
+                startedWithoutData = true;
+                Debug.Log($"[AdaptationEngine] Sin datos de niveles anteriores ni partidas guardadas: los retos iniciales van en V{versionWithoutData + 1}.");
+            }
+        }
+
         decisionsAtLevelStart = s.DecisionsMade;
 
         if (thetaStart == ThetaStart.CarryOver && s.DecisionsMade > 0)
@@ -180,6 +202,11 @@ public class AdaptationEngine : MonoBehaviour
     /// </summary>
     private void DecideInitial()
     {
+        if (startedWithoutData)
+        {
+            foreach (int t in initialStages) ApplyVersion(t, versionWithoutData);
+            return;
+        }
         if (!HasRules()) return;
 
         int last = SessionData.Instance.LastPlayedVersion;
@@ -299,6 +326,47 @@ public class AdaptationEngine : MonoBehaviour
             thetaBefore.ToString("F3", c), f.Get("K").ToString("F2", c), f.Get("delta").ToString("F3", c),
             f.Get("theta").ToString("F3", c), TargetNames(targets), "V" + (next + 1), "\"" + string.Join(" > ", trace) + "\"");
         File.AppendAllText(csvPath, line + "\n", Encoding.UTF8);
+    }
+
+    /// <summary>
+    /// Lee el CSV de decisiones más reciente (el que escribe <see cref="WriteCsv"/>) y devuelve el θ final,
+    /// la última versión jugada y cuántas decisiones hubo.
+    /// </summary>
+    private static bool TryLoadLastSave(out float savedTheta, out int lastVersion, out int decisions, out string file)
+    {
+        savedTheta = 0f; lastVersion = -1; decisions = 0; file = null;
+        try
+        {
+            var dir = new DirectoryInfo(Application.persistentDataPath);
+            if (!dir.Exists) return false;
+
+            FileInfo latest = null;
+            foreach (var f in dir.GetFiles("gatekeeper_decisiones_*.csv"))
+                if (latest == null || f.LastWriteTime > latest.LastWriteTime) latest = f;
+            if (latest == null) return false;
+
+            var c = CultureInfo.InvariantCulture;
+            bool any = false;
+            foreach (var line in File.ReadAllLines(latest.FullName))
+            {
+                // participante,reto_resuelto,version_jugada,P,theta_antes,K,delta,theta_despues,... (las reglas van al final, entre comillas)
+                var col = line.Split(',');
+                if (col.Length < 8 || !float.TryParse(col[7], NumberStyles.Float, c, out float t)) continue;
+                savedTheta = t;
+                any = true;
+                if (col[1] == "inicio_nivel") continue;
+                decisions++;
+                if (col[2].Length == 2 && col[2][0] == 'V' && char.IsDigit(col[2][1])) lastVersion = col[2][1] - '1';
+            }
+
+            file = latest.Name;
+            return any;
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning("[AdaptationEngine] No se pudo leer la partida guardada: " + e.Message);
+            return false;
+        }
     }
 
     private static float Sigmoid(float x) => 1f / (1f + Mathf.Exp(-x));
