@@ -38,12 +38,18 @@ public class ExpressionKeypad : MonoBehaviour
 
     private void Start() => Build();
 
-    public void Build()
+        public void Build()
     {
         if (built) return;
         built = true;
 
-        var all = new List<string>(keys) { "<-", "C" };
+        // Las teclas de edición van al final y se reconocen por su posición, no por su texto,
+        // para que no choquen con variables (por ejemplo, la variable C).
+        var all = new List<string>(keys);
+        int backIndex = all.Count;
+        all.Add("<-");
+        all.Add("CLR");
+
         int rows = Mathf.CeilToInt(all.Count / (float)columns);
         float stepX = keySize.x + gap, stepY = keySize.y + gap;
         float x0 = -(columns - 1) * stepX * 0.5f;
@@ -53,22 +59,26 @@ public class ExpressionKeypad : MonoBehaviour
         {
             int r = i / columns, c = i % columns;
             string k = all[i];
-            bool edit = k == "<-" || k == "C";
-            var cell = Level2PressCell.Create(transform, "Key_" + k, new Vector3(x0 + c * stepX, y0 - r * stepY, 0f), keySize, k,
+            bool isBack = i == backIndex;
+            bool isClear = i == backIndex + 1;
+            bool edit = isBack || isClear;
+            string goName = isBack ? "Key_Borrar" : isClear ? "Key_BorrarTodo" : "Key_" + k;
+
+            var cell = Level2PressCell.Create(transform, goName, new Vector3(x0 + c * stepX, y0 - r * stepY, 0f), keySize, k,
                 edit ? editColor : keyColor, keyPrefab);
-            cell.Pressed += _ => OnKey(k);
+            cell.Pressed += _ => OnKey(k, isBack, isClear);
             cells.Add(cell);
         }
 
         Refresh();
     }
 
-    private void OnKey(string k)
+    private void OnKey(string k, bool isBack, bool isClear)
     {
         if (Locked) return;
 
-        if (k == "<-") { if (Text.Length > 0) Text = Text.Substring(0, Text.Length - 1); }
-        else if (k == "C") Text = "";
+        if (isBack) { if (Text.Length > 0) Text = Text.Substring(0, Text.Length - 1); }
+        else if (isClear) Text = "";
         else if (Text.Length + k.Length <= maxLength) Text += k;
 
         Refresh();
