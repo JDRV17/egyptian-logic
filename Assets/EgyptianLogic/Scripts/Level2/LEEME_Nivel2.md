@@ -49,7 +49,21 @@ Nivel2
     └── PasilloSalida                 pasillo detrás de la puerta de salida, con la zona que carga el Nivel 3
 ```
 
-Todo está hecho con figuras básicas (cubos, cilindros, esferas) para reemplazarlas por modelos.
+**Acabados** (`Level2Decor.cs`, se generan al construir):
+- **Piso de arena:** usa la imagen de `Materials/Textures` cuyo nombre empieza por `Suelo_Arena`. Una copia ocupa
+  unos 1,6 m (`SandTileWidth`), en espejo en ambos sentidos y con copias pares por baldosa, así no se ven cortes
+  entre baldosas. Sin esa imagen, el piso queda liso.
+- **Muros con jeroglíficos:** usa la imagen de `Assets/EgyptianLogic/Materials/Textures` cuyo nombre empieza por
+  `Muro_jer` (hoy `Muro_jerolgificos.jpg`). Se repite a escala real, una copia cada 3,6 m (`GlyphTileWidth`), y a lo
+  ancho va en espejo para que no se note la unión. Sin esa imagen, los muros quedan lisos.
+- **Sillas doradas:** respaldo ovalado calado, patas delanteras torneadas, patas traseras en sable y cojín crema.
+  Cada silla es una sola malla (`Materials/Level2/Mallas/L2_SillaDorada.asset`) con dos materiales: `L2_Oro` y `L2_Tapiz`.
+- **Mesas con incrustaciones:** madera rojiza con un campo de estrellas de 8 puntas en nácar, una banda a cuadros
+  alrededor y en el canto, y patas curvas. Las texturas se dibujan por código (`Materials/Level2/Texturas`);
+  el patrón se repite cada 0,5 m (`InlayTile`).
+- Al cambiar ese código y volver a construir, las mallas, texturas y materiales se actualizan solos.
+
+El resto está hecho con figuras básicas (cubos, cilindros, esferas) para reemplazarlas por modelos.
 Otras opciones del menú: **Construir los 6 retos** (solo los retos en fila, sin salón ni sistemas) y
 **Construir solo 2.x** (un reto suelto para probarlo). Los materiales quedan en `Assets/EgyptianLogic/Materials/Level2`
 (las compuertas AND/OR/XOR/NOT usan los del Nivel 1); se pueden cambiar modelos y materiales sin tocar la lógica.
@@ -99,7 +113,7 @@ En un reto suelto, *Randomize On Start* elige la versión al azar; clic derecho 
 
 | Reto | Componente | Qué hace el jugador | Cómo se aprueba |
 |---|---|---|---|
-| 2.1 El Detective de Verdades | `TruthTablePuzzle` | Lee el circuito y toca las celdas de la columna S (? → 1 → 0…) | Botón *Comprobar*: todas las filas que no son X correctas (las incorrectas se marcan en rojo) |
+| 2.1 El Detective de Verdades | `TruthTablePuzzle` | Lee el circuito dibujado con símbolos y toca las celdas de la columna S (? → 1 → 0…) | Botón *Comprobar*: todas las filas que no son X correctas (las incorrectas se marcan en rojo) |
 | 2.2 Solo Tengo Esto | `CircuitSpecPuzzle` | Encaja compuertas NAND en las ranuras y conecta cables | Botón: la tabla completa coincide y solo hay NAND (las ranuras rechazan otras compuertas) |
 | 2.3 El Ahorro de Compuertas | `KarnaughMapPuzzle` | Agrupa celdas del mapa (el cartel dice si cada grupo es válido y qué término da) y escribe la expresión con el teclado | Botón: equivalente en las filas que no son X **y** con el mínimo de literales (calculado automáticamente) |
 | 2.4 El Selector (MUX) | `CircuitSpecPuzzle` | V1 con compuertas, V2 con módulos MUX 2:1, V3 en cascada con MUX 4:1 + MUX 2:1 | Prueba en vivo: con el circuito correcto, recorrer todas las combinaciones de los selectores |
@@ -127,6 +141,25 @@ En un reto suelto, *Randomize On Start* elige la versión al azar; clic derecho 
 Los módulos se agregaron **al final** de `LogicGateType`, así que los valores ya guardados en el Nivel 1 no cambian.
 
 ## Especificaciones (cambiar un reto sin programar)
+
+**Dibujo de explicación** (`Level2Schematic.cs`): cada versión de cada reto tiene un campo `drawing`, así el dibujo
+cambia por reto y por dificultad. Al construir se dibuja en un papiro a la izquierda del panel (el panel se ensancha y,
+si hace falta, se alarga) y queda en `Materials/Level2/Texturas/L2_Explicacion_2.x.y.png`. Dos formatos:
+- **Circuito con compuertas:** `S = AND(OR(A, B), NAND(A, B))`. Varias salidas con `;` (`S = XOR(A, B); C = AND(A, B)`),
+  compuertas AND, OR, XOR, NOT, NAND, NOR, XNOR de hasta 5 entradas, y `A'` para una entrada negada.
+- **Bloque:** `[MUX] MUX 4:1 | I0, I1, I2, I3 | S1, S0 | Y` → forma (`MUX` trapecio o `BOX` rectángulo), título |
+  entradas a la izquierda | entradas abajo | salidas a la derecha.
+
+| Reto | Qué muestra el dibujo |
+|---|---|
+| 2.1 | El circuito que hay que analizar (es el reto en sí) |
+| 2.2 | El circuito objetivo con compuertas normales; hay que armarlo solo con NAND |
+| 2.3 | El circuito sin simplificar (suma de productos); en la difícil, los mintérminos 1, 3, 7, 11 y 15 |
+| 2.4 | El bloque MUX 2:1, 4:1 u 8:1 con sus entradas, selectores y salida |
+| 2.5 | El bloque decodificador 2 a 4, 3 a 8 o 2 a 4 con Enable |
+| 2.6 | El bloque medio sumador, sumador de 4 bits o sumador/restador con comparador |
+
+Si cambias `spec`, revisa que `drawing` siga coincidiendo. Los dibujos de más de 0,85 m de alto se achican para caber.
 
 Cada reto guarda su lógica como texto en el Inspector (`spec`), una línea por salida:
 
@@ -171,6 +204,5 @@ Notas:
 ## Pendiente
 
 - La **variante inversa** de 2.1 (armar el circuito a partir de la tabla) no está hecha. Se puede montar con `CircuitSpecPuzzle` y la misma especificación.
-- En 2.1 el circuito se muestra como texto (`S = AND( OR(A,B), NAND(A,B) )`), no como un modelo 3D.
 - El comedor, los instrumentos y las compuertas en el suelo compilan con Unity 2020.3, pero falta recorrerlos con el visor
   (distancias, agarre desde el suelo y lectura de los carteles).

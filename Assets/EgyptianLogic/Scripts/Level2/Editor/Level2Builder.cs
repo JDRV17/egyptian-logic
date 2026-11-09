@@ -13,7 +13,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 /// y que el AdaptationEngine puede controlar igual que en el Nivel 1.
 /// Luego se pueden mover, reemplazar los modelos o cambiar materiales sin tocar la lógica.
 /// </summary>
-public static class Level2Builder
+public static partial class Level2Builder
 {
     private const string MaterialFolder = "Assets/EgyptianLogic/Materials/Level2";
     private const string Menu = "Egyptian Logic/Nivel 2/";
@@ -349,7 +349,7 @@ public static class Level2Builder
         // En baldosas de 5 m como máximo: un piso de una sola pieza recibe solo 4 luces y parpadea al moverse
         int nx = Mathf.Max(1, Mathf.CeilToInt(sizeX / 5f)), nz = Mathf.Max(1, Mathf.CeilToInt(sizeZ / 5f));
         float tx = sizeX / nx, tz = sizeZ / nz;
-        var mat = Mat("L2_Piso", new Color(0.66f, 0.55f, 0.38f));
+        var mat = FloorMaterial(tx, tz);
         for (int i = 0; i < nx; i++)
             for (int j = 0; j < nz; j++)
             {
@@ -367,7 +367,7 @@ public static class Level2Builder
     }
 
     private static void Wall(Transform parent, string name, Vector3 pos, Vector3 size) =>
-        Prim(PrimitiveType.Cube, parent, name, pos, size, Mat("L2_Muro", new Color(0.74f, 0.62f, 0.44f)), true);
+        Prim(PrimitiveType.Cube, parent, name, pos, size, WallMaterial(size.x, size.y), true);
 
     /// <summary>Pilares junto a los muros largos, entre los retos y en los extremos, con objetos sueltos a sus pies.</summary>
     private static void Pillars(Transform decor)
@@ -943,13 +943,11 @@ public static class Level2Builder
     {
         var table = new GameObject("MesaBanquete").transform;
         table.SetParent(parent, false);
-        var wood = Mat("L2_Madera", new Color(0.32f, 0.2f, 0.11f));
-
-        Prim(PrimitiveType.Cube, table, "Tablero", new Vector3(0f, 0.74f, 0f), new Vector3(length, 0.08f, 1.5f), wood, true);
-        Prim(PrimitiveType.Cube, table, "Camino", new Vector3(0f, 0.783f, 0f), new Vector3(length * 0.96f, 0.006f, 0.5f), Mat("L2_Tela", new Color(0.88f, 0.8f, 0.62f)));
-        foreach (float lx in new[] { -length * 0.5f + 0.2f, 0f, length * 0.5f - 0.2f })
+        // Madera rojiza con incrustaciones de nácar (Level2Decor) y patas curvas que se abren hacia afuera
+        InlaidTabletop(table, length, 1.5f);
+        foreach (float lx in new[] { -length * 0.5f + 0.25f, 0f, length * 0.5f - 0.25f })
             foreach (float lz in new[] { -0.6f, 0.6f })
-                Prim(PrimitiveType.Cube, table, "Pata", new Vector3(lx, 0.35f, lz), new Vector3(0.12f, 0.7f, 0.12f), wood);
+                CurvedLeg(table, new Vector3(lx, 0f, lz), lz > 0f ? 0f : 180f);
 
         // Sillas a ambos lados, mirando a la mesa
         for (float x = -length * 0.5f + 0.7f; x <= length * 0.5f - 0.7f; x += 1.3f)
@@ -985,13 +983,15 @@ public static class Level2Builder
         c.SetParent(parent, false);
         c.localPosition = pos;
         c.localRotation = Quaternion.Euler(0f, yaw, 0f);
-        var wood = Mat("L2_Madera", new Color(0.32f, 0.2f, 0.11f));
-        Prim(PrimitiveType.Cube, c, "Asiento", new Vector3(0f, 0.46f, 0f), new Vector3(0.5f, 0.06f, 0.5f), wood, true);
-        Prim(PrimitiveType.Cube, c, "Cojin", new Vector3(0f, 0.5f, 0f), new Vector3(0.44f, 0.03f, 0.44f), Mat("L2_Tela", new Color(0.88f, 0.8f, 0.62f)));
-        Prim(PrimitiveType.Cube, c, "Respaldo", new Vector3(0f, 0.85f, 0.22f), new Vector3(0.5f, 0.7f, 0.06f), wood, true);
-        foreach (float lx in new[] { -0.21f, 0.21f })
-            foreach (float lz in new[] { -0.21f, 0.21f })
-                Prim(PrimitiveType.Cube, c, "Pata", new Vector3(lx, 0.22f, lz), new Vector3(0.05f, 0.44f, 0.05f), wood);
+        // Silla dorada de respaldo ovalado (Level2Decor): una sola malla con oro y tela
+        c.gameObject.AddComponent<MeshFilter>().sharedMesh = ChairMesh();
+        c.gameObject.AddComponent<MeshRenderer>().sharedMaterials = new[] { GoldMat(), Mat("L2_Tapiz", new Color(0.93f, 0.9f, 0.82f)) };
+        var seat = c.gameObject.AddComponent<BoxCollider>();
+        seat.center = new Vector3(0f, 0.26f, 0f);
+        seat.size = new Vector3(0.46f, 0.52f, 0.46f);
+        var back = c.gameObject.AddComponent<BoxCollider>();
+        back.center = new Vector3(0f, 0.88f, 0.28f);
+        back.size = new Vector3(0.46f, 0.56f, 0.08f);
     }
     /// <summary>Objeto suelto que se puede agarrar: Rigidbody + XRGrabInteractable + sonido al chocar.</summary>
     private static Transform Grabbable(Transform parent, string name, Vector3 pos, float mass)
@@ -1208,19 +1208,22 @@ public static class Level2Builder
             {
                 title = "2.1.1 El Detective de Verdades (Fácil)", inputs = new[] { "A", "B" },
                 spec = "S = (A | B) & !(A & B)",
-                description = "Circuito:  S = AND( OR(A, B), NAND(A, B) )\nCompleta la tabla de verdad."
+                drawing = "S = AND(OR(A, B), NAND(A, B))",
+                description = "Lee el circuito y completa la tabla de verdad."
             },
             new TableDef
             {
                 title = "2.1.2 El Detective de Verdades (Medio)", inputs = new[] { "A", "B", "C" },
                 spec = "S = (!A & B) | C",
-                description = "Circuito:  S = OR( AND( NOT(A), B ), C )\nResuélvelo etapa por etapa."
+                drawing = "S = OR(AND(NOT(A), B), C)",
+                description = "Lee el circuito y resuélvelo etapa por etapa."
             },
             new TableDef
             {
                 title = "2.1.3 El Detective de Verdades (Difícil)", inputs = new[] { "A", "B", "C", "D" },
                 spec = "S = (A ^ B) & (C | !D)\ndc S = A & B",
-                description = "Circuito:  S = AND( XOR(A, B), OR(C, NOT(D)) )\nA=1 y B=1 nunca ocurre a la vez: esas filas son X."
+                drawing = "S = AND(XOR(A, B), OR(C, NOT(D)))",
+                description = "Lee el circuito. A=1 y B=1 nunca ocurre a la vez: esas filas son X."
             },
         };
         return BuildChallenge(parent, "Reto 2.1 - El Detective de Verdades", defs.Select(d => (System.Func<Transform, float>)(p => BuildTruthTable(p, d))).ToArray());
@@ -1236,21 +1239,24 @@ public static class Level2Builder
                 title = "2.2.1 Solo Tengo Esto (Fácil)", inputs = new[] { "A", "B" }, outputs = new[] { "S" },
                 spec = "S = A & B", allowed = nand, slots = 3, ports = 2, pins = 1, inputFanout = 2, pinFanout = 2,
                 gates = Gates((LogicGateType.NAND, 3)),
-                instructions = "Construye S = A AND B usando SOLO compuertas NAND.\nRecuerda: NOT(A) = NAND(A, A)   y   AND = NOT(NAND)."
+                drawing = "S = AND(A, B)",
+                instructions = "Construye este circuito usando SOLO compuertas NAND.\nRecuerda: NOT(A) = NAND(A, A)   y   AND = NOT(NAND)."
             },
             new CircuitDef
             {
                 title = "2.2.2 Solo Tengo Esto (Medio)", inputs = new[] { "A", "B", "C" }, outputs = new[] { "S" },
                 spec = "S = (A & B) | C", allowed = nand, slots = 5, ports = 2, pins = 1, inputFanout = 2, pinFanout = 2,
                 gates = Gates((LogicGateType.NAND, 5)),
-                instructions = "Construye S = (A AND B) OR C usando SOLO NAND.\nDe Morgan: A OR B = NAND( NAND(A,A), NAND(B,B) )."
+                drawing = "S = OR(AND(A, B), C)",
+                instructions = "Construye este circuito usando SOLO NAND.\nDe Morgan: A OR B = NAND( NAND(A,A), NAND(B,B) )."
             },
             new CircuitDef
             {
                 title = "2.2.3 Solo Tengo Esto (Difícil)", inputs = new[] { "A", "B" }, outputs = new[] { "S", "C" },
                 spec = "S = A ^ B\nC = A & B", allowed = nand, slots = 6, ports = 2, pins = 1, inputFanout = 3, pinFanout = 3,
                 gates = Gates((LogicGateType.NAND, 6)),
-                instructions = "Construye un medio sumador con SOLO NAND:\nSuma S = A XOR B      Acarreo C = A AND B"
+                drawing = "S = XOR(A, B); C = AND(A, B)",
+                instructions = "Construye este medio sumador usando SOLO NAND:\nla suma S y el acarreo C."
             },
         };
         return BuildChallenge(parent, "Reto 2.2 - Solo Tengo Esto", defs.Select(d => (System.Func<Transform, float>)(p => BuildCircuit(p, d))).ToArray());
@@ -1263,20 +1269,23 @@ public static class Level2Builder
             new KMapDef
             {
                 title = "2.3.1 El Ahorro de Compuertas (Fácil)", vars = new[] { "A", "B" },
-                spec = "F = A&B | A&!B", given = "Simplifica:  F = A·B + A·B'"
+                spec = "F = A&B | A&!B", given = "Simplifica este circuito con el mapa.",
+                drawing = "F = OR(AND(A, B), AND(A, B'))"
             },
             new KMapDef
             {
                 title = "2.3.2 El Ahorro de Compuertas (Medio)", vars = new[] { "A", "B", "C" },
                 spec = "F = !A&!B&!C | !A&!B&C | A&!B&!C | A&!B&C | A&B&!C",
-                given = "Simplifica:  F = A'B'C' + A'B'C + AB'C' + AB'C + ABC'"
+                given = "Simplifica este circuito con el mapa.",
+                drawing = "F = OR(AND(A', B', C'), AND(A', B', C), AND(A, B', C'), AND(A, B', C), AND(A, B, C'))"
             },
             new KMapDef
             {
                 title = "2.3.3 El Ahorro de Compuertas (Difícil)", vars = new[] { "A", "B", "C", "D" },
                 spec = "F = !A&!B&!C&D | !A&!B&C&D | !A&B&C&D | A&!B&C&D | A&B&C&D\n" +
                        "dc F = !A&!B&!C&!D | !A&!B&C&!D | !A&B&!C&D",
-                given = "F = m(1, 3, 7, 11, 15) + X(0, 2, 5)\nAprovecha las X para agrupar más."
+                given = "Simplifica este circuito. Las celdas 0, 2 y 5 son X:\naprovéchalas para agrupar más.",
+                drawing = "F = OR(AND(A', B', C', D), AND(A', B', C, D), AND(A', B, C, D), AND(A, B', C, D), AND(A, B, C, D))"
             },
         };
         return BuildChallenge(parent, "Reto 2.3 - El Ahorro de Compuertas", defs.Select(d => (System.Func<Transform, float>)(p => BuildKMap(p, d))).ToArray());
@@ -1292,6 +1301,7 @@ public static class Level2Builder
                 spec = MuxSpec(new[] { "S" }, 2), slots = 4, ports = 2, pins = 1, inputFanout = 2, pinFanout = 2,
                 gates = Gates((LogicGateType.NOT, 1), (LogicGateType.AND, 2), (LogicGateType.OR, 1), (LogicGateType.XOR, 1)),
                 liveTest = new[] { "S" },
+                drawing = "[MUX] MUX 2:1 | I0, I1 | S | Y",
                 instructions = "Arma un MUX 2:1:  Y = S'·I0 + S·I1\nPruébalo con S = 0 y S = 1."
             },
             new CircuitDef
@@ -1300,6 +1310,7 @@ public static class Level2Builder
                 spec = MuxSpec(new[] { "S1", "S0" }, 4), slots = 3, ports = 3, pins = 1, inputFanout = 2, pinFanout = 1,
                 gates = Gates((LogicGateType.MUX2, 3), (LogicGateType.OR, 1)),
                 liveTest = new[] { "S1", "S0" },
+                drawing = "[MUX] MUX 4:1 | I0, I1, I2, I3 | S1, S0 | Y",
                 instructions = "Arma un MUX 4:1 con módulos MUX 2:1 (I0, I1, S).\nS1S0 = 00→I0, 01→I1, 10→I2, 11→I3. Prueba las 4."
             },
             new CircuitDef
@@ -1309,6 +1320,7 @@ public static class Level2Builder
                 spec = MuxSpec(new[] { "S2", "S1", "S0" }, 8), slots = 3, ports = 6, pins = 1, inputFanout = 2, pinFanout = 1,
                 gates = Gates((LogicGateType.MUX4, 2), (LogicGateType.MUX2, 2)),
                 liveTest = new[] { "S2", "S1", "S0" },
+                drawing = "[MUX] MUX 8:1 | I0, I1, I2, I3, I4, I5, I6, I7 | S2, S1, S0 | Y",
                 instructions = "Arma un MUX 8:1 en cascada: dos MUX 4:1 (I0-I3, S0, S1) y un MUX 2:1 final con S2.\nPrueba las 8 combinaciones."
             },
         };
@@ -1325,6 +1337,7 @@ public static class Level2Builder
                 spec = DecoderSpec(new[] { "A1", "A0" }, null), slots = 6, ports = 2, pins = 1, inputFanout = 3, pinFanout = 3,
                 gates = Gates((LogicGateType.NOT, 2), (LogicGateType.AND, 4), (LogicGateType.OR, 1)),
                 liveTest = new[] { "A1", "A0" },
+                drawing = "[BOX] DECODIFICADOR 2 a 4 | A1, A0 | | Y0, Y1, Y2, Y3",
                 instructions = "Decodificador 2→4: para cada dirección A1A0 debe encenderse SOLO la puerta Y correspondiente.\nPrueba las 4 direcciones."
             },
             new CircuitDef
@@ -1333,6 +1346,7 @@ public static class Level2Builder
                 spec = DecoderSpec(new[] { "A2", "A1", "A0" }, null), slots = 11, ports = 3, pins = 1, inputFanout = 5, pinFanout = 4,
                 gates = Gates((LogicGateType.NOT, 3), (LogicGateType.AND, 8)),
                 liveTest = new[] { "A2", "A1", "A0" },
+                drawing = "[BOX] DECODIFICADOR 3 a 8 | A2, A1, A0 | | Y0, Y1, Y2, Y3, Y4, Y5, Y6, Y7",
                 instructions = "Decodificador 3→8: cada dirección A2A1A0 abre UNA sola bóveda (Y0-Y7).\nLas AND aceptan 3 cables. Prueba las 8."
             },
             new CircuitDef
@@ -1341,6 +1355,7 @@ public static class Level2Builder
                 spec = DecoderSpec(new[] { "A1", "A0" }, "E"), slots = 6, ports = 3, pins = 1, inputFanout = 4, pinFanout = 3,
                 gates = Gates((LogicGateType.NOT, 2), (LogicGateType.AND, 4)),
                 liveTest = new[] { "E", "A1", "A0" },
+                drawing = "[BOX] DECODIFICADOR 2 a 4 | A1, A0 | E | Y0, Y1, Y2, Y3",
                 instructions = "Decodificador 2→4 con Enable: si E = 0 ninguna salida se enciende; si E = 1 funciona normal.\nPrueba las 8 combinaciones de E, A1, A0."
             },
         };
@@ -1361,6 +1376,7 @@ public static class Level2Builder
                 spec = "S = A ^ B\nC = A & B", slots = 2, ports = 2, pins = 1, inputFanout = 2, pinFanout = 1,
                 gates = Gates((LogicGateType.XOR, 1), (LogicGateType.AND, 1), (LogicGateType.OR, 1)),
                 liveTest = new[] { "A", "B" },
+                drawing = "[BOX] MEDIO SUMADOR | A, B | | S, C",
                 instructions = "Medio sumador de 1 bit: Suma S y Acarreo C.\nPrueba las 4 combinaciones de A y B."
             },
             new CircuitDef
@@ -1368,6 +1384,7 @@ public static class Level2Builder
                 title = "2.6.2 La Balanza Digital (Medio)", inputs = a.Concat(b).ToArray(), constants = new[] { "GND" },
                 outputs = sums, spec = AdderSpec(false), slots = 4, ports = 3, pins = 2, inputFanout = 1, pinFanout = 1,
                 gates = Gates((LogicGateType.FULL_ADDER, 4), (LogicGateType.HALF_ADDER, 1)),
+                drawing = "[BOX] SUMADOR 4 BITS | A3, A2, A1, A0, B3, B2, B1, B0 | Cin = GND | C4, S3, S2, S1, S0",
                 instructions = "Encadena 4 sumadores completos: A3A2A1A0 + B3B2B1B0 = C4 S3S2S1S0.\nEl Cout de cada etapa va al Cin de la siguiente; el primer Cin va a GND (0)."
             },
             new CircuitDef
@@ -1376,6 +1393,7 @@ public static class Level2Builder
                 outputs = sums.Concat(new[] { "GT", "EQ", "LT" }).ToArray(), spec = AdderSpec(true),
                 slots = 12, ports = 4, pins = 2, inputFanout = 1, pinFanout = 3, fanoutOverrides = new Dictionary<string, int> { { "M", 5 } },
                 gates = Gates((LogicGateType.XOR, 4), (LogicGateType.FULL_ADDER, 4), (LogicGateType.NOR, 1), (LogicGateType.NOT, 2), (LogicGateType.AND, 1)),
+                drawing = "[BOX] SUMADOR / RESTADOR | A3, A2, A1, A0, B3, B2, B1, B0 | M | C4, S3, S2, S1, S0, GT, EQ, LT",
                 instructions = "Sumador/Restador con comparador. M = 0 suma, M = 1 resta (A − B en complemento a 2: B XOR M y Cin = M).\n" +
                                "Con M = 1:  EQ = el resultado es 0,  LT = no hubo acarreo final,  GT = hubo acarreo y no es igual."
             },
@@ -1471,6 +1489,8 @@ public static class Level2Builder
     private class CircuitDef
     {
         public string title, spec, instructions;
+        /// <summary>Dibujo de explicación (ver Level2Schematic). Vacío = sin dibujo.</summary>
+        public string drawing;
         public string[] inputs, outputs;
         public string[] constants = new string[0];
         public string[] liveTest = new string[0];
@@ -1483,6 +1503,8 @@ public static class Level2Builder
     private class TableDef
     {
         public string title, spec, description;
+        /// <summary>Dibujo de explicación (ver Level2Schematic): "S = AND(OR(A, B), NOT(C))". Vacío = sin dibujo.</summary>
+        public string drawing;
         public string[] inputs;
     }
 
@@ -1490,6 +1512,8 @@ public static class Level2Builder
     {
         public string title, spec, given;
         public string[] vars;
+        /// <summary>Dibujo de explicación (ver Level2Schematic). Vacío = sin dibujo.</summary>
+        public string drawing;
     }
 
     // ================================================================ Reto (3 versiones)
@@ -1600,7 +1624,7 @@ public static class Level2Builder
             puzzle.submitButton = MakeSubmit(table, new Vector3(panelW * 0.5f - 0.15f, 0.02f, 0f));
         puzzle.resultLight = MakeLamp(table, "LuzResultado", new Vector3(panelW * 0.5f - 0.32f, 0.04f, 0f), 0.05f);
 
-        return panelW;
+        return string.IsNullOrEmpty(d.drawing) ? panelW : AddExplanation(root, d.drawing, puzzle.puzzleId, panelW, top);
     }
 
     private static float BuildTruthTable(Transform root, TableDef d)
@@ -1608,7 +1632,7 @@ public static class Level2Builder
         int rows = 1 << d.inputs.Length;
         var cell = new Vector2(0.11f, 0.07f);
         float tableH = (rows + 1) * (cell.y + 0.012f);
-        float panelW = Mathf.Max(1.6f, (d.inputs.Length + 1) * 0.122f + 1.0f);
+        float panelW = Mathf.Max(1.0f, (d.inputs.Length + 1) * 0.122f + 0.5f);
         float top = ContentBottom + tableH;
 
         var puzzle = root.gameObject.AddComponent<TruthTablePuzzle>();
@@ -1630,7 +1654,7 @@ public static class Level2Builder
         var desk = Table(root, panelW);
         puzzle.submitButton = MakeSubmit(desk, new Vector3(0.2f, 0.02f, 0f));
         puzzle.resultLight = MakeLamp(desk, "LuzResultado", new Vector3(-0.05f, 0.04f, 0f), 0.05f);
-        return panelW;
+        return string.IsNullOrEmpty(d.drawing) ? panelW : AddExplanation(root, d.drawing, puzzle.puzzleId, panelW, top);
     }
 
     private static float BuildKMap(Transform root, KMapDef d)
@@ -1673,7 +1697,7 @@ public static class Level2Builder
         var desk = Table(root, panelW);
         puzzle.submitButton = MakeSubmit(desk, new Vector3(0.65f, 0.02f, 0f));
         puzzle.resultLight = MakeLamp(desk, "LuzResultado", new Vector3(0.4f, 0.04f, 0f), 0.05f);
-        return panelW;
+        return string.IsNullOrEmpty(d.drawing) ? panelW : AddExplanation(root, d.drawing, puzzle.puzzleId, panelW, top);
     }
 
     // ================================================================ Piezas
