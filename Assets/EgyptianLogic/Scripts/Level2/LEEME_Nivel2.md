@@ -201,6 +201,26 @@ Notas:
 - En 2.3 cada toque de celda cuenta como interacción (el documento cuenta "1 para agrupar"). Si quieres alinearlo, sube las interacciones ideales.
 - `StageConfig.hasSubmit` es por reto y no por versión. En 2.6 la V1 se valida en vivo y la V2/V3 con botón.
 
+## Estética del juego (modelos, materiales y sonido)
+
+Menú **Egyptian Logic → Nivel 2 → Aplicar estética del juego**, sobre la escena ya construida (no la reconstruye).
+`Level2Builder` también lo llama al final de "Construir el nivel". Se puede correr varias veces: lo ya convertido se salta.
+
+- **Modelos del proyecto** en vez de primitivas: antorchas (`torch.fbx` con el fuego de partículas del Nivel 1,
+  `Prefabs/Fuego.prefab`), bombillas (`Low_Poly_Light_Bulb`), llave (`key_low`), cerradura (`keyhole (2)`, sin su socket),
+  switches (`switch.prefab`), botón Comprobar (`Button (1).prefab`), compuertas AND/OR/XOR/NOT/NAND/XNOR (`Models/Gates`),
+  copas (`goblet.fbx`) y pilares (`pillar.fbx`). MUX, sumadores y NOR (solo hay `.blend`) quedan como bloques.
+- **Materiales**: los `L2_*` de color plano pasan a `Walls`, `Wood`, `Gold`, `Rust`, `Hiero 1/2`, `Gate Cable`, `Cable`,
+  `Red Light` y `Light Bulb` (tabla `MaterialMap` en `Level2Look.cs`). Comida, barro, alfombras, sillas, mesas de banquete,
+  pisos y muros con textura no se tocan.
+- **Sonido**: `Audio/MusicPlayer`, `SuccessPlayer` y `FailurePlayer` (como en los niveles 1 y 3), conectados a
+  `onSolved`/`onIncorrect` de los 18 retos. Fuego en bucle en antorchas de pared y braseros. Todos los AudioSource van al
+  `MainAudioMixer` (fuego → Ambience, el resto → SFX).
+- **Fuente** Eczar SDF en todos los textos.
+
+Las referencias de los scripts (CircuitInput, Level2Puzzle, Level2Flow, Level2Torch…) se reconectan solas.
+Los tamaños (largo de antorchas, switches, compuertas…) están como constantes al inicio de `Level2Look.cs`.
+
 ## Pendiente
 
 - La **variante inversa** de 2.1 (armar el circuito a partir de la tabla) no está hecha. Se puede montar con `CircuitSpecPuzzle` y la misma especificación.

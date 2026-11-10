@@ -7,7 +7,7 @@ public static class Level2Hints
     private static readonly System.Collections.Generic.Dictionary<string, string> Names = new System.Collections.Generic.Dictionary<string, string>
     {
         { "2.1", "El Detective de Verdades" }, { "2.2", "Solo Tengo Esto" }, { "2.3", "El Ahorro de Compuertas" },
-        { "2.4", "El Selector" }, { "2.5", "El Repartidor" }, { "2.6", "La Balanza Digital" },
+        { "2.4", "El Selector" }, { "2.5", "El Repartidor" },
     };
 
     // En 2.1 y 2.3 todo se responde en el panel; en los de circuitos, las compuertas están en el suelo
@@ -144,32 +144,6 @@ public static class Level2Hints
                 "Arma primero el decodificador 2→4 normal y después agrega el Enable.",
                 "Usa E como tercera entrada de cada AND: si E = 0, ninguna salida puede encenderse.",
                 "Solución: Yk = E · (término de la dirección k), por ejemplo Y0 = E·A1'·A0'. Prueba con E = 0 y E = 1."
-            },
-        },
-
-        // ---------------- 2.6 La Balanza Digital
-        new[]
-        {
-            new[]
-            {
-                Where("2.6"),
-                "En binario, 1 + 1 = 10: la suma es 0 y el acarreo es 1.",
-                "La suma vale 1 cuando A y B son distintos. El acarreo vale 1 cuando ambos son 1.",
-                "Solución: S = XOR(A, B), C = AND(A, B). Prueba las 4 combinaciones."
-            },
-            new[]
-            {
-                Where("2.6"),
-                "Cada sumador completo suma un bit: Ai, Bi y el acarreo que viene del bit anterior.",
-                "El Cout de cada etapa va al Cin de la siguiente. El primer Cin va a GND (0).",
-                "Solución: FA0(A0, B0, GND) → S0; FA1(A1, B1, Cout0) → S1; FA2 → S2; FA3 → S3, y su Cout → C4."
-            },
-            new[]
-            {
-                Where("2.6"),
-                "Restar es sumar el complemento a 2: se invierte B y se suma 1.",
-                "XOR(Bi, M) invierte B solo cuando M = 1, y M como primer Cin suma ese 1.",
-                "Solución: Xi = XOR(Bi, M); sumadores en cadena con Cin0 = M; EQ = NOR(S0..S3); LT = NOT(C4); GT = AND(C4, NOT(EQ))."
             },
         },
     };

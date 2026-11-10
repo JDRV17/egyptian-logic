@@ -8,7 +8,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 /// <summary>
 /// Menú "Egyptian Logic > Nivel 2" que arma en la escena abierta los retos del Nivel 2
-/// (6 juegos × 3 versiones) con piezas básicas: switches, ranuras, cables, compuertas, botones y carteles.
+/// (5 juegos × 3 versiones; el 2.6 La Balanza Digital se eliminó) con piezas básicas: switches, ranuras, cables, compuertas, botones y carteles.
 /// Cada reto queda con un PuzzleVersionManager que activa una versión al iniciar (aleatoria por defecto)
 /// y que el AdaptationEngine puede controlar igual que en el Nivel 1.
 /// Luego se pueden mover, reemplazar los modelos o cambiar materiales sin tocar la lógica.
@@ -20,14 +20,14 @@ public static partial class Level2Builder
 
     // ================================================================ Menú
 
-    [MenuItem(Menu + "Construir los 6 retos")]
+    [MenuItem(Menu + "Construir los 5 retos")]
     public static void BuildAll()
     {
         var root = new GameObject("Nivel2_Retos");
         Undo.RegisterCreatedObjectUndo(root, "Construir retos del Nivel 2");
 
         float x = 0f;
-        foreach (var build in new System.Func<Transform, float>[] { Build21, Build22, Build23, Build24, Build25, Build26 })
+        foreach (var build in new System.Func<Transform, float>[] { Build21, Build22, Build23, Build24, Build25 })
         {
             var holder = new GameObject("tmp");
             holder.transform.SetParent(root.transform, false);
@@ -51,7 +51,6 @@ public static partial class Level2Builder
     [MenuItem(Menu + "Construir solo 2.3 El Ahorro de Compuertas")] private static void Menu23() => BuildOne(Build23);
     [MenuItem(Menu + "Construir solo 2.4 El Selector (MUX)")] private static void Menu24() => BuildOne(Build24);
     [MenuItem(Menu + "Construir solo 2.5 El Repartidor (Decodificador)")] private static void Menu25() => BuildOne(Build25);
-    [MenuItem(Menu + "Construir solo 2.6 La Balanza Digital (Sumador)")] private static void Menu26() => BuildOne(Build26);
 
     private static void BuildOne(System.Func<Transform, float> build)
     {
@@ -78,13 +77,15 @@ public static partial class Level2Builder
 
     // ================================================================ Nivel completo
 
-    private static readonly string[] ChallengeIds = { "2.1", "2.2", "2.3", "2.4", "2.5", "2.6" };
+    // 2.6 "La Balanza Digital" (sumadores) se eliminó: el nivel queda con 5 retos, como los niveles 1 y 3
+    private const int ChallengeCount = 5;
+    private static readonly string[] ChallengeIds = { "2.1", "2.2", "2.3", "2.4", "2.5" };
 
     /// <summary>Nombres que ve el jugador (sin número ni dificultad).</summary>
     private static readonly string[] ChallengeNames =
     {
         "El Detective de Verdades", "Solo Tengo Esto", "El Ahorro de Compuertas",
-        "El Selector", "El Repartidor", "La Balanza Digital"
+        "El Selector", "El Repartidor"
     };
 
     // Valores ideales del documento: (segundos, interacciones) por versión, y si el reto tiene botón de comprobar
@@ -95,11 +96,11 @@ public static partial class Level2Builder
         new[] { (30f, 2), (60f, 6), (90f, 7) },
         new[] { (30f, 8), (90f, 20), (180f, 48) },
         new[] { (30f, 8), (90f, 24), (180f, 33) },
-        new[] { (30f, 12), (90f, 24), (180f, 36) },
     };
-    private static readonly bool[] HasSubmit = { true, true, true, false, false, false };
+    private static readonly bool[] HasSubmit = { true, true, true, false, false };
 
-    // Medidas del comedor (en metros): 40 × 28, la mesa de banquete al centro y 3 retos en cada muro largo.
+    // Medidas del comedor (en metros): 40 × 28, la mesa de banquete al centro y los retos en los muros largos
+    // (3 en el norte y 2 en el sur; el puesto sureste quedó libre al quitar el 2.6).
     private const float HallHalfX = 20f;          // entrada al oeste (x = −20), salida al este (x = 20)
     private const float HallHalfZ = 14f;          // muro norte en z = 14, muro sur en z = −14
     private const float HallHeight = 8f;
@@ -116,15 +117,15 @@ public static partial class Level2Builder
     // Ubicación de cada reto (columna, muro norte o sur), como en el plano del comedor
     private static readonly (int col, bool north)[] Cells =
     {
-        (0, true), (1, true), (0, false), (1, false), (2, true), (2, false)
+        (0, true), (1, true), (0, false), (1, false), (2, true)
     };
 
-    // Instrumento que aparece al resolver cada reto para abrir el siguiente
+    // Instrumento que aparece al resolver cada reto para abrir el siguiente. El del último (el brasero) abre la salida.
     private enum Instrument { Lever, PressurePlate, Key, Button, TorchBrazier, ExitLever }
     private static readonly Instrument[] Instruments =
     {
         Instrument.Lever, Instrument.PressurePlate, Instrument.Key,
-        Instrument.Button, Instrument.TorchBrazier, Instrument.ExitLever
+        Instrument.Button, Instrument.TorchBrazier
     };
 
     private static float ColumnX(int k) => (Cells[k].col - 1) * ColumnSpacing;
@@ -153,9 +154,9 @@ public static partial class Level2Builder
         hall.SetParent(level.transform, false);
 
         // ---- Retos
-        var builders = new System.Func<Transform, float>[] { Build21, Build22, Build23, Build24, Build25, Build26 };
-        var challenges = new Transform[6];
-        for (int k = 0; k < 6; k++)
+        var builders = new System.Func<Transform, float>[] { Build21, Build22, Build23, Build24, Build25 };
+        var challenges = new Transform[ChallengeCount];
+        for (int k = 0; k < ChallengeCount; k++)
             challenges[k] = BuildInto(hall, builders[k], out _);
 
         // ---- El comedor
@@ -178,11 +179,11 @@ public static partial class Level2Builder
                 Brazier(decor, new Vector3(x * (HallHalfX - 1.6f), 0f, z * (HallHalfZ - 2.5f)));
 
         // ---- Retos contra los muros
-        var managers = new PuzzleVersionManager[6];
-        var panelTorches = new Level2Torch[6][];
-        flow.stations = new Level2Flow.Station[6];
+        var managers = new PuzzleVersionManager[ChallengeCount];
+        var panelTorches = new Level2Torch[ChallengeCount][];
+        flow.stations = new Level2Flow.Station[ChallengeCount];
 
-        for (int k = 0; k < 6; k++)
+        for (int k = 0; k < ChallengeCount; k++)
         {
             var area = new GameObject($"Reto_{k + 1} {ChallengeNames[k]}").transform;
             area.SetParent(hall, false);
@@ -237,7 +238,7 @@ public static partial class Level2Builder
         }
 
         // ---- Instrumentos y camino de antorchas hacia el reto siguiente
-        for (int k = 0; k < 6; k++)
+        for (int k = 0; k < ChallengeCount; k++)
         {
             var station = flow.stations[k];
             var holder = new GameObject("Paso_" + (k + 1)).transform;
@@ -245,7 +246,7 @@ public static partial class Level2Builder
 
             var torches = new List<Level2Torch>();
             station.instrument = MakeInstrument(holder, k, torches);
-            if (k + 1 < 6)
+            if (k + 1 < ChallengeCount)
             {
                 torches.AddRange(PathTorches(holder, k));
                 torches.AddRange(panelTorches[k + 1]);
@@ -278,6 +279,9 @@ public static partial class Level2Builder
         else
             foreach (var g in level.GetComponentsInChildren<XRGrabInteractable>(true))
                 SetLayer(g.transform, layer);
+
+        // Modelos, materiales, fuentes y sonidos del resto del juego (Level2Look.cs)
+        Level2Look.Apply(level);
 
         Selection.activeGameObject = level;
         Debug.Log($"[Level2Builder] Nivel 2 construido: comedor de {HallHalfX * 2f:F0} × {HallHalfZ * 2f:F0} m. " +
@@ -427,7 +431,7 @@ public static partial class Level2Builder
         stele.localPosition = new Vector3(x + 3.2f, 0f, 3.6f);
         stele.localRotation = Quaternion.LookRotation(Vector3.right);   // se lee desde el lado de la entrada
         Prim(PrimitiveType.Cube, stele, "Piedra", new Vector3(0f, 1.1f, 0.1f), new Vector3(1.6f, 2.2f, 0.25f), Mat("L2_Pilar", new Color(0.78f, 0.67f, 0.48f)), true);
-        progress.Add(Level2Visuals.CreateLabel(stele, "Progreso", "Pruebas superadas: 0 / 6", new Vector3(0f, 1.5f, -0.04f), new Vector2(1.4f, 0.6f), 1.2f));
+        progress.Add(Level2Visuals.CreateLabel(stele, "Progreso", $"Pruebas superadas: 0 / {ChallengeCount}", new Vector3(0f, 1.5f, -0.04f), new Vector2(1.4f, 0.6f), 1.2f));
     }
 
     private static void FloorTile(Transform parent, Vector3 pos)
@@ -473,7 +477,7 @@ public static partial class Level2Builder
         float front = WallThick * 0.5f + 0.02f;
         Level2Visuals.CreateLabel(frame, "CartelSalida", "Nivel 3", new Vector3(0f, DoorHeight + 0.45f, front), new Vector2(DoorWidth, 0.6f), 2f)
             .transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
-        var sign = Level2Visuals.CreateLabel(frame, "Progreso", "Pruebas superadas: 0 / 6", new Vector3(0f, DoorHeight + 1.5f, front),
+        var sign = Level2Visuals.CreateLabel(frame, "Progreso", $"Pruebas superadas: 0 / {ChallengeCount}", new Vector3(0f, DoorHeight + 1.5f, front),
             new Vector2(6f, 0.9f), 2f);
         sign.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
         progress.Add(sign);
@@ -503,8 +507,8 @@ public static partial class Level2Builder
         levelExit.nextSceneName = "EgyptLevel3";
         levelExit.flow = flow;
 
-        // Las antorchas del pasillo se prenden con las de la puerta (al usar la última palanca)
-        var last = flow.stations[5];
+        // Las antorchas del pasillo se prenden con las de la puerta (al usar el último instrumento)
+        var last = flow.stations[ChallengeCount - 1];
         var list = new List<Level2Torch>(last.torches)
         {
             WallTorch(root, "Antorcha", new Vector3(cx, 2.2f, half - WallThick * 0.5f), Vector3.back, false),
@@ -599,7 +603,7 @@ public static partial class Level2Builder
         Vector3 start = InstrumentPosition(k);
         float zA = Side(k) * PathTorchZ;
 
-        if (k + 1 < 6)
+        if (k + 1 < ChallengeCount)
         {
             float x1 = ColumnX(k + 1), zB = Side(k + 1) * PathTorchZ;
             route.Add(new Vector3(start.x, 0f, zA));
@@ -1104,8 +1108,8 @@ public static partial class Level2Builder
         so.FindProperty("level").intValue = 2;
 
         var stages = so.FindProperty("stages");
-        stages.arraySize = 6;
-        for (int k = 0; k < 6; k++)
+        stages.arraySize = ChallengeCount;
+        for (int k = 0; k < ChallengeCount; k++)
         {
             var st = stages.GetArrayElementAtIndex(k);
             st.FindPropertyRelative("name").stringValue = ChallengeIds[k];
@@ -1135,8 +1139,8 @@ public static partial class Level2Builder
         else Debug.LogWarning("[Level2Builder] No encontré HintInput.inputactions: asigna Hint Action en el HintManager.");
 
         var stages = so.FindProperty("stages");
-        stages.arraySize = 6;
-        for (int k = 0; k < 6; k++)
+        stages.arraySize = ChallengeCount;
+        for (int k = 0; k < ChallengeCount; k++)
         {
             var st = stages.GetArrayElementAtIndex(k);
             st.FindPropertyRelative("name").stringValue = ChallengeIds[k];
@@ -1188,8 +1192,8 @@ public static partial class Level2Builder
         so.FindProperty("versionWithoutData").intValue = 0;
 
         var bindings = so.FindProperty("bindings");
-        bindings.arraySize = 6;
-        for (int k = 0; k < 6; k++)
+        bindings.arraySize = ChallengeCount;
+        for (int k = 0; k < ChallengeCount; k++)
         {
             var b = bindings.GetArrayElementAtIndex(k);
             b.FindPropertyRelative("name").stringValue = ChallengeIds[k];
@@ -1360,45 +1364,6 @@ public static partial class Level2Builder
             },
         };
         return BuildChallenge(parent, "Reto 2.5 - El Repartidor", defs.Select(d => (System.Func<Transform, float>)(p => BuildCircuit(p, d))).ToArray());
-    }
-
-    private static float Build26(Transform parent)
-    {
-        var a = new[] { "A3", "A2", "A1", "A0" };
-        var b = new[] { "B3", "B2", "B1", "B0" };
-        var sums = new[] { "C4", "S3", "S2", "S1", "S0" };
-
-        var defs = new[]
-        {
-            new CircuitDef
-            {
-                title = "2.6.1 La Balanza Digital (Fácil)", inputs = new[] { "A", "B" }, outputs = new[] { "S", "C" },
-                spec = "S = A ^ B\nC = A & B", slots = 2, ports = 2, pins = 1, inputFanout = 2, pinFanout = 1,
-                gates = Gates((LogicGateType.XOR, 1), (LogicGateType.AND, 1), (LogicGateType.OR, 1)),
-                liveTest = new[] { "A", "B" },
-                drawing = "[BOX] MEDIO SUMADOR | A, B | | S, C",
-                instructions = "Medio sumador de 1 bit: Suma S y Acarreo C.\nPrueba las 4 combinaciones de A y B."
-            },
-            new CircuitDef
-            {
-                title = "2.6.2 La Balanza Digital (Medio)", inputs = a.Concat(b).ToArray(), constants = new[] { "GND" },
-                outputs = sums, spec = AdderSpec(false), slots = 4, ports = 3, pins = 2, inputFanout = 1, pinFanout = 1,
-                gates = Gates((LogicGateType.FULL_ADDER, 4), (LogicGateType.HALF_ADDER, 1)),
-                drawing = "[BOX] SUMADOR 4 BITS | A3, A2, A1, A0, B3, B2, B1, B0 | Cin = GND | C4, S3, S2, S1, S0",
-                instructions = "Encadena 4 sumadores completos: A3A2A1A0 + B3B2B1B0 = C4 S3S2S1S0.\nEl Cout de cada etapa va al Cin de la siguiente; el primer Cin va a GND (0)."
-            },
-            new CircuitDef
-            {
-                title = "2.6.3 La Balanza Digital (Difícil)", inputs = a.Concat(b).Concat(new[] { "M" }).ToArray(),
-                outputs = sums.Concat(new[] { "GT", "EQ", "LT" }).ToArray(), spec = AdderSpec(true),
-                slots = 12, ports = 4, pins = 2, inputFanout = 1, pinFanout = 3, fanoutOverrides = new Dictionary<string, int> { { "M", 5 } },
-                gates = Gates((LogicGateType.XOR, 4), (LogicGateType.FULL_ADDER, 4), (LogicGateType.NOR, 1), (LogicGateType.NOT, 2), (LogicGateType.AND, 1)),
-                drawing = "[BOX] SUMADOR / RESTADOR | A3, A2, A1, A0, B3, B2, B1, B0 | M | C4, S3, S2, S1, S0, GT, EQ, LT",
-                instructions = "Sumador/Restador con comparador. M = 0 suma, M = 1 resta (A − B en complemento a 2: B XOR M y Cin = M).\n" +
-                               "Con M = 1:  EQ = el resultado es 0,  LT = no hubo acarreo final,  GT = hubo acarreo y no es igual."
-            },
-        };
-        return BuildChallenge(parent, "Reto 2.6 - La Balanza Digital", defs.Select(d => (System.Func<Transform, float>)(p => BuildCircuit(p, d))).ToArray());
     }
 
     // ================================================================ Especificaciones generadas

@@ -5,7 +5,7 @@ using UnityEngine;
 
 /// <summary>
 /// Teclado físico para escribir expresiones booleanas (A, B, ', +, paréntesis…).
-/// Las teclas se generan al iniciar; "&lt;-" borra un símbolo y "C" borra todo.
+/// Las teclas se generan al iniciar; "&lt;-" borra un símbolo y "CLR" borra todo.
 /// </summary>
 public class ExpressionKeypad : MonoBehaviour
 {
