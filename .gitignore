@@ -68,6 +68,10 @@ Thumbs.db
 # Registros de compilación de Addressables (si los usas)
 /[Aa]ssets/[Aa]ddressable[Aa]sset[Dd]ata/*/*.bin*
 
+# Credenciales del correo del menú final (no subir)
+/[Aa]ssets/EgyptianLogic/Resources/MailCredentials.json
+/[Aa]ssets/EgyptianLogic/Resources/MailCredentials.json.meta
+
 # Builds
 /BUILD_RELEASE/
 /Spacecode_O2Program_Data/
