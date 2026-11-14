@@ -8951,31 +8951,49 @@ MonoBehaviour:
     versionSource: {fileID: 299571419}
     byVersion:
     - hints:
-      - "Sigue las antorchas encendidas por el comedor hasta \xABEl Detective de
-        Verdades\xBB, junto al muro. La luz \xE1mbar sobre el reto indica que est\xE1
-        abierto."
-      - "Eval\xFAa por partes: para cada fila calcula OR(A,B) y NAND(A,B), y despu\xE9s
-        \xFAnelos con el AND."
-      - OR vale 1 si alguna entrada es 1. NAND vale 0 solo cuando ambas son 1. El
-        AND final necesita las dos partes en 1.
+      - "En mi antiguo comedor, los retos se encuentran ubicados en unos tableros
+        que emergen de las paredes. Cerca de la entrada, a tu izquierda, encontrar\xE1s
+        el primero de ellos."
+      - "Observa el circuito, y presta especial atenci\xF3n a las entradas. Llena
+        la tabla de verdad, tocando los cubos con el s\xEDmbolo \"?\". Coloca el
+        cubo en \"0\", si esa combinaci\xF3n de entradas no encender\xEDa el circuito,
+        y en \"1\" si s\xED lo resolver\xEDa. Al final, presiona el bot\xF3n al costado
+        derecho para evaluar tus respuestas. "
+      - "Recuerda que OR entrega 1 si alguna de sus entradas (A, B), o ambas, est\xE1n
+        en 1. NAND entrega 1 siempre y cuando las dos entradas (A, B) no est\xE9n
+        en 1. AND funciona al rev\xE9s, solo entregar\xE1 uno si sus dos entradas
+        (las salidas de las dos compuertas anteriores), est\xE1n en 1."
       - "Soluci\xF3n: S = 0, 1, 1, 0 para las filas 00, 01, 10, 11 (el circuito es
         un XOR)."
     - hints:
-      - "Sigue las antorchas encendidas por el comedor hasta \xABEl Detective de
-        Verdades\xBB, junto al muro. La luz \xE1mbar sobre el reto indica que est\xE1
-        abierto."
-      - 'Resuelve por etapas: primero NOT(A), luego el AND con B y al final el OR
-        con C.'
-      - "Si C = 1 la salida siempre es 1. Si C = 0, solo importa A'\xB7B (A apagado
-        y B encendido)."
+      - "En mi antiguo comedor, los retos se encuentran ubicados en unos tableros
+        que emergen de las paredes. Cerca de la entrada, a tu izquierda, encontrar\xE1s
+        el primero de ellos."
+      - "Observa el circuito, y presta especial atenci\xF3n a las entradas. Llena
+        la tabla de verdad, tocando los cubos con el s\xEDmbolo \"?\". Coloca el
+        cubo en \"0\", si esa combinaci\xF3n de entradas no encender\xEDa el circuito,
+        y en \"1\" si s\xED lo resolver\xEDa. Al final, presiona el bot\xF3n al costado
+        derecho para evaluar tus respuestas. "
+      - "Recuerda que NOT invierte su entrada (A), cambiando el valor de 0 a 1 o
+        de 1 a 0. AND solo entregar\xE1 uno si sus dos entradas (la salida del NOT
+        y B), est\xE1n en 1. OR entrega 1 si alguna de sus entradas (la salida del
+        AND y C), o ambas, est\xE1n en 1."
       - "Soluci\xF3n (filas 000 a 111): 0, 1, 1, 1, 0, 1, 0, 1."
     - hints:
-      - "Sigue las antorchas encendidas por el comedor hasta \xABEl Detective de
-        Verdades\xBB, junto al muro. La luz \xE1mbar sobre el reto indica que est\xE1
-        abierto."
-      - "Las filas con A = 1 y B = 1 son X: nunca ocurren y se aceptan con cualquier
-        valor. Conc\xE9ntrate en las otras 12."
-      - "La salida es 1 solo si A y B son distintos y adem\xE1s C = 1 o D = 0."
+      - "En mi antiguo comedor, los retos se encuentran ubicados en unos tableros
+        que emergen de las paredes. Cerca de la entrada, a tu izquierda, encontrar\xE1s
+        el primero de ellos."
+      - "Observa el circuito, y presta especial atenci\xF3n a las entradas. Llena
+        la tabla de verdad, tocando los cubos con el s\xEDmbolo \"?\". Coloca el
+        cubo en \"0\", si esa combinaci\xF3n de entradas no encender\xEDa el circuito,
+        y en \"1\" si s\xED lo resolver\xEDa. Al final, presiona el bot\xF3n al costado
+        derecho para evaluar tus respuestas. Los cubos que tengan \"X\" los puedes
+        ignorar.\r\n\r\n"
+      - "Recuerda que XOR solo entrega 1 si alguna de sus dos entradas (A, B), pero
+        NO ambas, est\xE1n en 1. NOT invierte su entrada (D), cambiando el valor
+        de 0 a 1 o de 1 a 0. OR entrega 1 si alguna de sus entradas (la salida del
+        NOT y C), o ambas, est\xE1n en 1. AND solo entregar\xE1 uno si sus dos entradas
+        (las salidas del XOR y el OR), est\xE1n en 1. "
       - "Soluci\xF3n: S = 1 en 0100, 0110, 0111, 1000, 1010 y 1011. Las filas 11xx
         son X. El resto es 0."
     skipFirstHint: 0
@@ -8983,31 +9001,73 @@ MonoBehaviour:
     versionSource: {fileID: 1562784469}
     byVersion:
     - hints:
-      - "Sigue las antorchas encendidas por el comedor hasta \xABSolo Tengo Esto\xBB,
-        junto al muro. La luz \xE1mbar sobre el reto indica que est\xE1 abierto,
-        y las compuertas para resolverlo est\xE1n en el suelo frente a \xE9l."
-      - "Una NAND es un AND con la salida negada. \xBFC\xF3mo deshaces esa negaci\xF3n
-        usando otra NAND?"
-      - "NOT(X) = NAND(X, X): conecta la misma se\xF1al a las dos entradas de una
-        NAND."
-      - "Soluci\xF3n: NAND1(A, B) y luego NAND2 con sus dos entradas desde la salida
-        de NAND1 \u2192 S."
+      - "Para desbloquear el siguiente tablero, es necesario que actives la palanca
+        que apareci\xF3 detr\xE1s tuyo, justo al frente del reto que acabas de completar.
+        Una vez lo hagas, mira a las paredes del comedor para encontrar d\xF3nde
+        surgi\xF3 el siguiente tablero."
+      - "Para este reto, tienes que lograr el mismo comportamiento del circuito que
+        se ve en el tablero, usando \xFAnicamente compuertas NAND. Encontrar\xE1s
+        las que necesitas regadas a tu alrededor, cayeron del techo luego de iniciar
+        el reto. Col\xF3calas donde las necesites, y arrastra los cables azules que
+        se ven en las entradas para conectar los distintos m\xF3dulos del circuito
+        (llev\xE1ndolos hasta los sockets dorados). Con\xE9ctalo todo a la bombilla
+        al final, y presiona el bot\xF3n para evaluar."
+      - "Para lograr el comportamiento de AND usando solo compuertas NAND, deben
+        ingresar las entradas a la compuerta NAND para producir (A\xB7B)', y luego
+        la salida de esta compuerta, debe conectarse dos veces como entrada a otra
+        compuerta NAND."
+      - "Conecta las dos entradas (A y B) con la primera compuerta NAND. Luego, conecta
+        dos de las salidas generadas a otra compuerta NAND. La salida de esta segunda
+        compuerta NAND, con\xE9ctalas al bombillo y presiona el bot\xF3n para evaluar."
     - hints:
-      - "Sigue las antorchas encendidas por el comedor hasta \xABSolo Tengo Esto\xBB,
-        junto al muro. La luz \xE1mbar sobre el reto indica que est\xE1 abierto,
-        y las compuertas para resolverlo est\xE1n en el suelo frente a \xE9l."
-      - "Por De Morgan: X + Y = NAND(X', Y'). Aqu\xED X = A\xB7B y Y = C."
-      - "(A\xB7B)' es justo NAND(A, B). Solo falta C negado: NAND(C, C)."
-      - "Soluci\xF3n: NAND1(A, B); NAND2(C, C); NAND3(NAND1, NAND2) \u2192 S."
+      - "Para desbloquear el siguiente tablero, es necesario que actives la palanca
+        que apareci\xF3 detr\xE1s tuyo, justo al frente del reto que acabas de completar.
+        Una vez lo hagas, mira a las paredes del comedor para encontrar d\xF3nde
+        surgi\xF3 el siguiente tablero."
+      - "Para este reto, tienes que lograr el mismo comportamiento del circuito que
+        se ve en el tablero, usando \xFAnicamente compuertas NAND. Encontrar\xE1s
+        las que necesitas regadas a tu alrededor, cayeron del techo luego de iniciar
+        el reto. Col\xF3calas donde las necesites, y arrastra los cables azules que
+        se ven en las entradas para conectar los distintos m\xF3dulos del circuito
+        (llev\xE1ndolos hasta los sockets dorados). Con\xE9ctalo todo a la bombilla
+        al final, y presiona el bot\xF3n para evaluar."
+      - "Para lograr el comportamiento de AND usando solo compuertas NAND, deben
+        ingresar las entradas a la compuerta NAND para producir (A\xB7B)', y luego
+        la salida de esta compuerta, debe conectarse dos veces como entrada a otra
+        compuerta NAND. Para lograr el comportamiento de OR, deben negarse las dos
+        entradas primero, colocando cada una como las dos entradas de dos compuertas
+        NAND diferentes, y luego las salidas de esas dos NANDS, se deben conectar
+        con otra NAND. "
+      - "Conecta las entradas A y B con la primera compuerta NAND. Luego, conecta
+        C dos veces a la segunda compuerta NAND para negarla. Une las salidas de
+        ambas compuertas en una tercera NAND. La salida de esta tercera compuerta
+        NAND, con\xE9ctala al bombillo y presiona el bot\xF3n para evaluar."
     - hints:
-      - "Sigue las antorchas encendidas por el comedor hasta \xABSolo Tengo Esto\xBB,
-        junto al muro. La luz \xE1mbar sobre el reto indica que est\xE1 abierto,
-        y las compuertas para resolverlo est\xE1n en el suelo frente a \xE9l."
-      - "Empieza por el acarreo: C = A\xB7B se hace con dos NAND en serie, como en
-        el reto f\xE1cil."
-      - 'El XOR con NAND: N1 = NAND(A,B); N2 = NAND(A,N1); N3 = NAND(B,N1); S = NAND(N2,N3).'
-      - "Soluci\xF3n: N1 = NAND(A,B); N2 = NAND(A,N1); N3 = NAND(B,N1); S = NAND(N2,N3);
-        C = NAND(N1,N1)."
+      - "Para desbloquear el siguiente tablero, es necesario que actives la palanca
+        que apareci\xF3 detr\xE1s tuyo, justo al frente del reto que acabas de completar.
+        Una vez lo hagas, mira a las paredes del comedor para encontrar d\xF3nde
+        surgi\xF3 el siguiente tablero."
+      - "Para este reto, tienes que lograr el mismo comportamiento del circuito que
+        se ve en el tablero, usando \xFAnicamente compuertas NAND. Encontrar\xE1s
+        las que necesitas regadas a tu alrededor, cayeron del techo luego de iniciar
+        el reto. Col\xF3calas donde las necesites, y arrastra los cables azules que
+        se ven en las entradas para conectar los distintos m\xF3dulos del circuito
+        (llev\xE1ndolos hasta los sockets dorados). Con\xE9ctalo todo a la bombilla
+        al final, y presiona el bot\xF3n para evaluar."
+      - Este circuito simula el comportamiento de un half-adder, donde el XOR hace
+        la suma y el AND se encarga del carry. Para el AND, deben ingresar las entradas
+        a la compuerta NAND, y luego la salida debe conectarse dos veces como entrada
+        a otra NAND. Para el XOR, deben ingresar las entradas a la compuerta NAND,
+        luego deben usarse otras dos compuertas NAND para conectar la salida de la
+        primera con las dos entradas, para finalmente unir esas dos salidas en una
+        cuarta compuerta NAND.
+      - "Conecta las dos entradas (A y B) con la primera compuerta NAND. Luego, conecta
+        dos de las salidas generadas a otra compuerta NAND. La salida de esta segunda
+        compuerta NAND, con\xE9ctala al bombillo C. Luego, conecta las dos entradas
+        a una tercera compuerta NAND, conecta la salida de esa tercera NAND con las
+        entradas (una NAND para NAND3 con A, y otra para NAND3 con B). Finalmente
+        conecta esas dos salidas con una sexta NAND, y conecta su salida al bombillo
+        S. "
     skipFirstHint: 0
   - name: 2.3
     versionSource: {fileID: 1251004233}
@@ -9262,7 +9322,7 @@ MonoBehaviour:
   versionWithoutData: 0
   useCustomSuccessors: 0
   successors: []
-  theta: -1
+  theta: 1
   pMin: 0.3
   pMax: 1
   rules:
@@ -11262,12 +11322,12 @@ GameObject:
   - component: {fileID: 64651384}
   - component: {fileID: 64651385}
   m_Layer: 0
-  m_Name: V3
+  m_Name: 2.2.3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &64651384
 Transform:
   m_ObjectHideFlags: 0
@@ -70102,7 +70162,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh564698
+  m_Name: pb_Mesh36004
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -82178,7 +82238,7 @@ GameObject:
   - component: {fileID: 527335128}
   - component: {fileID: 527335129}
   m_Layer: 0
-  m_Name: V1
+  m_Name: 2.3.1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -91362,7 +91422,7 @@ GameObject:
   m_Component:
   - component: {fileID: 574887246}
   m_Layer: 0
-  m_Name: Reto_1 El Detective de Verdades
+  m_Name: 2.1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95618,12 +95678,12 @@ GameObject:
   - component: {fileID: 605672236}
   - component: {fileID: 605672237}
   m_Layer: 0
-  m_Name: V3
+  m_Name: 2.3.3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &605672236
 Transform:
   m_ObjectHideFlags: 0
@@ -96393,12 +96453,12 @@ GameObject:
   - component: {fileID: 612689788}
   - component: {fileID: 612689789}
   m_Layer: 0
-  m_Name: V3
+  m_Name: 2.1.3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &612689788
 Transform:
   m_ObjectHideFlags: 0
@@ -104517,12 +104577,12 @@ GameObject:
   - component: {fileID: 674754010}
   - component: {fileID: 674754011}
   m_Layer: 0
-  m_Name: V2
+  m_Name: 2.3.2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &674754010
 Transform:
   m_ObjectHideFlags: 0
@@ -153708,7 +153768,7 @@ GameObject:
   - component: {fileID: 999652856}
   - component: {fileID: 999652857}
   m_Layer: 0
-  m_Name: V2
+  m_Name: 2.1.2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -195861,12 +195921,12 @@ GameObject:
   - component: {fileID: 1261886299}
   - component: {fileID: 1261886300}
   m_Layer: 0
-  m_Name: V1
+  m_Name: 2.1.1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1261886299
 Transform:
   m_ObjectHideFlags: 0
@@ -238949,7 +239009,7 @@ GameObject:
   - component: {fileID: 1532951170}
   - component: {fileID: 1532951171}
   m_Layer: 0
-  m_Name: V1
+  m_Name: 2.2.1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -272609,7 +272669,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1754071083}
   m_Layer: 0
-  m_Name: Reto_2 Solo Tengo Esto
+  m_Name: 2.2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -320744,7 +320804,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2086157551}
   m_Layer: 0
-  m_Name: Reto_3 El Ahorro de Compuertas
+  m_Name: 2.3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -325669,12 +325729,12 @@ GameObject:
   - component: {fileID: 2109712173}
   - component: {fileID: 2109712174}
   m_Layer: 0
-  m_Name: V2
+  m_Name: 2.2.2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2109712173
 Transform:
   m_ObjectHideFlags: 0
