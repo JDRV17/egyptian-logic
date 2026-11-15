@@ -39036,75 +39036,51 @@ MonoBehaviour:
     - hints:
       - "Sigue el camino del cable encendido. Notar\xE1s que ahora no todos los cubos
         del caj\xF3n muestran un \"?\"."
-      - "Hay nueve cubos, tres filas, tres columnas. La columna de la izquierda representa
-        el sistema binario, la del centro representa el decimal y la derecha representa
-        el hexadecimal. Dos de los cubos por cada fila muestran un n\xFAmero en su
-        respectivo sistema y el otro tiene un \"?\". Mueve el cubo del \"?\" para
-        encontrar el equivalente a los otros dos n\xFAmeros de la fila. Cuando los
-        hayas encontrado, presiona el bot\xF3n de la derecha."
-      - "Para pasar un n\xFAmero a binario, divide el n\xFAmero entero entre 2 sucesivamente
-        y anota los residuos (0 o 1), luego l\xE9elos de abajo hacia arriba. Para
-        hexadecimal, haz el mismo proceso de divisiones sucesivas, pero dividiendo
-        entre 16. Si alg\xFAn residuo es de 10 a 15, reempl\xE1zalo por su letra
-        correspondiente (A=10, B=11, C=12, D=13, E=14, F=15). Finalmente, lee los
-        residuos de abajo hacia arriba para obtener el valor hexadecimal completo."
-      - '1101 y D son equivalentes a 13 en decimal.
-
-
-        1010 y A son equivalentes
-        a 10 en decimal.
-
-
-        1111 y 15 son equivalentes a F en hexadecimal.'
+      - "Observa la m\xE1quina de estados en el pergamino sobre la mesa. En la parte
+        superior central ver\xE1s un patr\xF3n de colores. El objetivo es replicar
+        ese patr\xF3n, moviendo las palancas para replicar las transiciones entre
+        los estados (colores). "
+      - "En cada transici\xF3n entre dos estados hay unos valores de entrada. Debes
+        replicar esas entradas con los switches para efectuar la transici\xF3n cuando
+        el reloj marque un pulso. En este caso, tienes 8 segundos por transici\xF3n
+        para acomodar los switches. Si te equivocas, comienzas desde 0 (en rojo)."
+      - Activa los dos switches para pasar de rojo a azul, luego apaga el primero
+        para pasar a amarillo. Enciende el primero y apaga el segundo para pasar
+        a verde y finalmente, enciende los dos nuevamente para regresar a amarillo.
     - hints:
       - "Sigue el camino del cable encendido. Notar\xE1s que ahora no todos los cubos
         del caj\xF3n muestran un \"?\"."
-      - "Hay nueve cubos, tres filas, tres columnas. La columna de la izquierda representa
-        el sistema binario, la del centro representa el decimal y la derecha representa
-        el hexadecimal. Dos de los cubos por cada fila muestran un n\xFAmero en su
-        respectivo sistema y el otro tiene un \"?\". Mueve el cubo del \"?\" para
-        encontrar el equivalente a los otros dos n\xFAmeros de la fila. Cuando los
-        hayas encontrado, presiona el bot\xF3n de la derecha."
-      - "Para pasar un n\xFAmero a binario, divide el n\xFAmero entero entre 2 sucesivamente
-        y anota los residuos (0 o 1), luego l\xE9elos de abajo hacia arriba. Para
-        hexadecimal, haz el mismo proceso de divisiones sucesivas, pero dividiendo
-        entre 16. Si alg\xFAn residuo es de 10 a 15, reempl\xE1zalo por su letra
-        correspondiente (A=10, B=11, C=12, D=13, E=14, F=15). Finalmente, lee los
-        residuos de abajo hacia arriba para obtener el valor hexadecimal completo."
-      - '28 y 1C son equivalentes a 11100 en binario.
+      - "Observa la m\xE1quina de estados en el pergamino sobre la mesa. En la parte
+        superior central ver\xE1s un patr\xF3n de colores. El objetivo es replicar
+        ese patr\xF3n, moviendo las palancas para replicar las transiciones entre
+        los estados (colores). "
+      - "En cada transici\xF3n entre dos estados hay unos valores de entrada. Debes
+        replicar esas entradas con los switches para efectuar la transici\xF3n cuando
+        el reloj marque un pulso. En este caso, tienes 4 segundos por transici\xF3n
+        para acomodar los switches. Si te equivocas, comienzas desde 0 (en rojo)."
+      - 'Activa el segundo switch para pasar de rojo a verde, luego no cambies los
+        switches por un periodo para regresar a rojo. Luego enciende el primero y
+        apaga el segundo para pasar a amarillo y luego enciende los dos para regresar
+        a rojo. Deja ambos encendidos para pasar a azul y finalmente, para mantenerte
+        en azul, apaga los dos switches.
 
-
-        11110 y 1E son equivalentes
-        a 30 en decimal.
-
-
-        11011 y 27 son equivalentes a 1B en hexadecimal.'
+'
     - hints:
       - "Sigue el camino del cable encendido. Notar\xE1s que ahora no todos los cubos
         del caj\xF3n muestran un \"?\"."
-      - "Hay nueve cubos, tres filas, tres columnas. La columna de la izquierda representa
-        el sistema binario, la del centro representa el decimal y la derecha representa
-        el hexadecimal. Dos de los cubos por cada fila muestran un n\xFAmero en su
-        respectivo sistema y el otro tiene un \"?\". Mueve el cubo del \"?\" para
-        encontrar el equivalente a los otros dos n\xFAmeros de la fila. Cuando los
-        hayas encontrado, presiona el bot\xF3n de la derecha."
-      - "Para pasar un n\xFAmero a binario, divide el n\xFAmero entero entre 2 sucesivamente
-        y anota los residuos (0 o 1), luego l\xE9elos de abajo hacia arriba. Para
-        hexadecimal, haz el mismo proceso de divisiones sucesivas, pero dividiendo
-        entre 16. Si alg\xFAn residuo es de 10 a 15, reempl\xE1zalo por su letra
-        correspondiente (A=10, B=11, C=12, D=13, E=14, F=15). Finalmente, lee los
-        residuos de abajo hacia arriba para obtener el valor hexadecimal completo."
-      - '25 + 30 y 19 + 1E son equivalentes a 110111 en binario.
-
-
-
-        110110
-        - 001110 y 36 - E son equivalentes a 40 en decimal.
-
-
-
-        100101 + 011011
-        y 37 + 27 son equivalentes a 40 en hexadecimal.'
+      - "Observa la m\xE1quina de estados en el pergamino sobre la mesa. En la parte
+        superior central ver\xE1s un patr\xF3n de colores. El objetivo es replicar
+        ese patr\xF3n, moviendo las palancas para replicar las transiciones entre
+        los estados (colores). "
+      - "En cada transici\xF3n entre dos estados hay unos valores de entrada. Debes
+        replicar esas entradas con los switches para efectuar la transici\xF3n cuando
+        el reloj marque un pulso. En este caso, tienes 4 segundos por transici\xF3n
+        para acomodar los switches. Si te equivocas, comienzas desde 0 (en rojo)."
+      - Activa los dos switches para pasar de rojo a amarillo, luego apaga el primero
+        para pasar a verde. Apaga los dos switches para mantenerte en verde por un
+        periodo, y luego enciende el primero para pasar a azul. Apaga el primero
+        y enciende el segundo para regresar a rojo y finalmente, enciende ambos de
+        nuevo para regresar a amarillo.
     skipFirstHint: 0
   - name: 3.4
     versionSource: {fileID: 2060731441}
@@ -39114,43 +39090,76 @@ MonoBehaviour:
         de los cofres encontrar\xE1s cuatro pergaminos con preguntas curiosas. Si
         quieres saber qu\xE9 hacer con ellos, dir\xEDgete a la mesa con las llaves
         en la pared, cerca de mi tumba."
-      - "Cada pergamino tiene asignado un n\xFAmero, y su pregunta se puede responder
-        con un valor num\xE9rico. Encuentra la llave correspondiente al valor de
-        la respuesta, e introd\xFAcela en el orificio del valor del pergamino."
-      - "Para saber cu\xE1ntos bits se necesitan para representar X valores, basta
-        con obtener el resultado del logaritmo en base 2 de ese valor X. Si el resultado
-        no es entero, se toma el entero siguiente, es decir, si el resultado es 2.1,
-        entonces se necesitan 3 bits."
-      - "El orden correcto de las llaves es 2 - 1 - 7 - 5. Col\xF3calas en sus cerraduras
-        respetando ese orden."
+      - "Toca un cubo de la tablilla para girarlo: cada toque muestra otra flecha
+        (\u2191, \u2192, \u2193, \u2190). Cuando tengas la tabla lista, oprime el
+        bot\xF3n y observa al escarabajo: en cada paso avanza una losa por el laberinto.
+        Las bombillas de abajo muestran lo que detecta, y el cubo que est\xE1 usando
+        brilla. Si se estrella o se pierde, el cubo que caus\xF3 el error queda en
+        rojo y el escarabajo vuelve a la salida."
+      - "El escarabajo es una m\xE1quina de estados. Su estado es el rumbo que lleva:
+        las filas \u201CYendo \u2192\u201D y \u201CYendo \u2193\u201D. Su entrada
+        es lo que detecta su sensor: las columnas \u201CDelante libre\u201D y \u201CMuro
+        delante\u201D. Cada cubo es una transici\xF3n: dice a qu\xE9 estado pasa
+        desde esa fila cuando lee esa columna, y en el nuevo estado avanza una losa
+        hacia esa flecha. Si el camino est\xE1 libre, puede conservar su estado;
+        si hay muro, tiene que cambiarlo."
+      - "Todos los cubos empiezan en \u2191. En la fila \u201CYendo \u2192\u201D,
+        pon \u2192 en \u201CDelante libre\u201D (un toque) y \u2193 en \u201CMuro
+        delante\u201D (dos toques). En la fila \u201CYendo \u2193\u201D, pon \u2193
+        en \u201CDelante libre\u201D (dos toques) y \u2192 en \u201CMuro delante\u201D
+        (un toque). As\xED el escarabajo avanza mientras puede y, cada vez que choca,
+        cambia entre este y sur, que es la forma de la escalera. Luego oprime Probar."
     - hints:
       - "A la derecha se abri\xF3 una puerta con un cofre dentro. Si miras dentro
         de los cofres encontrar\xE1s cuatro pergaminos con preguntas curiosas. Si
         quieres saber qu\xE9 hacer con ellos, dir\xEDgete a la mesa con las llaves
         en la pared, cerca de mi tumba."
-      - "Cada pergamino tiene asignado un n\xFAmero, y su pregunta se puede responder
-        con un valor num\xE9rico. Encuentra la llave correspondiente al valor de
-        la respuesta, e introd\xFAcela en el orificio del valor del pergamino."
-      - "Para saber cu\xE1ntos bits se necesitan para representar X valores, basta
-        con obtener el resultado del logaritmo en base 2 de ese valor X. Si el resultado
-        no es entero, se toma el entero siguiente, es decir, si el resultado es 2.1,
-        entonces se necesitan 3 bits."
-      - "El orden correcto de las llaves es 5 - 7 - 8 - 4. Col\xF3calas en sus cerraduras
-        respetando ese orden."
+      - "Toca un cubo de la tablilla para girarlo: cada toque muestra otra flecha
+        (\u2191, \u2192, \u2193, \u2190). Cuando tengas la tabla lista, oprime el
+        bot\xF3n y observa al escarabajo: en cada paso avanza una losa por el laberinto.
+        Las bombillas de abajo muestran lo que detecta, y el cubo que est\xE1 usando
+        brilla. Si se estrella o se pierde, el cubo que caus\xF3 el error queda en
+        rojo y el escarabajo vuelve a la salida."
+      - "El escarabajo es una m\xE1quina de estados. Su estado es el rumbo que lleva:
+        las filas \u201CYendo \u2191\u201D, \u201CYendo \u2192\u201D, \u201CYendo
+        \u2193\u201D y \u201CYendo \u2190\u201D. Su entrada es lo que detecta su
+        sensor: las columnas \u201CDelante libre\u201D y \u201CMuro delante\u201D.
+        Cada cubo es una transici\xF3n: dice a qu\xE9 estado pasa desde esa fila
+        cuando lee esa columna, y en el nuevo estado avanza una losa hacia esa flecha.
+        Si el camino est\xE1 libre, puede conservar su estado, si hay muro, tiene
+        que cambiarlo."
+      - "En la columna \u201CDelante libre\u201D, pon en cada fila su misma flecha:
+        \u2191 en \u201CYendo \u2191\u201D, \u2192 en \u201CYendo \u2192\u201D, \u2193
+        en \u201CYendo \u2193\u201D y \u2190 en \u201CYendo \u2190\u201D. As\xED
+        sigue recto mientras puede. En la columna \u201CMuro delante\u201D, gira
+        a la derecha: \u2191 cambia a \u2192, \u2192 a \u2193, \u2193 a \u2190 y
+        \u2190 a \u2191."
     - hints:
       - "A la derecha se abri\xF3 una puerta con un cofre dentro. Si miras dentro
         de los cofres encontrar\xE1s cuatro pergaminos con preguntas curiosas. Si
         quieres saber qu\xE9 hacer con ellos, dir\xEDgete a la mesa con las llaves
         en la pared, cerca de mi tumba."
-      - "Cada pergamino tiene asignado un n\xFAmero, y su pregunta se puede responder
-        con un valor num\xE9rico. Encuentra la llave correspondiente al valor de
-        la respuesta, e introd\xFAcela en el orificio del valor del pergamino."
-      - "Para saber cu\xE1ntos bits se necesitan para representar X valores, basta
-        con obtener el resultado del logaritmo en base 2 de ese valor X. Si el resultado
-        no es entero, se toma el entero siguiente, es decir, si el resultado es 2.1,
-        entonces se necesitan 3 bits."
-      - "El orden correcto de las llaves es 7 - 10 - 6 - 3. Col\xF3calas en sus cerraduras
-        respetando ese orden."
+      - "Toca un cubo de la tablilla para girarlo: cada toque muestra otra flecha
+        (\u2191, \u2192, \u2193, \u2190). Cuando tengas la tabla lista, oprime el
+        bot\xF3n y observa al escarabajo: en cada paso avanza una losa por el laberinto.
+        Las bombillas de abajo muestran lo que detecta, y el cubo que est\xE1 usando
+        brilla. Si se estrella o se pierde, el cubo que caus\xF3 el error queda en
+        rojo y el escarabajo vuelve a la salida."
+      - "El escarabajo es una m\xE1quina de estados. Su estado es el rumbo que lleva:
+        las filas \u201CYendo \u2191\u201D, \u201CYendo \u2192\u201D, \u201CYendo
+        \u2193\u201D y \u201CYendo \u2190\u201D. Su entrada es lo que detectan sus
+        dos sensores, muro delante y muro a la derecha, y cada columna es una de
+        sus cuatro combinaciones. Cada cubo es una transici\xF3n: dice a qu\xE9 estado
+        pasa desde esa fila cuando lee esa columna. Se prueba la soluci\xF3n en dos
+        recorridos distintos.\r\n"
+      - "Cuando la derecha est\xE1 libre, gira hacia ella: en las columnas \u201CDelante
+        libre \xB7 Derecha libre\u201D y \u201CMuro delante \xB7 Derecha libre\u201D
+        pon \u2192 en \u201CYendo \u2191\u201D, \u2193 en \u201CYendo \u2192\u201D,
+        \u2190 en \u201CYendo \u2193\u201D y \u2191 en \u201CYendo \u2190\u201D.
+        Con muro a la derecha y delante libre, sigue recto: en esa columna pon la
+        misma flecha de cada fila. Con muro delante y a la derecha, gira a la izquierda:
+        pon \u2190 en \u201CYendo \u2191\u201D, \u2191 en \u201CYendo \u2192\u201D,
+        \u2192 en \u201CYendo \u2193\u201D y \u2193 en \u201CYendo \u2190\u201D."
     skipFirstHint: 0
   - name: 3.5
     versionSource: {fileID: 836069640}

@@ -87,6 +87,7 @@ public class FinalMenuController : MonoBehaviour
     public void BackToMainMenu()
     {
         SetTyping(false);
+        SaveSystem.Delete();               // la partida terminó: no queda nada que reanudar
         SessionData.Instance.ClearAll();   // la próxima persona empieza de cero
         Time.timeScale = 1f;
         SceneManager.LoadScene(mainMenuScene);

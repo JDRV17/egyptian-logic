@@ -8771,9 +8771,9 @@ MonoBehaviour:
   m_fontSize: 3
   m_fontSizeBase: 3
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 0
-  m_fontSizeMax: 72
+  m_fontSizeMax: 3
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -9899,6 +9899,7 @@ GameObject:
   m_Component:
   - component: {fileID: 860409408}
   - component: {fileID: 860409409}
+  - component: {fileID: 860409410}
   m_Layer: 0
   m_Name: MainMenu
   m_TagString: Untagged
@@ -9977,6 +9978,25 @@ MonoBehaviour:
   onHidden:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &860409410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860409407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ac9a6977b27aac4da933d92d39575aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playButton: {fileID: 1726901928}
+  exitButton: {fileID: 253546026}
+  playLabel: {fileID: 724577003}
+  exitLabel: {fileID: 1322700546}
+  resumeText: Resume
+  newText: New
+  nameKeyboard: {fileID: 2010749003}
 --- !u!4 &876492155 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2368509646345541742, guid: ce9c66eb65a59de4a8ff7d9d372fbedd, type: 3}

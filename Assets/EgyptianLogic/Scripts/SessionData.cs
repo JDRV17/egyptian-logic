@@ -108,6 +108,72 @@ public class SessionData : MonoBehaviour
         LastPlayedVersion = playedVersion;
     }
 
+    // ---------- Partida guardada (ver SaveSystem) ----------
+
+    /// <summary>Sesión de juego dentro de la partida: 1 al empezar y +1 cada vez que se reanuda. Va en los CSV.</summary>
+    public int Session { get; private set; } = 1;
+
+    /// <summary>La partida empezó desde el menú de inicio (nueva o reanudada). Solo así se guardan checkpoints.</summary>
+    public bool RunActive { get; private set; }
+
+    /// <summary>Partida nueva: se llama al confirmar el nombre en el menú de inicio.</summary>
+    public void BeginNewRun()
+    {
+        ClearRun();
+        Session = 1;
+        RunActive = true;
+    }
+
+    /// <summary>Foto del estado para guardar al entrar a un nivel (después de los Awake de la escena).</summary>
+    public SaveGame Capture(string scene)
+    {
+        var g = new SaveGame
+        {
+            scene = scene,
+            savedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+            playerName = PlayerName,
+            diagnosticCorrect = DiagnosticCorrect,
+            initialTheta = InitialTheta,
+            initialVersion = InitialVersion,
+            musicVolume = MusicVolume01,
+            sfxVolume = SfxVolume01,
+            finalTheta = FinalTheta,
+            decisionsMade = DecisionsMade,
+            lastPlayedVersion = LastPlayedVersion,
+            stageCsvPath = StageCsvPath ?? "",
+            decisionCsvPath = DecisionCsvPath ?? "",
+            session = Session
+        };
+        g.results.AddRange(results);
+        // Sin decisiones, el historial solo tiene el θ que el nivel registra en su Awake: al reanudar lo vuelve a registrar.
+        if (DecisionsMade > 0) g.thetaHistory.AddRange(thetaHistory);
+        return g;
+    }
+
+    /// <summary>Carga una partida guardada (antes de abrir su escena) y cuenta una sesión más.</summary>
+    public void Restore(SaveGame g)
+    {
+        PlayerName = g.playerName ?? "";
+        DiagnosticCorrect = g.diagnosticCorrect;
+        InitialTheta = g.initialTheta;
+        InitialVersion = g.initialVersion;
+        MusicVolume01 = g.musicVolume;
+        SfxVolume01 = g.sfxVolume;
+
+        results.Clear();
+        if (g.results != null) results.AddRange(g.results);
+        thetaHistory.Clear();
+        if (g.thetaHistory != null) thetaHistory.AddRange(g.thetaHistory);
+        FinalTheta = g.finalTheta;
+        DecisionsMade = g.decisionsMade;
+        LastPlayedVersion = g.lastPlayedVersion;
+        StageCsvPath = string.IsNullOrEmpty(g.stageCsvPath) ? null : g.stageCsvPath;
+        DecisionCsvPath = string.IsNullOrEmpty(g.decisionCsvPath) ? null : g.decisionCsvPath;
+
+        Session = g.session + 1;
+        RunActive = true;
+    }
+
     /// <summary>Borra los datos de una partida, conserva nombre, opciones y diagnóstico.</summary>
     public void ClearRun()
     {
@@ -128,6 +194,8 @@ public class SessionData : MonoBehaviour
         DiagnosticCorrect = -1;
         InitialTheta = 0f;
         InitialVersion = 1;
+        Session = 1;
+        RunActive = false;
     }
 
     private static string Sanitize(string s)

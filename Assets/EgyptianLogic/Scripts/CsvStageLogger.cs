@@ -29,7 +29,7 @@ public class CsvStageLogger : MonoBehaviour
             string stamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             path = Path.Combine(Application.persistentDataPath, $"gatekeeper_{pid}_{stamp}.csv");
             File.WriteAllText(path,
-                "participante,reto,version,tiempo_s,tiempo_pausado_pistas_s,intentos,interacciones,interacciones_ideal,pistas,tope_solucion,S_T,S_A,S_I,S_H,P\n",
+                "participante,reto,version,tiempo_s,tiempo_pausado_pistas_s,intentos,interacciones,interacciones_ideal,pistas,tope_solucion,S_T,S_A,S_I,S_H,P,sesion\n",
                 Encoding.UTF8);
             session.StageCsvPath = path;
             Debug.Log($"[CsvStageLogger] Guardando en: {path}");
@@ -41,7 +41,7 @@ public class CsvStageLogger : MonoBehaviour
             r.time.ToString("F2", c), r.hintPauseTime.ToString("F2", c),
             r.attempts, r.interactions, r.idealInteractions, r.hints, r.cappedBySolution ? 1 : 0,
             r.sT.ToString("F3", c), r.sA.ToString("F3", c), r.sI.ToString("F3", c),
-            r.sH.ToString("F3", c), r.P.ToString("F3", c));
+            r.sH.ToString("F3", c), r.P.ToString("F3", c), session.Session);
 
         File.AppendAllText(path, line + "\n", Encoding.UTF8);
     }

@@ -314,7 +314,7 @@ public class AdaptationEngine : MonoBehaviour
             string stamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             csvPath = Path.Combine(Application.persistentDataPath, $"gatekeeper_decisiones_{pid}_{stamp}.csv");
             File.WriteAllText(csvPath,
-                "participante,reto_resuelto,version_jugada,P,theta_antes,K,delta,theta_despues,reto_siguiente,version_siguiente,reglas\n",
+                "participante,reto_resuelto,version_jugada,P,theta_antes,K,delta,theta_despues,reto_siguiente,version_siguiente,reglas,sesion\n",
                 Encoding.UTF8);
             session.DecisionCsvPath = csvPath;
             Debug.Log($"[AdaptationEngine] Decisiones en: {csvPath}");
@@ -324,7 +324,7 @@ public class AdaptationEngine : MonoBehaviour
         string line = string.Join(",",
             pid, solvedName, playedVersion, p >= 0f ? p.ToString("F3", c) : "-",
             thetaBefore.ToString("F3", c), f.Get("K").ToString("F2", c), f.Get("delta").ToString("F3", c),
-            f.Get("theta").ToString("F3", c), TargetNames(targets), "V" + (next + 1), "\"" + string.Join(" > ", trace) + "\"");
+            f.Get("theta").ToString("F3", c), TargetNames(targets), "V" + (next + 1), "\"" + string.Join(" > ", trace) + "\"", session.Session.ToString(c));
         File.AppendAllText(csvPath, line + "\n", Encoding.UTF8);
     }
 

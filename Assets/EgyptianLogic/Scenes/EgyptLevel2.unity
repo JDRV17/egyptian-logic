@@ -9073,88 +9073,188 @@ MonoBehaviour:
     versionSource: {fileID: 1251004233}
     byVersion:
     - hints:
-      - "Sigue las antorchas encendidas por el comedor hasta \xABEl Ahorro de Compuertas\xBB,
-        junto al muro. La luz \xE1mbar sobre el reto indica que est\xE1 abierto."
-      - Marca las celdas con 1 en el mapa y busca un grupo de 2 celdas vecinas.
-      - "Dentro de un grupo, la variable que cambia de valor desaparece del t\xE9rmino."
-      - "Soluci\xF3n: F = A"
+      - "Cerca de las mesas emergi\xF3 un bot\xF3n del piso. P\xEDsalo para que aparezca
+        el siguiente tablero, al otro lado del comedor."
+      - "Digita la ecuaci\xF3n simplificada usando los botones de la derecha, con
+        ayuda del mapa de Karnaugh, que puedes tocar para agrupar los 1s que encuentres.
+        Recuerda que el ap\xF3strofe ' indica que esa entrada est\xE1 negada. Cuando
+        hayas digitado la ecuaci\xF3n, presiona el bot\xF3n al costado para evaluar
+        tu respuesta."
+      - "En los mapas de Karnaugh, el prop\xF3sito es agrupar los 1s en grupos de
+        2, 4 u 8, ya sea en l\xEDnea, o en cuadrados (y se pueden atravesar los bordes).
+        Las X tambi\xE9n pueden agruparse con los 1s, como si fueran 1s tambi\xE9n.
+        Una vez se tengan todos los grupos en el mapa de Karnaugh, se analiza por
+        cada grupo, cu\xE1les entradas se mantienen iguales dentro del grupo, y se
+        anotan esas entradas con su valor correspondiente en el grupo. "
+      - "El \xFAnico grupo posible es el dos 1s en la fila de abajo. En ese grupo,
+        el valor que no cambia es A en 1, por lo que la respuesta correcta es A."
     - hints:
-      - "Sigue las antorchas encendidas por el comedor hasta \xABEl Ahorro de Compuertas\xBB,
-        junto al muro. La luz \xE1mbar sobre el reto indica que est\xE1 abierto."
-      - "Busca el grupo m\xE1s grande: las columnas BC = 00 y 01 forman un bloque
-        de 4 celdas con 1."
-      - 'Los bordes del mapa son vecinos: la celda A=1, BC=10 se agrupa con A=1,
-        BC=00.'
-      - "Soluci\xF3n: F = B' + AC'"
+      - "Cerca de las mesas emergi\xF3 un bot\xF3n del piso. P\xEDsalo para que aparezca
+        el siguiente tablero, al otro lado del comedor."
+      - "Digita la ecuaci\xF3n simplificada usando los botones de la derecha, con
+        ayuda del mapa de Karnaugh, que puedes tocar para agrupar los 1s que encuentres.
+        Recuerda que el ap\xF3strofe ' indica que esa entrada est\xE1 negada. Cuando
+        hayas digitado la ecuaci\xF3n, presiona el bot\xF3n al costado para evaluar
+        tu respuesta."
+      - "En los mapas de Karnaugh, el prop\xF3sito es agrupar los 1s en grupos de
+        2, 4 u 8, ya sea en l\xEDnea, o en cuadrados (y se pueden atravesar los bordes).
+        Las X tambi\xE9n pueden agruparse con los 1s, como si fueran 1s tambi\xE9n.
+        Una vez se tengan todos los grupos en el mapa de Karnaugh, se analiza por
+        cada grupo, cu\xE1les entradas se mantienen iguales dentro del grupo, y se
+        anotan esas entradas con su valor correspondiente en el grupo. "
+      - "Hay dos grupos posibles, un cuadrado de cuatro 1s y una l\xEDnea de dos
+        1s entre el 1 que est\xE1 solo, y el primero uno de la fila (ya que los bordes
+        tambi\xE9n son adyacentes). Los valores que se repiten son B en 0 en el primer
+        grupo y A en 1 y C en 0 en el segundo, por lo que la respuesta correcta es
+        B' + AC'."
     - hints:
-      - "Sigue las antorchas encendidas por el comedor hasta \xABEl Ahorro de Compuertas\xBB,
-        junto al muro. La luz \xE1mbar sobre el reto indica que est\xE1 abierto."
-      - "Las X pueden contar como 1 si te ayudan a formar grupos m\xE1s grandes."
-      - La columna CD = 11 es un grupo de 4. Para cubrir la celda 0001, usa las X
-        cercanas.
-      - "Soluci\xF3n: F = A'B' + CD (tambi\xE9n vale A'D + CD)."
+      - "Cerca de las mesas emergi\xF3 un bot\xF3n del piso. P\xEDsalo para que aparezca
+        el siguiente tablero, al otro lado del comedor."
+      - "Digita la ecuaci\xF3n simplificada usando los botones de la derecha, con
+        ayuda del mapa de Karnaugh, que puedes tocar para agrupar los 1s que encuentres.
+        Recuerda que el ap\xF3strofe ' indica que esa entrada est\xE1 negada. Cuando
+        hayas digitado la ecuaci\xF3n, presiona el bot\xF3n al costado para evaluar
+        tu respuesta."
+      - "En los mapas de Karnaugh, el prop\xF3sito es agrupar los 1s en grupos de
+        2, 4 u 8, ya sea en l\xEDnea, o en cuadrados (y se pueden atravesar los bordes).
+        Las X tambi\xE9n pueden agruparse con los 1s, como si fueran 1s tambi\xE9n.
+        Una vez se tengan todos los grupos en el mapa de Karnaugh, se analiza por
+        cada grupo, cu\xE1les entradas se mantienen iguales dentro del grupo, y se
+        anotan esas entradas con su valor correspondiente en el grupo. "
+      - "Hay dos grupos posibles, una l\xEDnea vertical de cuatro 1s, y un cuadrado
+        de tres 1s y una X. Los valores que se repiten son C y D en 1 en el primer
+        grupo y A en 0 y D en 1 en el segundo, por lo que la respuesta correcta es
+        CD + A'D."
     skipFirstHint: 0
   - name: 2.4
     versionSource: {fileID: 277844649}
     byVersion:
     - hints:
-      - "Sigue las antorchas encendidas por el comedor hasta \xABEl Selector\xBB,
-        junto al muro. La luz \xE1mbar sobre el reto indica que est\xE1 abierto,
-        y las compuertas para resolverlo est\xE1n en el suelo frente a \xE9l."
-      - Cuando S = 0 debe pasar I0 a la salida; cuando S = 1 debe pasar I1.
-      - "Usa NOT(S) para dejar pasar I0 con un AND, y S para dejar pasar I1 con otro
-        AND. J\xFAntalos con un OR."
-      - "Soluci\xF3n: AND1(NOT S, I0); AND2(S, I1); OR(AND1, AND2) \u2192 Y. Luego
-        prueba S = 0 y S = 1."
+      - "Detr\xE1s del \xFAltimo reto emergi\xF3 un pedestal del suelo con una llave.
+        Agarra la llave e introd\xFAcela en su cerradura, en el pedestal al otro
+        lado de la misma mesa. Cuando se introduzca la llave, aparecer\xE1 el siguiente
+        tablero."
+      - "Al igual que en el segundo reto del comedor, tendr\xE1s que replicar el
+        circuito presentado en el tablero, pero esta vez hay mayor variedad de compuertas
+        a utilizar. B\xFAscalas a tu alrededor, cayeron del techo cuando emergi\xF3
+        el reto. Col\xF3calas donde las necesites, y arrastra los cables azules que
+        se ven en las entradas para conectar los distintos m\xF3dulos del circuito.
+        Para evaluar, enciende y apaga el switch del selector para probar todas las
+        combinaciones."
+      - "La ecuaci\xF3n booleana cl\xE1sica de un multiplexor 2:1 es (S'\xB7I0) +
+        (S\xB7I1). Recuerda que el \xB7 equivale a un AND, y el + equivale a un OR."
+      - "Coloca el NOT en la primera ranura y con\xE9ctalo con la entrada S. Luego
+        conecta la salida de esa compuerta con I0 a trav\xE9s de un AND. Por otro
+        lado, conecta la entrada S con I1 usando otra compuerta AND, y finalmente,
+        une las salidas de los dos ANDs con una compuerta OR."
     - hints:
-      - "Sigue las antorchas encendidas por el comedor hasta \xABEl Selector\xBB,
-        junto al muro. La luz \xE1mbar sobre el reto indica que est\xE1 abierto,
-        y las compuertas para resolverlo est\xE1n en el suelo frente a \xE9l."
-      - 'Divide el problema: un MUX 2:1 elige entre I0 e I1, y otro entre I2 e I3.'
-      - Los dos primeros MUX usan S0 (el bit menos significativo). El MUX final elige
-        con S1.
-      - "Soluci\xF3n: MUXa(I0, I1, S0); MUXb(I2, I3, S0); MUXc(MUXa, MUXb, S1) \u2192
-        Y. Prueba las 4 combinaciones."
+      - "Detr\xE1s del \xFAltimo reto emergi\xF3 un pedestal del suelo con una llave.
+        Agarra la llave e introd\xFAcela en su cerradura, en el pedestal al otro
+        lado de la misma mesa. Cuando se introduzca la llave, aparecer\xE1 el siguiente
+        tablero."
+      - "Al igual que en el segundo reto del comedor, tendr\xE1s que replicar el
+        circuito presentado en el tablero, pero esta vez hay mayor variedad de compuertas
+        a utilizar. B\xFAscalas a tu alrededor, cayeron del techo cuando emergi\xF3
+        el reto. Col\xF3calas donde las necesites, y arrastra los cables azules que
+        se ven en las entradas para conectar los distintos m\xF3dulos del circuito.
+        Para evaluar, enciende y apaga el switch del selector para probar todas las
+        combinaciones."
+      - "Un multiplexor 4:1 se puede construir usando tres multiplexores 2:1. Los
+        primeros dos MUX se dividen las cuatro entradas I, y utilizan el mismo selector
+        S0. El \xFAltimo MUX toma las salidas de los otros dos y utiliza S1 como
+        selector."
+      - "Coloca los tres MUX 2:1 en las tres ranuras disponibles. Al primero, con\xE9ctale
+        las entradas I0 e I1, y el selector S0, en ese orden de arriba a abajo. Al
+        segundo, con\xE9ctale las entradas I2 e I3 y el selector S0. Al tercero,
+        con\xE9ctale las salidas de los otros dos MUX y el selector S1."
     - hints:
-      - "Sigue las antorchas encendidas por el comedor hasta \xABEl Selector\xBB,
-        junto al muro. La luz \xE1mbar sobre el reto indica que est\xE1 abierto,
-        y las compuertas para resolverlo est\xE1n en el suelo frente a \xE9l."
-      - "Un MUX 4:1 para I0\u2013I3, otro para I4\u2013I7, y un MUX 2:1 final que
-        elige entre los dos."
-      - Los dos MUX 4:1 usan S0 y S1. El MUX 2:1 final usa S2.
-      - "Soluci\xF3n: MUX4a(I0..I3, S0, S1); MUX4b(I4..I7, S0, S1); MUX2(MUX4a, MUX4b,
-        S2) \u2192 Y."
+      - "Detr\xE1s del \xFAltimo reto emergi\xF3 un pedestal del suelo con una llave.
+        Agarra la llave e introd\xFAcela en su cerradura, en el pedestal al otro
+        lado de la misma mesa. Cuando se introduzca la llave, aparecer\xE1 el siguiente
+        tablero."
+      - "Al igual que en el segundo reto del comedor, tendr\xE1s que replicar el
+        circuito presentado en el tablero, pero esta vez hay mayor variedad de compuertas
+        a utilizar. B\xFAscalas a tu alrededor, cayeron del techo cuando emergi\xF3
+        el reto. Col\xF3calas donde las necesites, y arrastra los cables azules que
+        se ven en las entradas para conectar los distintos m\xF3dulos del circuito.
+        Para evaluar, enciende y apaga el switch del selector para probar todas las
+        combinaciones."
+      - "Un multiplexor 8:1 se puede construir usando dos multiplexores 4:1 y un
+        2:1. Los primeros dos MUX se dividen las ocho entradas I y utilizan S0 y
+        S1 como selectores. El \xFAltimo MUX toma las salidas de los otros dos y
+        utiliza S2 como selector."
+      - "Coloca los dos MUX 4:1 en las primeras dos ranuras y uno de los MUX 2:1
+        en la otra. Al primer MUX, con\xE9ctale las entradas I0, I1, I2 e I3, y los
+        selectores S0 y S1. Al segundo, con\xE9ctale las entradas I4, I5, I6 e I7,
+        y los selectores S0 y S1. Al tercero, con\xE9ctale las salidas de los otros
+        dos MUX y el selector S2."
     skipFirstHint: 0
   - name: 2.5
     versionSource: {fileID: 1670618773}
     byVersion:
     - hints:
-      - "Sigue las antorchas encendidas por el comedor hasta \xABEl Repartidor\xBB,
-        junto al muro. La luz \xE1mbar sobre el reto indica que est\xE1 abierto,
-        y las compuertas para resolverlo est\xE1n en el suelo frente a \xE9l."
-      - "Cada salida corresponde a una direcci\xF3n: Y0 = 00, Y1 = 01, Y2 = 10, Y3
-        = 11."
-      - "Saca A1' y A0' con dos NOT. Cada salida es un AND de dos se\xF1ales."
-      - "Soluci\xF3n: Y0 = A1'\xB7A0', Y1 = A1'\xB7A0, Y2 = A1\xB7A0', Y3 = A1\xB7A0.
-        Prueba las 4 direcciones."
+      - "Presiona el bot\xF3n rojo que sali\xF3 detr\xE1s del reto anterior para
+        revelar el \xFAltimo tablero del comedor. Una vez soluciones ese, recoge
+        la antorcha que saldr\xE1 detr\xE1s, y col\xF3cala en el brasero al otro
+        extremo de la mesa, para abrir la puerta de salida del comedor."
+      - "Al igual que en el segundo y cuarto reto, tendr\xE1s que replicar el circuito
+        presentado en el tablero. Busca las compuertas a tu alrededor, cayeron del
+        techo cuando emergi\xF3 el reto. Col\xF3calas donde las necesites, y arrastra
+        los cables azules que se ven en las entradas para conectar los distintos
+        m\xF3dulos del circuito. Para evaluar, enciende y apaga los switches para
+        probar todas las combinaciones.\r\n"
+      - "La ecuaci\xF3n booleana cl\xE1sica de un decodificador 2:4 es as\xED para
+        sus cuatro salidas: Y0 = A1'\xB7A0', Y1 = A1'\xB7A0, Y2 = A1\xB7A0', Y3 =
+        A1\xB7A0."
+      - "Coloca los NOTs en las primeras dos ranuras y con\xE9ctalos con las entradas
+        A1 y A0 respectivamente. Toma un AND y con\xE9ctalo a la salida de esas dos
+        compuertas NOTs, y luego conecta esa salida con Y0. Toma otro AND y con\xE9ctalo
+        con la salida del NOT de A1 y el A0 positivo, y esa salida va con Y1. Haz
+        lo mismo pero con la salida del NOT de A0 y el A1 positivo y llev\xE1ndolo
+        a Y2. Finalmente, usa un \xFAltimo AND para conectar las dos entradas positivas
+        y con\xE9ctalo con Y3.\r\n"
     - hints:
-      - "Sigue las antorchas encendidas por el comedor hasta \xABEl Repartidor\xBB,
-        junto al muro. La luz \xE1mbar sobre el reto indica que est\xE1 abierto,
-        y las compuertas para resolverlo est\xE1n en el suelo frente a \xE9l."
-      - "Es como el decodificador 2\u21924 pero con 3 bits: cada salida es un AND
-        de 3 entradas."
-      - Saca A2', A1' y A0' con tres NOT. La salida Yk usa el bit negado donde k
-        tiene un 0.
-      - "Soluci\xF3n: Y0 = A2'\xB7A1'\xB7A0', Y1 = A2'\xB7A1'\xB7A0, ..., Y7 = A2\xB7A1\xB7A0.
-        Prueba las 8 direcciones."
+      - "Presiona el bot\xF3n rojo que sali\xF3 detr\xE1s del reto anterior para
+        revelar el \xFAltimo tablero del comedor. Una vez soluciones ese, recoge
+        la antorcha que saldr\xE1 detr\xE1s, y col\xF3cala en el brasero al otro
+        extremo de la mesa, para abrir la puerta de salida del comedor."
+      - "Al igual que en el segundo y cuarto reto, tendr\xE1s que replicar el circuito
+        presentado en el tablero. Busca las compuertas a tu alrededor, cayeron del
+        techo cuando emergi\xF3 el reto. Col\xF3calas donde las necesites, y arrastra
+        los cables azules que se ven en las entradas para conectar los distintos
+        m\xF3dulos del circuito. Para evaluar, enciende y apaga los switches para
+        probar todas las combinaciones.\r\n"
+      - "La ecuaci\xF3n booleana cl\xE1sica de un decodificador 3:8 es as\xED para
+        sus ocho salidas: Y0 = A2'\xB7A1'\xB7A0', Y1 = A2'\xB7A1'\xB7A0, Y2 = A2'\xB7A1\xB7A0',
+        Y3 = A2'\xB7A1\xB7A0, Y4 = A2\xB7A1'\xB7A0', Y5 = A2\xB7A1'\xB7A0, Y6 = A2\xB7A1\xB7A0',
+        Y7 = A2\xB7A1\xB7A0."
+      - "Coloca los NOTs en las primeras tres ranuras y con\xE9ctalos con las entradas
+        A2, A1 y A0 respectivamente. Conecta los ANDs con las entradas positivas
+        y las salidas de los NOTs, de tal manera que se logren todas las combinaciones
+        (000, 001, 010, 011, 100, 101, 110, 111), y con\xE9ctalas con sus respectivas
+        salidas (Y0, Y1, Y2, Y3, Y4, Y5, Y6, Y7)."
     - hints:
-      - "Sigue las antorchas encendidas por el comedor hasta \xABEl Repartidor\xBB,
-        junto al muro. La luz \xE1mbar sobre el reto indica que est\xE1 abierto,
-        y las compuertas para resolverlo est\xE1n en el suelo frente a \xE9l."
-      - "Arma primero el decodificador 2\u21924 normal y despu\xE9s agrega el Enable."
-      - 'Usa E como tercera entrada de cada AND: si E = 0, ninguna salida puede encenderse.'
-      - "Soluci\xF3n: Yk = E \xB7 (t\xE9rmino de la direcci\xF3n k), por ejemplo
-        Y0 = E\xB7A1'\xB7A0'. Prueba con E = 0 y E = 1."
+      - "Presiona el bot\xF3n rojo que sali\xF3 detr\xE1s del reto anterior para
+        revelar el \xFAltimo tablero del comedor. Una vez soluciones ese, recoge
+        la antorcha que saldr\xE1 detr\xE1s, y col\xF3cala en el brasero al otro
+        extremo de la mesa, para abrir la puerta de salida del comedor."
+      - "Al igual que en el segundo y cuarto reto, tendr\xE1s que replicar el circuito
+        presentado en el tablero. Busca las compuertas a tu alrededor, cayeron del
+        techo cuando emergi\xF3 el reto. Col\xF3calas donde las necesites, y arrastra
+        los cables azules que se ven en las entradas para conectar los distintos
+        m\xF3dulos del circuito. Para evaluar, enciende y apaga los switches para
+        probar todas las combinaciones.\r\n"
+      - "Un decodificador 2:4 con Enable es igual al decodificador normal, pero cada
+        salida tambi\xE9n depende de E. La ecuaci\xF3n booleana cl\xE1sica es as\xED
+        para sus cuatro salidas: Y0 = E\xB7A1'\xB7A0', Y1 = E\xB7A1'\xB7A0, Y2 =
+        E\xB7A1\xB7A0', Y3 = E\xB7A1\xB7A0. Si E = 0, todas las salidas quedan en
+        0."
+      - "Coloca los NOTs en las primeras dos ranuras y con\xE9ctalos con las entradas
+        A1 y A0 respectivamente. Conecta cada AND a tres cables: la entrada E y,
+        para A1 y A0, la entrada positiva (1) o la salida de su NOT (0), de tal manera
+        que se logren las combinaciones E A1 A0 = 100, 101, 110, 111. E siempre va
+        positivo. Por \xFAltimo, conecta la salida de cada AND a su salida correspondiente
+        (Y0, Y1, Y2, Y3)."
     skipFirstHint: 0
   spawner: {fileID: 52726158}
   cooldown: 10
@@ -20987,7 +21087,7 @@ GameObject:
   m_Component:
   - component: {fileID: 129306336}
   m_Layer: 0
-  m_Name: Reto_5 El Repartidor
+  m_Name: 2.5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46681,12 +46781,12 @@ GameObject:
   - component: {fileID: 286950022}
   - component: {fileID: 286950023}
   m_Layer: 0
-  m_Name: V2
+  m_Name: 2.4.2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &286950022
 Transform:
   m_ObjectHideFlags: 0
@@ -70162,7 +70262,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh36004
+  m_Name: pb_Mesh139028
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -143456,12 +143556,12 @@ GameObject:
   - component: {fileID: 930920253}
   - component: {fileID: 930920254}
   m_Layer: 0
-  m_Name: V1
+  m_Name: 2.5.1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &930920253
 Transform:
   m_ObjectHideFlags: 0
@@ -154314,8 +154414,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4279179817
-  m_fontColor: {r: 0.16, g: 0.1, b: 0.06, a: 1}
+    rgba: 4278718232
+  m_fontColor: {r: 0.09433961, g: 0.05706245, b: 0.029725872, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -164594,8 +164694,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4279179817
-  m_fontColor: {r: 0.16, g: 0.1, b: 0.06, a: 1}
+    rgba: 4278915613
+  m_fontColor: {r: 0.11320752, g: 0.072171845, b: 0.042079017, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -177341,7 +177441,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1130729151}
   m_Layer: 0
-  m_Name: Reto_4 El Selector
+  m_Name: 2.4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -210412,8 +210512,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4279179817
-  m_fontColor: {r: 0.16, g: 0.1, b: 0.06, a: 1}
+    rgba: 4278651923
+  m_fontColor: {r: 0.0754717, g: 0.048525345, b: 0.028764684, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -228998,12 +229098,12 @@ GameObject:
   - component: {fileID: 1469933110}
   - component: {fileID: 1469933111}
   m_Layer: 0
-  m_Name: V2
+  m_Name: 2.5.2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1469933110
 Transform:
   m_ObjectHideFlags: 0
@@ -277668,7 +277768,7 @@ GameObject:
   - component: {fileID: 1804718285}
   - component: {fileID: 1804718286}
   m_Layer: 0
-  m_Name: V3
+  m_Name: 2.4.3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -287772,12 +287872,12 @@ GameObject:
   - component: {fileID: 1877169781}
   - component: {fileID: 1877169782}
   m_Layer: 0
-  m_Name: V1
+  m_Name: 2.4.1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1877169781
 Transform:
   m_ObjectHideFlags: 0
@@ -298858,7 +298958,7 @@ GameObject:
   - component: {fileID: 1952357113}
   - component: {fileID: 1952357114}
   m_Layer: 0
-  m_Name: V3
+  m_Name: 2.5.3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
